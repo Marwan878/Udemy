@@ -4,8 +4,15 @@ import { SignUp } from "@clerk/nextjs";
 
 export default function Page() {
   return (
-    <div>
-      <SignUp />
-    </div>
+    <SignUp
+      appearance={{
+        elements: {
+          cardBox: "w-full",
+        },
+        variables: {
+          fontSize: "1.3rem",
+        },
+      }}
+    />
   );
 }

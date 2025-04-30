@@ -1,22 +1,23 @@
+"use client";
+
+import { Select } from "@/components/general";
 import Input from "@/components/general/input";
+import { useCourseManagement } from "@/contexts/course-management";
 import PageCard from "../page-card";
-import { Button, Select } from "@/components/general";
 
 export default function Page() {
+  const { courseData, setCourseData } = useCourseManagement();
   return (
     <PageCard heading="Pricing">
       <div className="space-y-6">
         <h2 className="heading-md font-medium text-gray-900">
           Set a price for your course
         </h2>
-
         <p className="text-gray-600">
-          Please select the currency and the price tier for your course. If
-          you&apos;d like to offer your course for free, it must have a total
-          video length of less than 2 hours.
+          Please select the currency and the price tier for your course.
         </p>
 
-        <form className="space-y-4">
+        <div className="space-y-4">
           <div className="flex gap-8 items-center">
             <div className="space-y-2">
               <label className="block font-medium text-gray-700">
@@ -25,22 +26,23 @@ export default function Page() {
               <Select
                 className="w-36"
                 name="currency"
-                options={[
-                  { displayName: "USD", value: "usd" },
-                  { displayName: "EGP", value: "egp" },
-                ]}
+                options={[{ displayName: "USD", value: "usd" }]}
               />
             </div>
 
             <div className="space-y-2">
               <label className="block font-medium text-gray-700">Price</label>
-              <Input type="number" min={0} required />
+              <Input
+                type="number"
+                min={0}
+                value={courseData.price ?? 0}
+                setContent={(newContent) =>
+                  setCourseData((prev) => ({ ...prev, price: +newContent }))
+                }
+              />
             </div>
           </div>
-          <Button className="font-bold min-w-0" height="md">
-            Save
-          </Button>
-        </form>
+        </div>
       </div>
     </PageCard>
   );

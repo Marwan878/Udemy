@@ -26,7 +26,9 @@ export default function Select({
         name={name}
       >
         {options.map((option) => (
-          <option key={option.value}>{option.displayName}</option>
+          <option key={option.value} value={option.value}>
+            {option.displayName}
+          </option>
         ))}
       </select>
       <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2" />

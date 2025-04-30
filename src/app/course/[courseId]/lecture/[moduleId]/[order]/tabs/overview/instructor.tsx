@@ -1,10 +1,6 @@
-import { TInstructor } from "@/types";
+import { TUser } from "@/types";
 
-export default function Instructor({
-  instructor,
-}: {
-  instructor: TInstructor;
-}) {
+export default function Instructor({ instructor }: { instructor: TUser }) {
   return (
     <div className="border-t border-[#d1d2e0] p-[2.4rem] flex">
       <dt className="w-1/4">Instructor</dt>
@@ -16,7 +12,7 @@ export default function Instructor({
           />
           <div className="ms-[2.4rem]">
             <a href="" className="heading-lg text-[#303141]">
-              {instructor.name}
+              {instructor.firstName + " " + instructor.lastName}
             </a>
             <p>{instructor.bio}</p>
           </div>

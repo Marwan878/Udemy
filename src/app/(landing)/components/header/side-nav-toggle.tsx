@@ -5,11 +5,17 @@ import { cn } from "@/lib/utils";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function SideNavToggle() {
   const [sideNavIsOpen, setSideNavIsOpen] = useState(false);
   const { user } = useUser();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    document.body.classList.remove("sidebar-open");
+  }, [pathname]);
 
   return (
     <>

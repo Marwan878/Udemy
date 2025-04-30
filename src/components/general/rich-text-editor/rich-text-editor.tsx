@@ -1,13 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { TFormats } from "@/types";
 import FormattingControls from "./formatting-controls";
 
 function RichTextEditor({
+  value,
   onChange,
 }: {
+  value: string;
   onChange: (newContent: string) => void;
 }) {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -146,6 +148,12 @@ function RichTextEditor({
       }
     }
   };
+
+  useEffect(() => {
+    if (editorRef.current && value !== editorRef.current.innerHTML) {
+      editorRef.current.innerHTML = value;
+    }
+  }, [value]);
 
   return (
     <div className="border rounded-md">

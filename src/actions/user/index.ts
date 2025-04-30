@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/firebase";
-import { TNote, TPurchasedCourseData } from "@/types";
+import { TNote, TPurchasedCourseData, TUser } from "@/types";
 import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { revalidatePath } from "next/cache";
 import { fetchUserField, getLoggedInUserId } from "../cart";
@@ -14,6 +14,10 @@ import {
 
 async function fetchLearnerCourses() {
   const learnerId = await getLoggedInUserId();
+
+  if (!learnerId) {
+    throw new Error("You must be logged in to perform this action.");
+  }
 
   const learnerRef = doc(db, "users", learnerId);
   const learnerSnap = await getDoc(learnerRef);
@@ -158,7 +162,7 @@ async function fetchUserCart() {
     throw new Error("You must be logged in to perform this action.");
   }
 
-  const coursesIds = Object.keys(await fetchUserField("cart"));
+  const coursesIds = (await fetchUserField("cart")) as string[];
   const courses = await fetchCourses(coursesIds);
 
   return courses;
@@ -175,6 +179,10 @@ async function rateCourse(rating: number, courseId: string) {
   }
 
   const userId = await getLoggedInUserId();
+
+  if (!userId) {
+    throw new Error("You must be logged in to perform this action.");
+  }
 
   const userRef = doc(db, "users", userId);
   const userSnap = await getDoc(userRef);
@@ -260,6 +268,62 @@ async function deleteNote(courseId: string, noteId: string) {
   await updateDoc(userRef, { [target]: updatedNotes });
 }
 
+async function fetchUser() {
+  const userId = await getLoggedInUserId();
+  if (!userId) {
+    throw new Error("No user logged in.");
+  }
+
+  const userRef = doc(db, "users", userId);
+  const userSnap = await getDoc(userRef);
+
+  if (!userSnap.exists()) {
+    throw new Error(`User with id: ${userId} does not exsist.`);
+  }
+
+  return userSnap.data() as TUser;
+}
+
+async function updateUserImagePath(newImagePath: string) {
+  const userId = await getLoggedInUserId();
+  if (!userId) {
+    throw new Error("You must be logged in to perform this action.");
+  }
+
+  const userRef = doc(db, "users", userId);
+  const userSnap = await getDoc(userRef);
+
+  if (!userSnap.exists()) {
+    throw new Error(`User with id: ${userId} does not exist.`);
+  }
+
+  const target = "imageUrl";
+  await updateDoc(userRef, { [target]: newImagePath });
+}
+
+async function updateUserData(formData: FormData) {
+  const userId = await getLoggedInUserId();
+  if (!userId) {
+    throw new Error("You must be logged in to perform this action.");
+  }
+
+  const userRef = doc(db, "users", userId);
+  const userSnap = await getDoc(userRef);
+
+  if (!userSnap.exists()) {
+    throw new Error(`User with id: ${userId} does not exist.`);
+  }
+
+  const formFields = Object.fromEntries(formData.entries());
+  const actionIdKey = Object.keys(formFields)[0];
+  delete formFields[actionIdKey];
+
+  const dbUserData = userSnap.data() as TUser;
+
+  const updatedUser = { ...dbUserData, ...formFields };
+  await updateDoc(userRef, updatedUser);
+}
+
 export {
   addCoursesToUserCourses,
   fetchLearnerCourses,
@@ -271,4 +335,7 @@ export {
   fetchCourseNotes,
   saveNote,
   deleteNote,
+  fetchUser,
+  updateUserImagePath,
+  updateUserData,
 };

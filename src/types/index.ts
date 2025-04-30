@@ -1,32 +1,15 @@
 import { LEVELS } from "@/constants";
 
-// type TUser = {
-//   id: string;
-//   email: string;
-//   displayName: string;
-//   photoURL: string;
-//   role: "student" | "teacher";
-//   createdAt: number;
-//   updatedAt: number;
-//   purchasedCourses: {
-//     id: string;
-//     progress: number;
-//     purchaseDate: number;
-//   }[];
-//   wishlist: string[];
-//   subscriptions: {
-//     plan: "pro" | "free" | "business";
-//     status: "active" | "canceled" | "trialing";
-//     expiresAt: number | null;
-//   };
-// };
-
-type TInstructor = {
+type TUser = {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
+  imageUrl: string;
   bio: string;
   about: string;
-  imageUrl: string;
+  courses: TPurchasedCourseData[];
+  publishedCoursesIds: string[];
+  cart: string[];
   studentsCount: number;
   reviewsCount: number;
   coursesCount: number;
@@ -64,13 +47,13 @@ type TLevel = (typeof LEVELS)[number];
 type TCourse = {
   imageUrl: string;
   title: string;
-  instructor: TInstructor;
+  instructor: TUser;
   rating: number;
   ratingCount: number;
   price: number;
   tag?: TCourseTag;
   updatedAt?: number;
-  category: TCategory;
+  category: string;
   skillLevel: TLevel;
   leadHeadline: string;
   features: string[];
@@ -92,7 +75,6 @@ type TCurriculumItemType = "video";
 type TModule = {
   content: TContent[];
   id: string;
-  order: number;
   title: string;
 };
 
@@ -100,7 +82,6 @@ type TContent = {
   type: TCurriculumItemType;
   url?: string;
   isCompleted: boolean;
-  order: number;
   title: string;
   duration: number;
   id: string;
@@ -108,7 +89,6 @@ type TContent = {
 
 type TVideo = {
   duration: number;
-  order: number;
   title: string;
   type: "video";
   url: string;
@@ -148,6 +128,8 @@ type TFormats = {
   code: boolean;
 };
 
+type TCourseState = "purchased" | "published" | "not_purchased";
+
 export type {
   TCategory,
   TCourse,
@@ -158,10 +140,12 @@ export type {
   TBenefit,
   TPurchasedCourseData,
   TVideo,
-  TInstructor,
   TModule,
   TContent,
   TCurriculumItemType,
   TFormats,
   TNote,
+  TLevel,
+  TUser,
+  TCourseState,
 };

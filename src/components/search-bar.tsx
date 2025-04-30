@@ -1,23 +1,29 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
-import { useState } from "react";
+import { ChangeEvent } from "react";
 
-export default function SearchBar({ className }: { className?: string }) {
-  const [searchText, setSearchText] = useState("");
-
+export default function SearchBar({
+  className,
+  value,
+  onChange,
+  onSearch,
+  containerClassName,
+}: {
+  className?: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onSearch: () => void;
+  containerClassName?: string;
+}) {
   return (
-    <form
-      action=""
-      className={cn("relative h-20 flex-1 mx-[1.2rem]", className)}
-    >
+    <div className={cn("relative", containerClassName)}>
       <button
-        disabled={searchText.trim() === ""}
+        onClick={onSearch}
+        disabled={value.trim() === ""}
         className={cn(
           "absolute top-1/2 -translate-y-1/2 left-4 cursor-not-allowed",
           {
-            "cursor-pointer": searchText.trim() !== "",
+            "cursor-pointer": value.trim() !== "",
           }
         )}
       >
@@ -26,10 +32,13 @@ export default function SearchBar({ className }: { className?: string }) {
       <input
         type="text"
         placeholder="Search for anything"
-        className="h-full rounded-full ps-16 pe-3 border border-[#666] hover:bg-[#f4f4f4] focus:bg-transparent w-full"
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
+        className={cn(
+          "rounded-full ps-16 pe-3 border border-[#666] hover:bg-[#f4f4f4] focus:bg-transparent w-full h-20",
+          className
+        )}
+        value={value}
+        onChange={onChange}
       />
-    </form>
+    </div>
   );
 }

@@ -9,7 +9,7 @@ export default async function Page() {
   const learnerCourses = await fetchLearnerCourses();
 
   return (
-    <MaxWidthWrapper className="pt-[1.6rem]">
+    <MaxWidthWrapper className="pt-[1.6rem] min-h-screen">
       <div className="mx-[-0.8rem] grid grid-cols-1 sm:grid-cols-2 gap-[2.4rem] md:grid-cols-3 xl:grid-cols-4">
         {learnerCourses.length > 0
           ? learnerCourses.map(
@@ -42,7 +42,9 @@ export default async function Page() {
                     <h3 className="line-clamp-2 text-ellipsis heading-md mb-[0.4rem]">
                       {title}
                     </h3>
-                    <div className="text-xs mb-2">{instructor.name}</div>
+                    <div className="text-xs mb-2">
+                      {instructor.firstName + " " + instructor.lastName}
+                    </div>
                     <ProgressBar progress={userProgress} />
                     <div className="flex justify-between text-xs mt-1">
                       <span>

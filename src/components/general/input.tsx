@@ -1,19 +1,13 @@
 "use client";
+
 import { cn } from "@/lib/utils";
-import {
-  DetailedHTMLProps,
-  Dispatch,
-  InputHTMLAttributes,
-  SetStateAction,
-  useRef,
-} from "react";
+import { DetailedHTMLProps, InputHTMLAttributes, useRef } from "react";
 
 export default function Input({
   limit,
   className,
   content,
   setContent,
-  index,
   ...props
 }: DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,
@@ -21,28 +15,17 @@ export default function Input({
 > & {
   limit?: number;
   className?: string;
-  index?: number;
   content?: string;
-  setContent?:
-    | Dispatch<SetStateAction<string>>
-    | Dispatch<SetStateAction<string[]>>;
+  setContent?: (content: string) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setContent?.((prev: string | string[]) => {
-      if (limit && limit === e.target.value.length - 1) {
-        return prev;
-      } else {
-        if (Array.isArray(prev)) {
-          const updated = [...prev];
-          updated[index] = e.target.value;
-          return updated;
-        } else {
-          return e.target.value;
-        }
-      }
-    });
+    if (limit && limit === e.target.value.length - 1) {
+      setContent?.(content ?? "");
+    } else {
+      setContent?.(e.target.value);
+    }
   };
 
   return (
@@ -64,7 +47,9 @@ export default function Input({
         ref={inputRef}
       />
       {limit && (
-        <span className="mx-4 text-[#595c73]">{limit - content.length}</span>
+        <span className="mx-4 text-[#595c73]">
+          {limit - (content ?? "").length}
+        </span>
       )}
     </div>
   );

@@ -1,25 +1,22 @@
-import { Button, SearchBar } from "@/components/general";
+import { Button } from "@/components/general";
 import Logo from "@/components/udemy-logo";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { SearchIcon } from "lucide-react";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
+import DesktopSearchBar from "./desktop-search-bar";
+import MobileSearchBar from "./mobile-search-bar";
 import MyLearning from "./my-learning";
 import ShoppingCart from "./shopping-cart";
 import SideNavToggle from "./side-nav-toggle";
+import UserButton from "@/components/user-button";
 
 export default function Header() {
   return (
     <header className="shadow-md h-[5.6rem] lg:h-[7.2rem] md:px-6 lg:py-0 p-1 flex items-center justify-between relative z-[60] bg-white">
       <SideNavToggle />
-
       <Logo color="black" />
-
-      <SearchBar className="hidden lg:block ms-4" />
-
+      <DesktopSearchBar />
       <div className="flex items-center h-full">
-        <Button variant="ghost" className="block lg:hidden p-2">
-          <SearchIcon width={20} height={20} />
-        </Button>
+        <MobileSearchBar />
         <SignedIn>
           <div className="gap-x-3 hidden lg:flex lg:items-center h-full">
             <Button
@@ -35,11 +32,7 @@ export default function Header() {
         </SignedIn>
         <ShoppingCart />
         <SignedIn>
-          <UserButton
-            appearance={{
-              elements: { userButtonAvatarBox: "w-6 h-6 hidden lg:block ms-3" },
-            }}
-          />
+          <UserButton />
         </SignedIn>
       </div>
 

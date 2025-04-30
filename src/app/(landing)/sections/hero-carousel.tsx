@@ -120,7 +120,7 @@ function LargeScreensContent({ url }: { url: string }) {
         src={HERO_IMAGES_BASE_URL + "/big-" + url}
       />
       <Card
-        className="bg-white top-[20rem] shadow-md rounded-sm w-[34rem] left-[4.8rem] -translate-y-1/2 absolute hidden md:block"
+        className="bg-white top-[20rem] shadow-md rounded-sm w-[34rem] left-[10rem] -translate-y-1/2 absolute hidden md:block"
         heading="Learning that gets you"
         style={{
           boxShadow:

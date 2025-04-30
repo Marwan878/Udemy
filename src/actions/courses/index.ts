@@ -3,30 +3,33 @@
 import { db } from "@/lib/firebase";
 import { TCategory, TContent, TCourse, TModule } from "@/types";
 import {
+  arrayUnion,
   collection,
   doc,
   getDoc,
   getDocs,
   increment,
-  limit,
-  orderBy,
   query,
+  setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";
 import { fetchInstructors } from "../instructor";
+import { getLoggedInUserId } from "../cart";
 
 async function fetchCourses(coursesIds: string[]): Promise<TCourse[]> {
   if (coursesIds.length === 0) return [];
+
   const coursesQuery = query(
     collection(db, "courses"),
     where("__name__", "in", coursesIds)
   );
   const snapshot = await getDocs(coursesQuery);
+
   const fetchedCourses = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  }));
+  })) as Omit<TCourse, "instructor"> & { instructorId: string }[];
 
   // Get unique instructors ids
   const instructorsIds = Array.from(
@@ -34,7 +37,6 @@ async function fetchCourses(coursesIds: string[]): Promise<TCourse[]> {
   );
 
   const instructors = await fetchInstructors(instructorsIds);
-
   // map each instructor to their course
   fetchedCourses.forEach((course) => {
     for (const instructor of instructors) {
@@ -46,7 +48,7 @@ async function fetchCourses(coursesIds: string[]): Promise<TCourse[]> {
     }
   });
 
-  return fetchedCourses as TCourse[];
+  return fetchedCourses;
 }
 
 async function fetchCourseName(courseId: string): Promise<string> {
@@ -80,11 +82,7 @@ async function fetchFirstModuleId(courseId: string) {
     throw new Error(`Course with id ${courseId} does not exist.`);
   }
 
-  const q = query(
-    collection(db, "courses", courseId, "modules"),
-    orderBy("order"),
-    limit(1)
-  );
+  const q = query(collection(db, "courses", courseId, "modules"));
 
   const snapshot = await getDocs(q);
 
@@ -116,16 +114,12 @@ async function fetchModulesWithContent(courseId: string): Promise<TModule[]> {
   if (!courseId) {
     throw new Error("Attempted to fetch modules with an empty courseId.");
   }
-  const q = query(
-    collection(db, "courses", courseId, "modules"),
-    orderBy("order"),
-    limit(100)
-  );
+  const q = query(collection(db, "courses", courseId, "modules"));
 
   const snapshot = await getDocs(q);
   const modules = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 
-  const modulesWithContent = await Promise.all(
+  const modulesWithContent = (await Promise.all(
     modules.map(async (module) => {
       const contentRef = collection(
         db,
@@ -136,35 +130,27 @@ async function fetchModulesWithContent(courseId: string): Promise<TModule[]> {
         "content"
       );
       const contentSnap = await getDocs(contentRef);
-      const content: TContent[] = contentSnap.docs.map((doc) => ({
+      const content = contentSnap.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
-      }));
-
-      content.sort((a, b) => a.order - b.order);
+      })) as TContent[];
 
       return { ...module, content };
     })
-  );
+  )) as TModule[];
 
   return modulesWithContent;
 }
 
-async function fetchCurriculumItem(
-  courseId: string,
-  moduleId: string,
-  order: number
-) {
-  if (!courseId || !moduleId || !order) {
+async function fetchCurriculumItem(courseId: string, moduleId: string) {
+  if (!courseId || !moduleId) {
     throw new Error(
       "Attempted to fetch a curriculum item with insufficient data."
     );
   }
 
   const q = query(
-    collection(db, "courses", courseId, "modules", moduleId, "content"),
-    orderBy("order"),
-    limit(1)
+    collection(db, "courses", courseId, "modules", moduleId, "content")
   );
 
   const snapshot = await getDocs(q);
@@ -172,8 +158,6 @@ async function fetchCurriculumItem(
   const curriculumItem = snapshot.docs[0].data();
   return curriculumItem;
 }
-
-function updateCourseData(formData) {}
 
 async function fetchCourseLength(courseId: string) {
   try {
@@ -220,6 +204,7 @@ async function fetchCategoryCourses(categoryId: string): Promise<TCourse[]> {
   }
 
   const coursesIds = categorySnap.data().coursesIds;
+  console.log(coursesIds);
   const courses = await fetchCourses(coursesIds);
 
   return courses;
@@ -255,13 +240,128 @@ async function updateCourseAverageRating(
   });
 }
 
-async function fetchVideoSource(
-  courseId: string,
-  moduleId: string,
-  order: number
-) {
-  const curriculumItem = await fetchCurriculumItem(courseId, moduleId, order);
+async function fetchVideoSource(courseId: string, moduleId: string) {
+  const curriculumItem = await fetchCurriculumItem(courseId, moduleId);
   return curriculumItem.url;
+}
+
+async function upsertCourseDataAndModules(
+  courseData: TCourse,
+  modules: TModule[]
+) {
+  // Update the main course document
+  const courseRef = doc(db, "courses", courseData.id);
+  await updateDoc(courseRef, {
+    ...courseData,
+  });
+
+  // Upsert each module and its content
+  for (const module of modules) {
+    const moduleRef = doc(db, "courses", courseData.id, "modules", module.id);
+    await updateDoc(moduleRef, {
+      id: module.id,
+      title: module.title,
+    });
+
+    // Upsert each content item in the module
+    for (const contentItem of module.content) {
+      const contentRef = doc(
+        db,
+        "courses",
+        courseData.id,
+        "modules",
+        module.id,
+        "content",
+        contentItem.id
+      );
+      await updateDoc(contentRef, {
+        ...contentItem,
+      });
+    }
+  }
+}
+
+async function searchCourses(query: string): Promise<TCourse[]> {
+  const coursesRef = collection(db, "courses");
+  const snapshot = await getDocs(coursesRef);
+  const allCourses = snapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  })) as TCourse[];
+
+  return allCourses.filter((course) =>
+    course.title.toLowerCase().includes(query.toLowerCase())
+  );
+}
+
+async function createCourse(title: string, category: string): Promise<string> {
+  const userId = await getLoggedInUserId();
+  if (!userId) {
+    throw new Error("You need to be logged in to perform this action.");
+  }
+
+  const newCourseId = crypto.randomUUID();
+  const newCourse: Omit<TCourse, "instructor" | "price"> & {
+    instructorId: string;
+  } = {
+    category,
+    description: "",
+    features: [],
+    hasCaptions: false,
+    id: newCourseId,
+    imageUrl: "",
+    instructorId: userId,
+    isPublished: false,
+    language: "English",
+    leadHeadline: "",
+    rating: 0,
+    ratingCount: 0,
+    requirements: [],
+    skillLevel: "beginner",
+    studentsCount: 0,
+    title,
+    whatYouWillLearn: [],
+    whoThisCourseIsFor: [],
+    updatedAt: new Date().getTime(),
+  };
+
+  const courseRef = doc(db, "courses", newCourse.id);
+  await setDoc(courseRef, newCourse);
+
+  return newCourseId;
+}
+
+async function addCourseToAppropriateCategory(
+  courseId: string,
+  categoryId: string
+) {
+  const categoryRef = doc(db, "categories", categoryId);
+  const categorySnap = await getDoc(categoryRef);
+  if (!categorySnap.exists()) {
+    throw new Error(`Category with id ${categoryId} does not exist.`);
+  }
+
+  await updateDoc(categoryRef, {
+    coursesIds: arrayUnion(courseId),
+  });
+}
+
+async function addCourseToPublishedCourses(courseId: string) {
+  const userId = await getLoggedInUserId();
+  if (!userId) {
+    throw new Error("You need to be logged in to perform this action.");
+  }
+
+  const userRef = doc(db, "users", userId);
+  const userSnap = await getDoc(userRef);
+
+  if (!userSnap.exists()) {
+    throw new Error(`User with id ${userId} does not exist.`);
+  }
+
+  await updateDoc(userRef, {
+    publishedCoursesIds: arrayUnion(courseId),
+  });
 }
 
 export {
@@ -271,11 +371,15 @@ export {
   fetchCurriculumItem,
   fetchModulesWithContent,
   fetchCourseName,
-  updateCourseData,
   fetchCourseLength,
   fetchCategories,
   fetchVideoSource,
   fetchCategoryCourses,
   incrementCourseRatingCount,
   updateCourseAverageRating,
+  upsertCourseDataAndModules,
+  searchCourses,
+  createCourse,
+  addCourseToAppropriateCategory,
+  addCourseToPublishedCourses,
 };

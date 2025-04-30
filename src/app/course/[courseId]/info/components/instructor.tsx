@@ -1,4 +1,4 @@
-import { TInstructor } from "@/types";
+import { TUser } from "@/types";
 import { Award, PlayCircle, Star, Users } from "lucide-react";
 
 export default function Instructor({
@@ -13,7 +13,7 @@ export default function Instructor({
     studentsCount,
   },
 }: {
-  instructor: TInstructor;
+  instructor: TUser;
 }) {
   return (
     <div id="instructor">
@@ -26,7 +26,10 @@ export default function Instructor({
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-x-8">
           <img
-            src={imageUrl}
+            src={
+              imageUrl ||
+              "https://img-c.udemycdn.com/user/200_H/anonymous_3.png"
+            }
             alt={name}
             className="h-44 w-44 rounded-full object-cover"
           />

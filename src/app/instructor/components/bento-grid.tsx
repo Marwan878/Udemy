@@ -27,7 +27,7 @@ export function BentoGrid() {
           </p>
           <div>
             <Link
-              href="#"
+              href="/course/create"
               className="inline-block text-purple-600 font-medium hover:text-purple-800 transition-colors"
             >
               Get Started
@@ -59,7 +59,7 @@ export function BentoGrid() {
             </p>
             <div>
               <Link
-                href="#"
+                href="/course/create"
                 className="inline-block text-purple-600 font-medium hover:text-purple-800 transition-colors"
               >
                 Get Started
@@ -88,7 +88,7 @@ export function BentoGrid() {
             </p>
             <div>
               <Link
-                href="#"
+                href="/course/create"
                 className="inline-block text-purple-600 font-medium hover:text-purple-800 transition-colors"
               >
                 Get Started
@@ -121,7 +121,7 @@ export function BentoGrid() {
           </p>
           <div>
             <Link
-              href="#"
+              href="/course/create"
               className="inline-block text-purple-600 font-medium hover:text-purple-800 transition-colors"
             >
               Get Started

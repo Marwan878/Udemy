@@ -190,16 +190,16 @@ const BENEFITS: TBenefit[] = [
 
 const CATEGORIES = [
   {
-    displayName: "Development",
-    value: "development",
+    displayName: "Microsoft Excel",
+    value: "msexcel",
   },
   {
-    displayName: "Business",
-    value: "business",
+    displayName: "C++",
+    value: "c++",
   },
   {
-    displayName: "IT & Software",
-    value: "it-and-software",
+    displayName: "HTML",
+    value: "html",
   },
 ] as const;
 
@@ -421,6 +421,13 @@ const LEARNING_OBJECTIVES_PLACEHOLDERS = [
   "Complete a case study to manage a project from conception to completion",
 ] as const;
 
+const COURSE_CREATION_STEPS_COUNT = 2;
+
+const PROFILE_TABS = [
+  { name: "Udemy profile", url: "/instructor/profile/basic-information" },
+  { name: "Profile picture", url: "/instructor/profile/photo" },
+] as const;
+
 export {
   UDEMY_HEADER_CATEGORIES,
   CART_LOCAL_STORAGE_KEY,
@@ -443,4 +450,6 @@ export {
   MIN_AUDIENCE_DESCRIPTION_COUNT,
   MIN_FEATURES_COUNT,
   LEARNING_OBJECTIVES_PLACEHOLDERS,
+  COURSE_CREATION_STEPS_COUNT,
+  PROFILE_TABS,
 };

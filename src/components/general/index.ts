@@ -17,6 +17,7 @@ import Select from "./select";
 import StarRating from "./star-rating";
 import Checkbox from "./checkbox";
 import RichTextEditor from "./rich-text-editor/rich-text-editor";
+import Input from "./input";
 
 export {
   ContentSlider,
@@ -39,4 +40,5 @@ export {
   StarRating,
   Checkbox,
   RichTextEditor,
+  Input,
 };

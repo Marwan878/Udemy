@@ -48,7 +48,7 @@ export default function Controls({
       {/* Left controls */}
       <div className="flex items-center gap-x-1 md:gap-x-3">
         <Button
-          className="md:p-1 w-3 h-3 md:w-6 md:h-6"
+          className="md:p-1 w-3 h-3 md:w-8 md:h-8"
           variant="ghost"
           height="sm"
           onClick={togglePlay}
@@ -61,7 +61,7 @@ export default function Controls({
           <ControlTooltip text={isPlaying ? "Pause" : "Play"} />
         </Button>
         <Button
-          className="md:p-1 w-3 h-3 md:w-6 md:h-6"
+          className="md:p-1 w-3 h-3 md:w-8 md:h-8"
           variant="ghost"
           height="sm"
           onClick={() =>
@@ -74,7 +74,7 @@ export default function Controls({
           <ControlTooltip text="Rewind 5s" />
         </Button>
         <Button
-          className="md:p-1 w-3 h-3 md:w-6 md:h-6"
+          className="md:p-1 w-3 h-3 md:w-8 md:h-8"
           variant="ghost"
           height="sm"
           onClick={() =>
@@ -116,7 +116,7 @@ export default function Controls({
           variant="ghost"
           height="sm"
           onClick={toggleMute}
-          className="md:p-1 w-3 h-3 md:w-6 md:h-6"
+          className="md:p-1 w-3 h-3 md:w-8 md:h-8"
         >
           {volume === 0 ? (
             <VolumeOff color="#d1d2e0" />
@@ -138,7 +138,7 @@ export default function Controls({
           variant="ghost"
           height="sm"
           onClick={toggleFullscreen}
-          className="md:p-1 w-3 h-3 md:w-6 md:h-6 ms-1"
+          className="md:p-1 w-3 h-3 md:w-8 md:h-8 ms-1"
         >
           {isFullscreen ? (
             <Minimize color="#d1d2e0" />

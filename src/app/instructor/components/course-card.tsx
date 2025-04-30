@@ -52,7 +52,10 @@ export function CourseCard({ course }: { course: TCourse }) {
     >
       <div className="bg-gray-300 h-full w-[11.8rem] relative">
         <Image
-          src={course.imageUrl}
+          src={
+            course.imageUrl ||
+            "https://s.udemycdn.com/course/200_H/placeholder.jpg"
+          }
           alt={course.title}
           fill
           className="object-cover"

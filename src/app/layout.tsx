@@ -1,4 +1,4 @@
-import { AppProvider } from "@/lib/context-provider";
+import { CartProvider } from "@/contexts/cart";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -18,8 +18,6 @@ export const metadata: Metadata = {
   title: "Online Courses - Learn Anything, On Your Schedule | Udemy",
 };
 
-// const CartContext = createContext();
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <AppProvider>
+      <CartProvider>
         <html lang="en">
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -37,7 +35,7 @@ export default function RootLayout({
             {/* <Footer /> */}
           </body>
         </html>
-      </AppProvider>
+      </CartProvider>
     </ClerkProvider>
   );
 }

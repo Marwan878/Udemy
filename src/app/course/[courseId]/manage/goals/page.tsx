@@ -1,43 +1,35 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useState } from "react";
-import PageCard from "../page-card";
-import Input from "@/components/general/input";
 import { Button } from "@/components/general";
-import { Menu, PlusCircle, Trash2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import DragDropList from "@/components/general/drag-drop-list";
+import Input from "@/components/general/input";
 import {
+  LEARNING_OBJECTIVES_PLACEHOLDERS,
   MIN_AUDIENCE_DESCRIPTION_COUNT,
   MIN_LEARNING_OBJECTIVES_COUNT,
   MIN_PREREQUISITES_COUNT,
-  LEARNING_OBJECTIVES_PLACEHOLDERS,
 } from "@/constants";
 import { useCourseManagement } from "@/contexts/course-management";
+import { cn } from "@/lib/utils";
+import { Menu, PlusCircle, Trash2 } from "lucide-react";
+import PageCard from "../page-card";
 
 export default function Page() {
-  const [learningObjectives, setLearningObjectives] = useState<string[]>(
-    Array.from({ length: MIN_LEARNING_OBJECTIVES_COUNT }, () => "")
-  );
-
-  const [prerequisites, setPrerequisites] = useState<string[]>([""]);
-
-  const [targetAudience, setTargetAudience] = useState<string[]>([""]);
-
-  function incrementResource(setState: Dispatch<SetStateAction<string[]>>) {
-    setState((prev) => [...prev, ""]);
-  }
+  const { courseData, setCourseData } = useCourseManagement();
 
   function canAdd(resource: string[]) {
     return resource.every((item) => item.length > 0);
   }
 
   function handleDeleteObjective(objectiveIndex: number) {
-    if (learningObjectives.length <= MIN_LEARNING_OBJECTIVES_COUNT) {
+    if (courseData.whatYouWillLearn.length <= MIN_LEARNING_OBJECTIVES_COUNT) {
       return;
     }
 
-    setLearningObjectives((prev) => prev.toSpliced(objectiveIndex, 1));
+    setCourseData((prev) => ({
+      ...prev,
+      whatYouWillLearn: prev.whatYouWillLearn.toSpliced(objectiveIndex, 1),
+    }));
   }
 
   return (
@@ -63,15 +55,27 @@ export default function Page() {
 
           <DragDropList
             className="space-y-3 w-full"
-            items={learningObjectives}
-            onReorder={setLearningObjectives}
+            items={courseData.whatYouWillLearn}
+            onReorder={(newItems) =>
+              setCourseData((prev) => ({
+                ...prev,
+                whatYouWillLearn: newItems,
+              }))
+            }
           >
-            {learningObjectives.map((objective, i) => (
+            {courseData.whatYouWillLearn.map((objective, i) => (
               <DragDropList.Item index={i} key={i} className="flex group">
                 <Input
-                  index={i}
                   content={objective}
-                  setContent={setLearningObjectives}
+                  setContent={(content) =>
+                    setCourseData((prev) => ({
+                      ...prev,
+                      whatYouWillLearn: prev.whatYouWillLearn
+                        .slice(0, i)
+                        .concat(content)
+                        .concat(prev.whatYouWillLearn.slice(i + 1)),
+                    }))
+                  }
                   placeholder={`Example: ${LEARNING_OBJECTIVES_PLACEHOLDERS.at(
                     i % LEARNING_OBJECTIVES_PLACEHOLDERS.length
                   )}`}
@@ -81,7 +85,8 @@ export default function Page() {
                 <Button
                   variant="secondary"
                   disabled={
-                    learningObjectives.length <= MIN_LEARNING_OBJECTIVES_COUNT
+                    courseData.whatYouWillLearn.length <=
+                    MIN_LEARNING_OBJECTIVES_COUNT
                   }
                   className={cn(
                     "min-w-0 h-10 aspect-square me-1 invisible disabled:cursor-not-allowed",
@@ -106,11 +111,16 @@ export default function Page() {
             ))}
           </DragDropList>
 
-          {canAdd(learningObjectives) && (
+          {canAdd(courseData.whatYouWillLearn) && (
             <Button
               variant="ghost"
               className="mt-4 text-purple-600 hover:text-purple-700 hover:bg-purple-50 pl-2"
-              onClick={() => incrementResource(setLearningObjectives)}
+              onClick={() =>
+                setCourseData((prev) => ({
+                  ...prev,
+                  whatYouWillLearn: [...prev.whatYouWillLearn, ""],
+                }))
+              }
             >
               <PlusCircle className="h-5 w-5 mr-2" />
               Add more to your response
@@ -134,25 +144,41 @@ export default function Page() {
 
           <DragDropList
             className="space-y-3 w-full"
-            items={prerequisites}
-            onReorder={setPrerequisites}
-            itemsAreDraggable={prerequisites.length > MIN_PREREQUISITES_COUNT}
+            items={courseData.requirements}
+            onReorder={(newItems) =>
+              setCourseData((prev) => ({
+                ...prev,
+                requirements: newItems,
+              }))
+            }
+            itemsAreDraggable={
+              courseData.requirements.length > MIN_PREREQUISITES_COUNT
+            }
           >
-            {prerequisites.map((prerequisite, i) => (
+            {courseData.requirements.map((prerequisite, i) => (
               <DragDropList.Item index={i} key={i} className="flex group">
                 <Input
-                  key={i}
-                  index={i}
                   content={prerequisite}
-                  setContent={setPrerequisites}
+                  setContent={(content) =>
+                    setCourseData((prev) => ({
+                      ...prev,
+                      requirements: prev.requirements
+                        .slice(0, i)
+                        .concat(content)
+                        .concat(prev.requirements.slice(i + 1)),
+                    }))
+                  }
                   placeholder="Example: No programming experience needed. You will learn everything you need to know"
                   className="w-full"
                 />
-                {prerequisites.length > 1 && (
+                {courseData.requirements.length > MIN_PREREQUISITES_COUNT && (
                   <>
                     <Button
                       variant="secondary"
-                      disabled={prerequisites.length <= MIN_PREREQUISITES_COUNT}
+                      disabled={
+                        courseData.requirements.length <=
+                        MIN_PREREQUISITES_COUNT
+                      }
                       className={cn(
                         "min-w-0 h-10 aspect-square me-1 invisible disabled:cursor-not-allowed",
                         { "group-hover:visible ": prerequisite !== "" }
@@ -178,11 +204,16 @@ export default function Page() {
             ))}
           </DragDropList>
 
-          {canAdd(prerequisites) && (
+          {canAdd(courseData.requirements) && (
             <Button
               variant="ghost"
               className="mt-4 text-purple-600 hover:text-purple-700 hover:bg-purple-50 pl-2"
-              onClick={() => incrementResource(setPrerequisites)}
+              onClick={() =>
+                setCourseData((prev) => ({
+                  ...prev,
+                  requirements: [...prev.requirements, ""],
+                }))
+              }
             >
               <PlusCircle className="h-5 w-5 mr-2" />
               Add more to your response
@@ -196,36 +227,50 @@ export default function Page() {
         <div className="mb-8">
           <h2 className="font-bold mb-2">Who is this course for?</h2>
           <p className="mb-4">
-            Write a clear description of the{" "}
-            <span className="text-purple-600">intended learners</span> for your
-            course who will find your course content valuable. This will help
-            you attract the right learners to your course.
+            Write a clear description of the intended learners for your course
+            who will find your course content valuable. This will help you
+            attract the right learners to your course.
           </p>
 
           <DragDropList
             className="space-y-3 w-full"
-            items={targetAudience}
-            onReorder={setPrerequisites}
+            items={courseData.whoThisCourseIsFor}
+            onReorder={(newItems) =>
+              setCourseData((prev) => ({
+                ...prev,
+                whoThisCourseIsFor: newItems,
+              }))
+            }
             itemsAreDraggable={
-              targetAudience.length > MIN_AUDIENCE_DESCRIPTION_COUNT
+              courseData.whoThisCourseIsFor.length >
+              MIN_AUDIENCE_DESCRIPTION_COUNT
             }
           >
-            {targetAudience.map((audience, i) => (
+            {courseData.whoThisCourseIsFor.map((audience, i) => (
               <DragDropList.Item index={i} key={i} className="flex group">
                 <Input
                   key={i}
-                  index={i}
                   content={audience}
-                  setContent={setPrerequisites}
+                  setContent={(content) =>
+                    setCourseData((prev) => ({
+                      ...prev,
+                      whoThisCourseIsFor: prev.whoThisCourseIsFor
+                        .slice(0, i)
+                        .concat(content)
+                        .concat(prev.whoThisCourseIsFor.slice(i + 1)),
+                    }))
+                  }
                   placeholder="Example: No programming experience needed. You will learn everything you need to know"
                   className="w-full"
                 />
-                {targetAudience.length > MIN_AUDIENCE_DESCRIPTION_COUNT && (
+                {courseData.whoThisCourseIsFor.length >
+                  MIN_AUDIENCE_DESCRIPTION_COUNT && (
                   <>
                     <Button
                       variant="secondary"
                       disabled={
-                        targetAudience.length <= MIN_AUDIENCE_DESCRIPTION_COUNT
+                        courseData.whoThisCourseIsFor.length <=
+                        MIN_AUDIENCE_DESCRIPTION_COUNT
                       }
                       className={cn(
                         "min-w-0 h-10 aspect-square me-1 invisible disabled:cursor-not-allowed",
@@ -252,11 +297,16 @@ export default function Page() {
             ))}
           </DragDropList>
 
-          {canAdd(targetAudience) && (
+          {canAdd(courseData.whoThisCourseIsFor) && (
             <Button
               variant="ghost"
               className="mt-4 text-purple-600 hover:text-purple-700 hover:bg-purple-50 pl-2"
-              onClick={() => incrementResource(setTargetAudience)}
+              onClick={() =>
+                setCourseData((prev) => ({
+                  ...prev,
+                  whoThisCourseIsFor: [...prev.whoThisCourseIsFor, ""],
+                }))
+              }
             >
               <PlusCircle className="h-5 w-5 mr-2" />
               Add more to your response

@@ -2,12 +2,12 @@
 
 import { Button } from "@/components/general";
 import Popper from "@/components/general/popper";
-import { useAppContext } from "@/lib/context-provider";
+import { useCart } from "@/contexts/cart";
 import { ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function ShoppingCart() {
-  const { cart } = useAppContext();
+  const { cart } = useCart();
 
   return (
     <Popper>
@@ -23,7 +23,7 @@ export default function ShoppingCart() {
         </Button>
       </Popper.Trigger>
       <Popper.Content>
-        {cart.length > 0 ? (
+        {cart && cart.length > 0 ? (
           <>
             <ul>
               {cart.map((course) => (
@@ -44,7 +44,11 @@ export default function ShoppingCart() {
                       <p className="text-start font-bold leading-6 mb-2">
                         {course.title}
                       </p>
-                      <p className="text-sm">{course.instructor.name}</p>
+                      <p className="text-sm">
+                        {course.instructor.firstName +
+                          " " +
+                          course.instructor.lastName}
+                      </p>
                       <p className="font-bold">
                         {course.price === 0 ? "FREE" : `$${course.price}`}
                       </p>

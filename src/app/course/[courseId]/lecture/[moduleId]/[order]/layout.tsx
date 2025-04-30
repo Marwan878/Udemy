@@ -1,9 +1,9 @@
 import { fetchUserField } from "@/actions/cart";
+import { VideoTimestampProvider } from "@/contexts/video-timestamp";
 import { notFound } from "next/navigation";
 import Header from "./components/header";
 import SideBar from "./components/side-bar/side-bar";
 import VideoPlayer from "./components/video-player/video-player";
-import { VideoTimestampProvider } from "@/contexts/video-timestamp";
 
 async function Layout({
   children,
@@ -21,7 +21,7 @@ async function Layout({
   return (
     <>
       <Header courseId={courseId} />
-      <main className="md:flex w-full">
+      <main className="md:flex w-full relative">
         <VideoTimestampProvider>
           <div className="min-w-0 grow">
             <VideoPlayer

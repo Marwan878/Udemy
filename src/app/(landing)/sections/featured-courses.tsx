@@ -7,7 +7,7 @@ export default async function FeaturedCourses() {
 
   return (
     <>
-      <Section>
+      <Section className="pb-0 -mb-4">
         <SectionHeading
           primaryText="All the skills you need in one place"
           secondaryText="From critical skills to technical topics, Udemy supports your professional development."

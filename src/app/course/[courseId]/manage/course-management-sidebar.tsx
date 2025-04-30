@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/general";
 import { COURSE_MANAGEMENT_SIDE_NAV_LINKS } from "@/constants";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
@@ -47,7 +46,6 @@ export default function CourseManagementSidebar() {
           )
         )}
       </nav>
-      <Button className="mt-8 font-bold w-full">Submit for Review</Button>
     </aside>
   );
 }

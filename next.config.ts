@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
       {
         hostname: "placehold.co",
       },
+      {
+        hostname: "frontends.udemycdn.com",
+      },
+      {
+        hostname: "s.udemycdn.com",
+      },
     ],
   },
   experimental: {

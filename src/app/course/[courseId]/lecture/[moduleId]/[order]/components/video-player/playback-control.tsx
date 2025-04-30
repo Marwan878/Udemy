@@ -18,12 +18,12 @@ export default function PlaybackControl({
         onClick={() => setIsMenuOpen((prev) => !prev)}
         className="w-12 min-w-12 max-w-12 md:w-24 md:min-w-24 md:max-w-24"
       >
-        <div className="bg-white md:px-2 w-full text-black text-sm md:text-sm">
+        <div className="bg-white md:px-2 w-full text-black text-sm md:text-md">
           {playbackRate + "x"}
         </div>
       </Button>
       {isMenuOpen && (
-        <ul className="absolute bg-[#1d1e27] border border-[#d1d2e0] rounded-md text-white md:p-2 md:text-sm text-xs z-10 bottom-full -translate-y-4">
+        <ul className="absolute bg-[#1d1e27] border border-[#d1d2e0] rounded-md text-white md:p-2 md:text-md text-xs z-10 bottom-full -translate-y-4">
           {Array.from({ length: 7 }).map((_, i) => {
             const rate = i * 0.25 + 0.5;
             return (

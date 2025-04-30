@@ -1,6 +1,6 @@
-import { useAppContext } from "@/lib/context-provider";
+import { useCart } from "@/contexts/cart";
 import { unixToMonthYear } from "@/lib/utils";
-import { TCourse } from "@/types";
+import { TCourse, TCourseState } from "@/types";
 import { Check } from "lucide-react";
 import { CSSProperties } from "react";
 import { createPortal } from "react-dom";
@@ -16,11 +16,13 @@ const COURSE_POPOVER_WIDTH_IN_PX = COURSE_POPOVER_WIDTH_IN_REM * ROOT_FONT_SIZE;
 export default function CoursePopover({
   course: { title, leadHeadline, features, tag, updatedAt, id },
   cardRect,
+  state,
 }: {
   course: TCourse;
   cardRect: DOMRectReadOnly;
+  state: TCourseState;
 }) {
-  const { cartCoursesIds, addToCart } = useAppContext();
+  const { cartCoursesIds, addToCart } = useCart();
   let appropriatePopoverPosition: "left" | "right" | "top";
 
   if (window.innerWidth - cardRect.right >= COURSE_POPOVER_WIDTH_IN_PX) {
@@ -88,9 +90,6 @@ export default function CoursePopover({
   return createPortal(
     <div
       style={{
-        // left: computePopoverLeft(),
-        // top: `${cardRect.top + window.scrollY}px`,
-        // transform: `translateY(calc((100% - ${cardRect.height}px) / -2))`,
         width: `${COURSE_POPOVER_WIDTH_IN_REM}rem`,
         ...computePopoverStyle(),
       }}
@@ -126,26 +125,49 @@ export default function CoursePopover({
             </li>
           ))}
         </ul>
-        {cartCoursesIds.includes(id) ? (
+        {state === "purchased" && (
           <Button
-            as="a"
-            href="/cart"
+            as={Link}
+            href={`/course/${id}/lecture`}
             variant="primary"
             height="lg"
             className="w-full mt-[0.8rem] heading-md"
           >
-            Go to cart
-          </Button>
-        ) : (
-          <Button
-            variant="primary"
-            height="lg"
-            className="w-full mt-[0.8rem] heading-md"
-            onClick={() => addToCart(id)}
-          >
-            Add to cart
+            Go to course
           </Button>
         )}
+        {state === "published" && (
+          <Button
+            as={Link}
+            href={`/course/${id}/manage/basics`}
+            variant="primary"
+            height="lg"
+            className="w-full mt-[0.8rem] heading-md"
+          >
+            Manage your course
+          </Button>
+        )}
+        {state === "not_purchased" &&
+          (cartCoursesIds.includes(id) ? (
+            <Button
+              as={Link}
+              href="/cart"
+              variant="primary"
+              height="lg"
+              className="w-full mt-[0.8rem] heading-md"
+            >
+              Go to cart
+            </Button>
+          ) : (
+            <Button
+              variant="primary"
+              height="lg"
+              className="w-full mt-[0.8rem] heading-md"
+              onClick={() => addToCart(id)}
+            >
+              Add to cart
+            </Button>
+          ))}
       </div>
     </div>,
     document.body

@@ -40,13 +40,7 @@ export default function Hero({
           </div>
 
           <p className="text-sm mb-4">
-            Created by{" "}
-            <a
-              href="#instructor"
-              className="text-[#6d28d2] lg:text-[#c0c4fc] underline"
-            >
-              {instructor.name}
-            </a>
+            Created by {instructor.firstName + " " + instructor.lastName}
           </p>
 
           {updatedAt && (
