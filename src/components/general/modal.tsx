@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import Button from "./button";
 import { CSSProperties } from "react";
 
 export default function Modal({

@@ -19,7 +19,14 @@ const CourseManagementContext = createContext<{
   setCourseImage: Dispatch<SetStateAction<File | undefined>>;
   modules: TModule[];
   setModules: Dispatch<SetStateAction<TModule[]>>;
-}>({});
+}>({
+  courseData: {} as TCourse,
+  setCourseData: () => {},
+  courseImage: undefined,
+  setCourseImage: () => {},
+  modules: [],
+  setModules: () => {},
+});
 
 export function CourseManagementProvider({
   children,

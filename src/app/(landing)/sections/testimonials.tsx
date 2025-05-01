@@ -11,10 +11,7 @@ export default function Testimonials() {
   return (
     <Section className="bg-[#f6f7f9] pb-24">
       <SectionHeading primaryText="See what others are achieving through learning" />
-      <ContentSlider
-        className="block xl:hidden"
-        childrenCount={TESTIMONIALS.length}
-      >
+      <ContentSlider className="block xl:hidden">
         {TESTIMONIALS.map((testimonial, i) => (
           <TestimonialCard
             className={

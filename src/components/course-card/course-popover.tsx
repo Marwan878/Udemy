@@ -19,12 +19,13 @@ export default function CoursePopover({
   state,
 }: {
   course: TCourse;
-  cardRect: DOMRectReadOnly;
+  cardRect: DOMRect | undefined;
   state: TCourseState;
 }) {
   const { cartCoursesIds, addToCart } = useCart();
-  let appropriatePopoverPosition: "left" | "right" | "top";
+  if (!cardRect) return null;
 
+  let appropriatePopoverPosition: "left" | "right" | "top";
   if (window.innerWidth - cardRect.right >= COURSE_POPOVER_WIDTH_IN_PX) {
     appropriatePopoverPosition = "right";
   } else if (cardRect.left >= COURSE_POPOVER_WIDTH_IN_PX) {

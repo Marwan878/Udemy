@@ -25,7 +25,7 @@ export default function Page() {
       return;
     }
 
-    const { redirectUrl } = await createCheckoutSession(
+    const session = await createCheckoutSession(
       cart.map((course) => ({
         title: course.title,
         price: course.price,
@@ -33,9 +33,9 @@ export default function Page() {
       }))
     );
 
-    if (!redirectUrl) return;
+    if (!session || !session.redirectUrl) return;
 
-    router.push(redirectUrl);
+    router.push(session.redirectUrl);
   };
 
   if (!cart) {
@@ -96,10 +96,6 @@ export default function Page() {
               <p className="mt-[0.8rem] text-[1.2rem] text-[#595c73]">
                 You won't be charged yet
               </p>
-              {/* <div className="mt-[1.6rem] pt-[1.6rem] border-t border-t-[#d1d2e0]"> */}
-              {/* <div className="heading-md mb-[1.6rem]">Promotions</div> */}
-              {/* <input type="text" /> */}
-              {/* </div> */}
             </div>
           </div>
         )}

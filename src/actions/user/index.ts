@@ -13,28 +13,16 @@ import {
 } from "../courses";
 
 async function fetchLearnerCourses() {
-  const learnerId = await getLoggedInUserId();
-
-  if (!learnerId) {
-    throw new Error("You must be logged in to perform this action.");
-  }
-
-  const learnerRef = doc(db, "users", learnerId);
-  const learnerSnap = await getDoc(learnerRef);
-
-  if (!learnerSnap.exists()) {
-    throw new Error(`User with id: ${learnerId} does not exsist.`);
-  }
-
-  const learnerCoursesData: Record<string, TPurchasedCourseData> =
-    learnerSnap.get("courses");
+  const learnerCoursesData = (await fetchUserField("courses")) as Record<
+    string,
+    TPurchasedCourseData
+  >;
 
   const learnerCoursesIds = Object.keys(learnerCoursesData);
-  const learnerCoursesLengths = {};
+  const learnerCoursesLengths: Record<string, number> = {};
 
   for (const id of learnerCoursesIds) {
     const courseLength = await fetchCourseLength(id);
-
     learnerCoursesLengths[id] = courseLength;
   }
 
@@ -207,7 +195,10 @@ async function rateCourse(rating: number, courseId: string) {
 }
 
 async function fetchCourseNotes(courseId: string): Promise<TNote[]> {
-  const userCoursesData = await fetchUserField("courses");
+  const userCoursesData = (await fetchUserField("courses")) as Record<
+    string,
+    TPurchasedCourseData
+  >;
   if (!(courseId in userCoursesData)) {
     throw new Error(
       "You can't access notes for a course you haven't purchased."

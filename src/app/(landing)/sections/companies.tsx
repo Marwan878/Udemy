@@ -1,15 +1,6 @@
 import MaxWidthWrapper from "@/components/general/max-width-wrapper";
-
-const COMPANIES_LOGOS = [
-  "/images/companies/cisco.svg",
-  "/images/companies/citi.svg",
-  "/images/companies/epricsson.svg",
-  "/images/companies/hewlett-packard-enterprise.svg",
-  "/images/companies/p&g.svg",
-  "/images/companies/samsung.svg",
-  "/images/companies/vimeo.svg",
-  "/images/companies/volkswagen.svg",
-] as const;
+import { COMPANIES_LOGOS } from "@/constants";
+import Image from "next/image";
 
 export default function Companies() {
   return (
@@ -20,8 +11,10 @@ export default function Companies() {
           world
         </p>
         <div className="grid grid-cols-4 gap-y-8 gap-x-8 lg:flex lg:items-center lg:justify-between">
-          {COMPANIES_LOGOS.map((logo, i) => (
-            <img height={48} src={logo} key={i} className="mx-auto" />
+          {COMPANIES_LOGOS.map((logo) => (
+            <div key={logo} className="mx-auto h-[4.8rem] relative w-full">
+              <Image className="object-contain" fill src={logo} alt="" />
+            </div>
           ))}
         </div>
       </MaxWidthWrapper>

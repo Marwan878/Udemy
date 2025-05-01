@@ -40,7 +40,10 @@ export default function Courses({ categories }: { categories: TCategory[] }) {
   };
 
   useEffect(() => {
-    changeCategory(categories.at(0));
+    const firstCategory = categories.at(0);
+    if (!firstCategory) return;
+
+    changeCategory(firstCategory);
   }, [categories]);
 
   useEffect(() => {
@@ -57,7 +60,7 @@ export default function Courses({ categories }: { categories: TCategory[] }) {
   return (
     <div className="bg-[#f6f7f9] py-12">
       <MaxWidthWrapper>
-        <ContentSlider childrenCount={categories.length}>
+        <ContentSlider>
           {categories.map((category, i) => (
             <CategoryPill
               key={category.id}
@@ -70,10 +73,7 @@ export default function Courses({ categories }: { categories: TCategory[] }) {
             />
           ))}
         </ContentSlider>
-        <ContentSlider
-          childrenCount={courses.length}
-          className="flex gap-x-4 mt-8 w-full"
-        >
+        <ContentSlider className="flex gap-x-4 mt-8 w-full">
           {courses.map((course) =>
             course.isPublished ? (
               <CourseCard

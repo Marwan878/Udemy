@@ -33,7 +33,7 @@ export default function Controls({
   togglePlay: () => void;
   currentTime: number;
   duration: number;
-  handleSeek: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleSeek: (newValue: string) => void;
   playbackRate: number;
   setPlaybackRate: (rate: number) => void;
   volume: number;
@@ -64,11 +64,7 @@ export default function Controls({
           className="md:p-1 w-3 h-3 md:w-8 md:h-8"
           variant="ghost"
           height="sm"
-          onClick={() =>
-            handleSeek({
-              target: { value: Math.max(currentTime - 5, 0).toString() },
-            })
-          }
+          onClick={() => handleSeek(Math.max(currentTime - 5, 0).toString())}
         >
           <RotateCcw color="#d1d2e0" />
           <ControlTooltip text="Rewind 5s" />
@@ -77,11 +73,7 @@ export default function Controls({
           className="md:p-1 w-3 h-3 md:w-8 md:h-8"
           variant="ghost"
           height="sm"
-          onClick={() =>
-            handleSeek({
-              target: { value: Math.min(currentTime + 5, duration).toString() },
-            })
-          }
+          onClick={() => handleSeek(Math.max(currentTime + 5, 0).toString())}
         >
           <RotateCw color="#d1d2e0" />
           <ControlTooltip text="Forward 5s" />
@@ -103,7 +95,7 @@ export default function Controls({
           max={duration}
           step={0.1}
           value={currentTime}
-          onChange={handleSeek}
+          onChange={(e) => handleSeek(e.target.value)}
           className="w-full h-1 accent-purple-500 bg-gray-300 rounded-lg cursor-pointer"
         />
         <span className="text-xs text-white w-12">

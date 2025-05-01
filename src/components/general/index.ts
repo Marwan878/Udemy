@@ -7,7 +7,6 @@ import Button from "./button";
 import MaxWidthWrapper from "./max-width-wrapper";
 import ImageSlider from "./hero-carousel";
 import Star from "./star";
-import CascadingListManager from "./cascading-list";
 import PopperTrigger from "./popper-trigger";
 import Modal from "./modal";
 import SearchBar from "../search-bar";
@@ -30,7 +29,6 @@ export {
   AccordionBody,
   ImageSlider,
   Star,
-  CascadingListManager,
   PopperTrigger,
   Modal,
   SearchBar,

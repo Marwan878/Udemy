@@ -7,12 +7,10 @@ import { useVideoTimestamp } from "@/contexts/video-timestamp";
 
 export default function VideoPlayer({
   courseId,
-  moduleId,
-  order,
+  curriculumItemId,
 }: {
   courseId: string;
-  moduleId: string;
-  order: number;
+  curriculumItemId: string;
 }) {
   const { setCurrentTimestamp } = useVideoTimestamp();
   const [videoSrc, setVideoSrc] = useState<undefined | string>();
@@ -50,10 +48,10 @@ export default function VideoPlayer({
     }
   }
 
-  function handleSeek(e: ChangeEvent<HTMLInputElement>) {
+  function handleSeek(newValue: string) {
     if (videoRef.current) {
-      videoRef.current.currentTime = Number(e.target.value);
-      setCurrentTime(Number(e.target.value));
+      videoRef.current.currentTime = Number(newValue);
+      setCurrentTime(Number(newValue));
     }
   }
 
@@ -120,19 +118,16 @@ export default function VideoPlayer({
 
   useEffect(() => {
     const handleVideoLoad = async () => {
-      const videoSrc = await fetchVideoSource(courseId, moduleId, order);
+      const videoSrc = await fetchVideoSource(courseId, curriculumItemId);
       setVideoSrc(videoSrc);
     };
     handleVideoLoad();
-  }, [courseId, moduleId, order]);
+  }, [courseId, curriculumItemId]);
 
   if (!videoSrc) return null;
 
   return (
     <div className="relative h-80 md:h-[40rem] max-w-full bg-[#000]">
-      {/* <button className="btn border border-[#9194ac] border-s-0 w-[2.8rem] btn-md absolute left-0 top-1/2 -translate-y-1/2 bg-udemy-purple z-10">
-              <ChevronLeft color="white" />
-          </button> */}
       <video
         ref={videoRef}
         className="w-full h-full"
@@ -144,9 +139,7 @@ export default function VideoPlayer({
         <source src={videoSrc} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      {/* <button className="btn border border-[#9194ac] border-e-0 w-[2.8rem] btn-md absolute right-0 top-1/2 -translate-y-1/2 bg-udemy-purple z-10">
-              <ChevronRight color="white" />
-          </button> */}
+
       <Controls
         isPlaying={isPlaying}
         togglePlay={togglePlay}

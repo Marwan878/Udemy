@@ -47,6 +47,7 @@ export default function DragDropList({
 
   const handleDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
+    if (!draggedIndex) return;
 
     const listItem = e.currentTarget as HTMLLIElement;
     const rect = listItem.getBoundingClientRect();

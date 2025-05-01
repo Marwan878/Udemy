@@ -32,12 +32,7 @@ export default function CourseCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       {isHovered && (
-        <CoursePopover
-          cardRect={cardRect}
-          course={course}
-          arrowDirection={"right"}
-          state={state}
-        />
+        <CoursePopover cardRect={cardRect} course={course} state={state} />
       )}
       <img
         className="object-cover w-full rounded-t-[8px]"

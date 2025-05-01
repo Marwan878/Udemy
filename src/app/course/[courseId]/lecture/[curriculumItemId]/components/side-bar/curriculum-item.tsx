@@ -25,11 +25,11 @@ export default function CurriculumItem({
   return (
     <li className="flex items-center gap-3 p-4 hover:bg-[#d1d2e0]">
       <Checkbox
-        checked={item.isCompleted}
+        checked={item.isCompleted ?? false}
         disabled={isLoading}
         onChange={() => handleCheckboxChange(id, module.id, courseId)}
       />
-      <Link href={`/course/${courseId}/lecture/${module.id}/${item.order}`}>
+      <Link href={`/course/${courseId}/lecture/${id}`}>
         <div className="flex flex-1 items-center justify-between">
           <label
             htmlFor="lesson-1"

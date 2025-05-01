@@ -10,9 +10,9 @@ async function Layout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ courseId: string; moduleId: string; order: string }>;
+  params: Promise<{ courseId: string; curriculumItemId: string }>;
 }) {
-  const { courseId, moduleId, order } = await params;
+  const { courseId, curriculumItemId } = await params;
   const userCourses = await fetchUserField("courses");
   if (!(courseId in userCourses)) {
     return notFound();
@@ -26,10 +26,8 @@ async function Layout({
           <div className="min-w-0 grow">
             <VideoPlayer
               courseId={courseId}
-              moduleId={moduleId}
-              order={+order}
+              curriculumItemId={curriculumItemId}
             />
-
             {children}
           </div>
         </VideoTimestampProvider>

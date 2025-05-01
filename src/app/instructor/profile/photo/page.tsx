@@ -12,8 +12,6 @@ export default function Page() {
   const [selectedImage, setSelectedImage] = useState<File | undefined>();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  console.log(selectedImage);
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     setSelectedImage(file);

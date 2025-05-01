@@ -3,7 +3,8 @@ import { Award, PlayCircle, Star, Users } from "lucide-react";
 
 export default function Instructor({
   instructor: {
-    name,
+    firstName,
+    lastName,
     bio,
     about,
     imageUrl,
@@ -19,7 +20,7 @@ export default function Instructor({
     <div id="instructor">
       <h2 className="heading-xl font-bold mb-4">Instructor</h2>
 
-      <h3 className="text-4xl font-bold mb-4">{name}</h3>
+      <h3 className="text-4xl font-bold mb-4">{firstName + " " + lastName}</h3>
 
       <div className="text-gray-700 mb-4">{bio}</div>
 
@@ -30,7 +31,7 @@ export default function Instructor({
               imageUrl ||
               "https://img-c.udemycdn.com/user/200_H/anonymous_3.png"
             }
-            alt={name}
+            alt={`${firstName} ${lastName} personal image.`}
             className="h-44 w-44 rounded-full object-cover"
           />
 

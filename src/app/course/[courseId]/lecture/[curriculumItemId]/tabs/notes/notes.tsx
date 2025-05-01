@@ -4,23 +4,52 @@ import { fetchModulesWithContent } from "@/actions/courses";
 import { fetchCourseNotes, saveNote } from "@/actions/user";
 import { Button, MaxWidthWrapper, RichTextEditor } from "@/components/general";
 import { useVideoTimestamp } from "@/contexts/video-timestamp";
-import { TNote } from "@/types";
+import { formatVideoTime } from "@/lib/utils";
+import { TContent, TModule, TNote } from "@/types";
 import { Plus } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import SavedNotes from "./saved-notes";
 import TimePill from "./time-pill";
-import { formatVideoTime } from "@/lib/utils";
+
+const computeCurriculumItemOrder = (
+  modules: TModule[],
+  curriculumItemId: string
+): number => {
+  const curriculumItems: TContent[] = [];
+  modules.forEach((module) => {
+    curriculumItems.concat(module.content);
+  });
+
+  const curriculumItemIndex = curriculumItems.findIndex(
+    (curriculumItem) => curriculumItem.id === curriculumItemId
+  );
+
+  return curriculumItemIndex + 1;
+};
+
+const computeModuleOrder = (
+  modules: TModule[],
+  curriculumItemId: string
+): number => {
+  return (
+    modules.findIndex(
+      (module) =>
+        module.content.find(
+          (curriculumItem) => curriculumItem.id !== curriculumItemId
+        ) !== undefined
+    ) + 1
+  );
+};
 
 export default function Notes() {
   const [textEditorIsVisible, setTextEditiorIsVisible] = useState(false);
   const { currentTimestamp } = useVideoTimestamp();
-  const noteContent = useRef("");
+  const [note, setNote] = useState("");
   const [notes, setNotes] = useState<TNote[]>();
-  const { courseId, order, moduleId } = useParams() as {
+  const { courseId, curriculumItemId } = useParams() as {
     courseId: string;
-    order: string;
-    moduleId: string;
+    curriculumItemId: string;
   };
 
   useEffect(() => {
@@ -34,15 +63,20 @@ export default function Notes() {
 
   const handleSaveNote = async () => {
     const modules = await fetchModulesWithContent(courseId);
-    const currentModule = modules.find((module) => module.id === moduleId);
+    const currentModuleOrder = computeModuleOrder(modules, curriculumItemId);
+    const curriculumItemOrder = computeCurriculumItemOrder(
+      modules,
+      curriculumItemId
+    );
+    const currentModule = modules.at(currentModuleOrder - 1);
     const currentLecture = currentModule?.content.find(
-      (lecture) => lecture.order === +order
+      (lecture) => lecture.id === curriculumItemId
     );
 
     const newNote: TNote = {
-      content: noteContent.current,
-      lectureNumber: +order,
-      moduleNumber: currentModule?.order ?? 1,
+      content: note,
+      lectureNumber: curriculumItemOrder,
+      moduleNumber: currentModuleOrder,
       takenAtSecond: Math.round(currentTimestamp),
       lectureName: currentLecture?.title ?? "",
       moduleName: currentModule?.title ?? "",
@@ -73,11 +107,7 @@ export default function Notes() {
           <div className="flex gap-x-3 items-start">
             <TimePill timeInSeconds={currentTimestamp} />
             <div className="flex flex-col shrink-0 grow">
-              <RichTextEditor
-                onChange={(newContent) => {
-                  noteContent.current = newContent;
-                }}
-              />
+              <RichTextEditor value={note} onChange={setNote} />
               <div className="self-end flex gap-x-3 mt-4">
                 <Button
                   height="md"

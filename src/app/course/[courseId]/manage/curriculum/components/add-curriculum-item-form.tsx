@@ -28,6 +28,7 @@ export default function AddCurriculumItemForm({ module }: { module: TModule }) {
                 title: lectureTitle,
                 type: "video",
                 url: "",
+                id: crypto.randomUUID(),
               },
             ],
           },

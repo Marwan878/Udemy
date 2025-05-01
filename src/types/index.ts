@@ -16,24 +16,6 @@ type TUser = {
   rating: number;
 };
 
-type TBenefit = {
-  imageUrl: string;
-  heading: string;
-  description: string;
-  ctaHref?: string;
-  ctaText?: string;
-  forEnterprise: boolean;
-};
-
-type TTopic = {
-  parentQueryName: string;
-  name: string;
-  queryName: string;
-  subtopics: TSubtopic[];
-};
-
-type TSubtopic = { name: string; queryName: string; learnersCount: number };
-
 type TCategory = {
   id: string;
   displayName: string;
@@ -81,7 +63,7 @@ type TModule = {
 type TContent = {
   type: TCurriculumItemType;
   url?: string;
-  isCompleted: boolean;
+  isCompleted?: boolean;
   title: string;
   duration: number;
   id: string;
@@ -135,9 +117,6 @@ export type {
   TCourse,
   TCourseTag,
   TTestimonial,
-  TTopic,
-  TSubtopic,
-  TBenefit,
   TPurchasedCourseData,
   TVideo,
   TModule,

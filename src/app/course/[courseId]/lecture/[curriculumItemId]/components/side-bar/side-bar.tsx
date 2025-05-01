@@ -26,7 +26,7 @@ export default function SideBar() {
 
   useEffect(() => {
     const handleLoadData = async () => {
-      const modules: TModule[] = await fetchModulesWithContent(courseId);
+      const modules = await fetchModulesWithContent(courseId);
       const courseData = await fetchUserCourseData(courseId);
       const completedCurriculumItemsIds =
         courseData.completedCurriculumItemsIds;
@@ -123,7 +123,7 @@ export default function SideBar() {
                     </div>
                     <div className="text-sm text-muted-foreground">
                       {module.content.reduce(
-                        (acc, curr) => acc + +curr.isCompleted,
+                        (acc, curr) => acc + Number(curr.isCompleted ?? false),
                         0
                       )}{" "}
                       / {module.content.length} |{" "}

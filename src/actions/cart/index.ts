@@ -29,10 +29,8 @@ async function addToCart(formData: FormData) {
     await updateDoc(userRef, {
       cart: arrayUnion(courseId),
     });
-    // return { success: true, message: "Course added successfully" };
   } catch (error) {
     console.error("Error adding course:", error);
-    // return { success: false, message: "Failed to add course" };
   }
 }
 

@@ -1,192 +1,4 @@
-import { TCategory, TTestimonial, TBenefit } from "@/types";
-
-const UDEMY_HEADER_CATEGORIES: TCategory[] = [
-  {
-    title: "Development",
-    link: "/courses/development/",
-    subcategories: [
-      {
-        title: "Web Development",
-        link: "/courses/development/web-development/",
-        subcategories: [
-          {
-            title: "JavaScript",
-            link: "/courses/development/web-development/javascript/",
-          },
-          {
-            title: "React",
-            link: "/courses/development/web-development/react/",
-          },
-          {
-            title: "Vue.js",
-            link: "/courses/development/web-development/vuejs/",
-          },
-          {
-            title: "Angular",
-            link: "/courses/development/web-development/angular/",
-          },
-          {
-            title: "HTML & CSS",
-            link: "/courses/development/web-development/html-css/",
-          },
-        ],
-      },
-      {
-        title: "Mobile Development",
-        link: "/courses/development/mobile-development/",
-        subcategories: [
-          {
-            title: "iOS Development",
-            link: "/courses/development/mobile-development/ios/",
-          },
-          {
-            title: "Android Development",
-            link: "/courses/development/mobile-development/android/",
-          },
-          {
-            title: "Flutter",
-            link: "/courses/development/mobile-development/flutter/",
-          },
-          {
-            title: "React Native",
-            link: "/courses/development/mobile-development/react-native/",
-          },
-        ],
-      },
-      {
-        title: "Programming Languages",
-        link: "/courses/development/programming-languages/",
-        subcategories: [
-          {
-            title: "Python",
-            link: "/courses/development/programming-languages/python/",
-          },
-          {
-            title: "Java",
-            link: "/courses/development/programming-languages/java/",
-          },
-          {
-            title: "C++",
-            link: "/courses/development/programming-languages/cpp/",
-          },
-          {
-            title: "C#",
-            link: "/courses/development/programming-languages/csharp/",
-          },
-          {
-            title: "PHP",
-            link: "/courses/development/programming-languages/php/",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: "Business",
-    link: "/courses/business/",
-    subcategories: [
-      {
-        title: "Entrepreneurship",
-        link: "/courses/business/entrepreneurship/",
-        subcategories: [
-          {
-            title: "Business Strategy",
-            link: "/courses/business/entrepreneurship/business-strategy/",
-          },
-          {
-            title: "Startup",
-            link: "/courses/business/entrepreneurship/startup/",
-          },
-        ],
-      },
-      {
-        title: "Communication",
-        link: "/courses/business/communication/",
-        subcategories: [
-          {
-            title: "Public Speaking",
-            link: "/courses/business/communication/public-speaking/",
-          },
-          {
-            title: "Presentation Skills",
-            link: "/courses/business/communication/presentation-skills/",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: "IT & Software",
-    link: "/courses/it-and-software/",
-    subcategories: [
-      {
-        title: "Network & Security",
-        link: "/courses/it-and-software/network-security/",
-        subcategories: [
-          {
-            title: "Cybersecurity",
-            link: "/courses/it-and-software/network-security/cybersecurity/",
-          },
-          {
-            title: "Ethical Hacking",
-            link: "/courses/it-and-software/network-security/ethical-hacking/",
-          },
-        ],
-      },
-      {
-        title: "Operating Systems",
-        link: "/courses/it-and-software/operating-systems/",
-        subcategories: [
-          {
-            title: "Linux",
-            link: "/courses/it-and-software/operating-systems/linux/",
-          },
-          {
-            title: "Windows",
-            link: "/courses/it-and-software/operating-systems/windows/",
-          },
-        ],
-      },
-    ],
-  },
-] as const;
-
-const BENEFITS: TBenefit[] = [
-  {
-    imageUrl: "/images/benefits/1.webp",
-    heading: "Hands-on training",
-    description:
-      "Upskill effectively with AI-powered coding exercises, practice tests, and quizzes.",
-    forEnterprise: false,
-  },
-  {
-    imageUrl: "/images/benefits/2.webp",
-    heading: "Certification prep",
-    description:
-      "Prep for industry-recognized certifications by solving real-world challenges and earn badges along the way.",
-    forEnterprise: false,
-    ctaHref: "",
-    ctaText: "Explore courses",
-  },
-  {
-    imageUrl: "/images/benefits/3.jpg",
-    heading: "Insights and analytics",
-    description:
-      "Fast-track goals with advanced insights plus a dedicated customer success team to help drive effective learning.",
-    forEnterprise: true,
-    ctaHref: "",
-    ctaText: "Find out more",
-  },
-  {
-    imageUrl: "/images/benefits/4.webp",
-    heading: "Customizable content",
-    description:
-      "Create tailored learning paths for team and organization goals and even host your own content and resources.",
-    forEnterprise: true,
-    ctaHref: "",
-    ctaText: "Find out more",
-  },
-] as const;
+import { TTestimonial } from "@/types";
 
 const CATEGORIES = [
   {
@@ -207,14 +19,6 @@ const HERO_IMAGES_BASE_URL = "/images/slider-images/hero";
 const HERO_IMAGES_RAW_URLS = [
   "slider-image-1.jpg",
   "slider-image-2.jpg",
-] as const;
-
-const BENEFITS_IMAGES_BASE_URL = "/images/slider-images/benefits";
-const BENEFITS_IMAGES_RAW_URLS = [
-  "1.webp",
-  "2.webp",
-  "3.jpg",
-  "4.webp",
 ] as const;
 
 const CART_LOCAL_STORAGE_KEY = "cart";
@@ -428,28 +232,45 @@ const PROFILE_TABS = [
   { name: "Profile picture", url: "/instructor/profile/photo" },
 ] as const;
 
+const UDEMY_BUISNESS_USERS_IMAGES_URLS = [
+  "/images/companies/nasdaq.svg",
+  "/images/companies/volkswagen.svg",
+  "/images/companies/box.svg",
+  "/images/companies/netapp.svg",
+  "/images/companies/eventbrite.svg",
+] as const;
+
+const COMPANIES_LOGOS = [
+  "/images/companies/cisco.svg",
+  "/images/companies/citi.svg",
+  "/images/companies/epricsson.svg",
+  "/images/companies/hewlett-packard-enterprise.svg",
+  "/images/companies/p&g.svg",
+  "/images/companies/samsung.svg",
+  "/images/companies/vimeo.svg",
+  "/images/companies/volkswagen.svg",
+] as const;
+
 export {
-  UDEMY_HEADER_CATEGORIES,
   CART_LOCAL_STORAGE_KEY,
-  TESTIMONIALS,
+  CATEGORIES,
+  COURSE_CREATION_REQUIREMENTS,
+  COURSE_CREATION_STEPS_COUNT,
+  COURSE_CREATION_TIPS,
+  COURSE_MANAGEMENT_SIDE_NAV_LINKS,
   HERO_IMAGES_BASE_URL,
   HERO_IMAGES_RAW_URLS,
-  BENEFITS,
-  BENEFITS_IMAGES_BASE_URL,
-  BENEFITS_IMAGES_RAW_URLS,
-  TABS,
-  COURSE_CREATION_REQUIREMENTS,
-  COURSE_CREATION_TIPS,
-  CATEGORIES,
-  LEVELS,
   LANGUAGES,
-  COURSE_MANAGEMENT_SIDE_NAV_LINKS,
-  RATING_DESCRIPTIONS,
-  MIN_LEARNING_OBJECTIVES_COUNT,
-  MIN_PREREQUISITES_COUNT,
+  LEARNING_OBJECTIVES_PLACEHOLDERS,
+  LEVELS,
   MIN_AUDIENCE_DESCRIPTION_COUNT,
   MIN_FEATURES_COUNT,
-  LEARNING_OBJECTIVES_PLACEHOLDERS,
-  COURSE_CREATION_STEPS_COUNT,
+  MIN_LEARNING_OBJECTIVES_COUNT,
+  MIN_PREREQUISITES_COUNT,
   PROFILE_TABS,
+  RATING_DESCRIPTIONS,
+  TABS,
+  TESTIMONIALS,
+  UDEMY_BUISNESS_USERS_IMAGES_URLS,
+  COMPANIES_LOGOS,
 };

@@ -8,12 +8,10 @@ import RoundButton from "./round-button";
 export default function ContentSlider({
   children,
   className,
-  childrenCount,
   arrowStyle = "roundButton",
 }: {
   children: React.ReactNode;
   className?: string;
-  childrenCount: number;
   arrowStyle?: "chevron" | "roundButton";
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);

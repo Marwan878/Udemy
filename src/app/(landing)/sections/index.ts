@@ -1,4 +1,3 @@
-import Benefits from "./benefits";
 import Companies from "./companies";
 import FeaturedCourses from "./featured-courses";
 import HeroCarousel from "./hero-carousel";
@@ -7,7 +6,6 @@ import Testimonials from "./testimonials";
 import Pricing from "./pricing";
 
 export {
-  Benefits,
   Companies,
   FeaturedCourses,
   HeroCarousel,
