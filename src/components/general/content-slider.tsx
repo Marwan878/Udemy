@@ -23,7 +23,6 @@ export default function ContentSlider({
       const { scrollLeft, clientWidth, scrollWidth } = containerRef.current;
       setIsScrolledStart(scrollLeft <= 130);
       setIsScrolledEnd(Math.ceil(scrollLeft + clientWidth) >= scrollWidth);
-      // setIsScrolledEnd(scrollLeft >= clientWidth * (childrenCount - 1));
     }
   }, []);
 
@@ -82,13 +81,10 @@ export default function ContentSlider({
         {!isScrolledEnd && (
           <RoundButton
             aria-label="Scroll right."
-            className={cn(
-              "absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2",
-              {
-                "bg-transparent shadow-none hover:bg-transparent -right-4":
-                  arrowStyle === "chevron",
-              }
-            )}
+            className={cn("absolute right-0 top-1/2 -translate-y-1/2", {
+              "bg-transparent shadow-none hover:bg-transparent -right-4":
+                arrowStyle === "chevron",
+            })}
             onClick={goRight}
           >
             <ChevronRight

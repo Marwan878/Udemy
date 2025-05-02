@@ -112,6 +112,8 @@ type TFormats = {
 
 type TCourseState = "purchased" | "published" | "not_purchased";
 
+type TAppropriatePopoverPosition = "left" | "right" | "top";
+
 export type {
   TCategory,
   TCourse,
@@ -127,4 +129,5 @@ export type {
   TLevel,
   TUser,
   TCourseState,
+  TAppropriatePopoverPosition,
 };

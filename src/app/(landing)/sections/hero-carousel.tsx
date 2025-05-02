@@ -1,12 +1,10 @@
 "use client";
 
-import { RoundButton } from "@/components/general";
-import { Button, MaxWidthWrapper } from "@/components/general/index";
-import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-
+import { MaxWidthWrapper, RoundButton } from "@/components/general";
 import { HERO_IMAGES_BASE_URL, HERO_IMAGES_RAW_URLS } from "@/constants";
+import { cn } from "@/lib/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react";
 
 export default function HeroCarousel() {
   const [currentImageIndex, setCurrentImageIndex] = useState(1);
@@ -147,37 +145,10 @@ function SmallScreensContent({ url }: { url: string }) {
         <Card
           heading="Skills that drive you forward"
           body={
-            <>
-              <p className="text-md">
-                Technology and the world of work change fast — with us, you’re
-                faster. Get the skills to achieve goals and stay competitive.
-              </p>
-              <div className="flex flex-col my-[1.6rem]">
-                <Button variant="primary" height="lg" className="heading-md">
-                  Plan for individuals
-                </Button>
-                <Button
-                  variant="secondary"
-                  height="lg"
-                  className="heading-md mt-[0.8rem]"
-                >
-                  Plan for organizations
-                </Button>
-              </div>
-              <Button
-                variant="ghost"
-                height="lg"
-                className="relative w-full mt-[1.6rem] max-w-[80rem] border border-[#9194ac] text-[#595c73] text-md"
-              >
-                <span className="absolute left-[1.2rem]">
-                  What do you want to learn?
-                </span>
-                <Search
-                  className="absolute right-[1.2rem] w-[2.4rem] h-[2.4rem]"
-                  color="#303141"
-                />
-              </Button>
-            </>
+            <p className="text-md">
+              Technology and the world of work change fast — with us, you’re
+              faster. Get the skills to achieve goals and stay competitive.
+            </p>
           }
         />
       </div>
@@ -193,10 +164,10 @@ function Card({
   style,
 }: {
   heading: string;
-  body: React.ReactNode;
-  cta?: React.ReactNode;
+  body: ReactNode;
+  cta?: ReactNode;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }) {
   return (
     <div className={cn("p-[2.4rem] ", className)} style={style}>

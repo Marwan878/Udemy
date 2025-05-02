@@ -1,4 +1,4 @@
-import { fetchCourses, fetchFirstModuleId } from "@/actions/courses";
+import { fetchModulesWithContent } from "@/actions/courses";
 import { notFound, redirect } from "next/navigation";
 
 export default async function Page({
@@ -7,9 +7,8 @@ export default async function Page({
   params: Promise<{ courseId: string }>;
 }) {
   const courseId = (await params).courseId;
-  const data = await fetchCourses([courseId]);
-  if (data?.length === 0) return notFound();
+  const modules = await fetchModulesWithContent(courseId);
+  if (!modules || !modules.length) return notFound();
 
-  const firstModuleId = await fetchFirstModuleId(courseId);
-  redirect(`/course/${courseId}/lecture/${firstModuleId}/1`);
+  redirect(`/course/${courseId}/lecture/${modules[0].content[0].id}`);
 }

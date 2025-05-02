@@ -1,17 +1,16 @@
 import { useCart } from "@/contexts/cart";
 import { unixToMonthYear } from "@/lib/utils";
-import { TCourse, TCourseState } from "@/types";
+import { TAppropriatePopoverPosition, TCourse, TCourseState } from "@/types";
 import { Check } from "lucide-react";
 import { CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "../general";
 import Tag from "./tag";
 import Link from "next/link";
-
-const COURSE_POPOVER_WIDTH_IN_REM = 34;
-//w-[34rem]
-const ROOT_FONT_SIZE = 10;
-const COURSE_POPOVER_WIDTH_IN_PX = COURSE_POPOVER_WIDTH_IN_REM * ROOT_FONT_SIZE;
+import {
+  COURSE_POPOVER_WIDTH_IN_PX,
+  COURSE_POPOVER_WIDTH_IN_REM,
+} from "@/constants";
 
 export default function CoursePopover({
   course: { title, leadHeadline, features, tag, updatedAt, id },
@@ -23,9 +22,10 @@ export default function CoursePopover({
   state: TCourseState;
 }) {
   const { cartCoursesIds, addToCart } = useCart();
+
   if (!cardRect) return null;
 
-  let appropriatePopoverPosition: "left" | "right" | "top";
+  let appropriatePopoverPosition: TAppropriatePopoverPosition;
   if (window.innerWidth - cardRect.right >= COURSE_POPOVER_WIDTH_IN_PX) {
     appropriatePopoverPosition = "right";
   } else if (cardRect.left >= COURSE_POPOVER_WIDTH_IN_PX) {
@@ -34,65 +34,15 @@ export default function CoursePopover({
     appropriatePopoverPosition = "top";
   }
 
-  const computePopoverStyle = (): CSSProperties => {
-    if (appropriatePopoverPosition === "right") {
-      return {
-        left: `${cardRect.right}px`,
-        top: `${cardRect.top + window.scrollY}px`,
-        transform: `translateY(calc((100% - ${cardRect.height}px) / -2))`,
-      };
-    } else if (appropriatePopoverPosition === "left") {
-      return {
-        left: `calc(${cardRect.left}px - 100%)`,
-        top: `${cardRect.top + window.scrollY}px`,
-        transform: `translateY(calc((100% - ${cardRect.height}px) / -2))`,
-      };
-    } else {
-      return {
-        left: `${cardRect.left}px`,
-        top: `${cardRect.bottom + window.scrollY}px`,
-      };
-    }
-  };
-
-  const computeArrowStyle = (): CSSProperties => {
-    switch (appropriatePopoverPosition) {
-      case "left":
-        return {
-          top: "50%",
-          transform: "translate(-50%) rotateZ(45deg)",
-          left: "100%",
-          borderLeft: "none",
-          borderBottom: "none",
-        };
-      case "right":
-        return {
-          top: "50%",
-          transform: "translate(-50%) rotateZ(45deg)",
-          left: "0",
-          borderTop: "none",
-          borderRight: "none",
-        };
-      case "top":
-        return {
-          top: "0",
-          left: "50%",
-          transform: "translate(-50%) rotateZ(45deg)",
-          borderRight: "none",
-          borderBottom: "none",
-        };
-      default:
-        return {};
-    }
-  };
-
-  const arrowStyle: CSSProperties = computeArrowStyle();
+  const arrowStyle: CSSProperties = computeArrowStyle(
+    appropriatePopoverPosition
+  );
 
   return createPortal(
     <div
       style={{
         width: `${COURSE_POPOVER_WIDTH_IN_REM}rem`,
-        ...computePopoverStyle(),
+        ...computePopoverStyle(appropriatePopoverPosition, cardRect),
       }}
       className="absolute z-[100] px-[1rem]"
     >
@@ -174,3 +124,60 @@ export default function CoursePopover({
     document.body
   );
 }
+
+const computeArrowStyle = (
+  appropriatePopoverPosition: "left" | "right" | "top"
+): CSSProperties => {
+  switch (appropriatePopoverPosition) {
+    case "left":
+      return {
+        top: "50%",
+        transform: "translate(-50%) rotateZ(45deg)",
+        left: "100%",
+        borderLeft: "none",
+        borderBottom: "none",
+      };
+    case "right":
+      return {
+        top: "50%",
+        transform: "translate(-50%) rotateZ(45deg)",
+        left: "0",
+        borderTop: "none",
+        borderRight: "none",
+      };
+    case "top":
+      return {
+        top: "0",
+        left: "50%",
+        transform: "translate(-50%) rotateZ(45deg)",
+        borderRight: "none",
+        borderBottom: "none",
+      };
+    default:
+      return {};
+  }
+};
+
+const computePopoverStyle = (
+  appropriatePopoverPosition: TAppropriatePopoverPosition,
+  cardRect: DOMRect
+): CSSProperties => {
+  if (appropriatePopoverPosition === "right") {
+    return {
+      left: `${cardRect.right}px`,
+      top: `${cardRect.top + window.scrollY}px`,
+      transform: `translateY(calc((100% - ${cardRect.height}px) / -2))`,
+    };
+  } else if (appropriatePopoverPosition === "left") {
+    return {
+      left: `calc(${cardRect.left}px - 100%)`,
+      top: `${cardRect.top + window.scrollY}px`,
+      transform: `translateY(calc((100% - ${cardRect.height}px) / -2))`,
+    };
+  } else {
+    return {
+      left: `${cardRect.left}px`,
+      top: `${cardRect.bottom + window.scrollY}px`,
+    };
+  }
+};

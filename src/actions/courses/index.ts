@@ -48,7 +48,8 @@ async function fetchCourses(coursesIds: string[]): Promise<TCourse[]> {
   ) as Map<string, TUser>;
 
   const courses = fetchedCourses.map((course) => {
-    if (!instructorsHashMap.get(course.instructorId)) {
+    const instructor = instructorsHashMap.get(course.instructorId);
+    if (!instructor) {
       throw new Error("Did not find an instructor for a course.");
     }
 
@@ -60,7 +61,7 @@ async function fetchCourses(coursesIds: string[]): Promise<TCourse[]> {
 
     const preparedCourse: TCourse = {
       ...courseWithoutInstructorNorInstructorId,
-      instructor: instructorsHashMap.get(course.instructorId)!,
+      instructor,
     };
 
     return preparedCourse;
@@ -84,29 +85,6 @@ async function fetchCourseName(courseId: string): Promise<string> {
   }
 
   return courseSnap.data().title;
-}
-
-async function fetchFirstModuleId(courseId: string) {
-  if (!courseId) {
-    throw new Error(
-      "Attempted to fetch a curriculum item id with an empty courseId."
-    );
-  }
-
-  const courseRef = doc(db, "courses", courseId);
-  const courseSnap = await getDoc(courseRef);
-
-  if (!courseSnap.exists()) {
-    throw new Error(`Course with id ${courseId} does not exist.`);
-  }
-
-  const q = query(collection(db, "courses", courseId, "modules"));
-
-  const snapshot = await getDocs(q);
-
-  const firstModuleId = snapshot.docs[0].id;
-
-  return firstModuleId;
 }
 
 async function fetchModule(courseId: string, moduleId: string) {
@@ -165,14 +143,16 @@ async function fetchCurriculumItem(
   curriculumItemId: string
 ): Promise<void | TContent> {
   const modules = await fetchModulesWithContent(courseId);
-  modules.forEach((module) => {
-    const searchResult = module.content.find(
+
+  for (const _module of modules) {
+    const searchResult = _module.content.find(
       (curriculumItem) => curriculumItem.id === curriculumItemId
     );
+
     if (searchResult !== undefined) {
       return searchResult;
     }
-  });
+  }
 
   throw new Error(
     `Curriculum item with ID: ${curriculumItemId} and courseId: ${courseId} does not exist`
@@ -385,7 +365,6 @@ async function addCourseToPublishedCourses(courseId: string) {
 
 export {
   fetchCourses,
-  fetchFirstModuleId,
   fetchModule,
   fetchCurriculumItem,
   fetchModulesWithContent,
