@@ -16,6 +16,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Online Courses - Learn Anything, On Your Schedule | Udemy",
+  description:
+    "Learn anytime, anywhere with our Udemy-style platform offering expert-led video courses in tech, business, design, and more. Start learning today!",
 };
 
 export default function RootLayout({

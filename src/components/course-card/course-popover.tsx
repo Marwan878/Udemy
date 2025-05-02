@@ -44,7 +44,7 @@ export default function CoursePopover({
         width: `${COURSE_POPOVER_WIDTH_IN_REM}rem`,
         ...computePopoverStyle(appropriatePopoverPosition, cardRect),
       }}
-      className="absolute z-[100] px-[1rem]"
+      className="absolute z-[100] px-[1rem] hidden lg:block"
     >
       <div className="p-[2.4rem] rounded-[0.8rem] relative text-[#303141] bg-white flex flex-col items-start shadow-[0_0_0_1px_#d1d2e0,0_2px_4px_rgba(6,17,118,.08),0_4px_12px_rgba(6,17,118,.08)]">
         <span

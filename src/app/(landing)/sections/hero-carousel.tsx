@@ -72,7 +72,7 @@ export default function HeroCarousel() {
   };
 
   return (
-    <section className="md:h-[40rem] h-[76rem]">
+    <section className="md:h-[40rem] h-[60rem]">
       <MaxWidthWrapper className="h-full px-0 sm:px-6 relative overflow-hidden">
         <RoundButton
           onClick={handlePrev}
