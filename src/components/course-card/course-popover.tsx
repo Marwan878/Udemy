@@ -13,7 +13,7 @@ import {
 } from "@/constants";
 
 export default function CoursePopover({
-  course: { title, leadHeadline, features, tag, updatedAt, id },
+  course,
   cardRect,
   state,
 }: {
@@ -22,6 +22,7 @@ export default function CoursePopover({
   state: TCourseState;
 }) {
   const { cartCoursesIds, addToCart } = useCart();
+  const { title, leadHeadline, features, tag, updatedAt, id } = course;
 
   if (!cardRect) return null;
 
@@ -114,7 +115,7 @@ export default function CoursePopover({
               variant="primary"
               height="lg"
               className="w-full mt-[0.8rem] heading-md"
-              onClick={() => addToCart(id)}
+              onClick={() => addToCart(course)}
             >
               Add to cart
             </Button>

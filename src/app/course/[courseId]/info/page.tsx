@@ -29,11 +29,7 @@ export default async function Page({
           <WhoThisCourseIsFor whoThisCourseIsFor={course.whoThisCourseIsFor} />
           <Instructor instructor={course.instructor} />
         </div>
-        <SideCard
-          courseImage={course.imageUrl}
-          coursePrice={course.price}
-          courseId={course.id}
-        />
+        <SideCard course={course} />
       </MaxWidthWrapper>
       <SliderMenu course={course} />
     </>

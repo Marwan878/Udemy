@@ -30,7 +30,7 @@ export default function SliderMenu({ course }: { course: TCourse }) {
             as={cartCoursesIds.includes(course.id) ? Link : undefined}
             href="/cart"
             className="font-bold flex-1 md:bg-white md:hover:bg-gray-200 md:text-[#000]"
-            onClick={() => addToCart(course.id)}
+            onClick={() => addToCart(course)}
           >
             {cartCoursesIds.includes(course.id) ? "Go to cart" : "Add to cart"}
           </Button>

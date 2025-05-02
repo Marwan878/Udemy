@@ -17,33 +17,31 @@ import {
 
 const CartContext = createContext<{
   cartCoursesIds: string[];
-  setCartCoursesIds: Dispatch<SetStateAction<string[]>>;
-  addToCart: (courseId: string) => Promise<void>;
+  addToCart: (course: TCourse) => Promise<void>;
   cart: TCourse[] | null;
   setCart: Dispatch<SetStateAction<TCourse[] | null>>;
 }>({
   cartCoursesIds: [],
-  setCartCoursesIds: () => {},
   addToCart: async () => {},
   cart: null,
   setCart: () => {},
 });
 
 function CartProvider({ children }: { children: React.ReactNode }) {
-  const [cartCoursesIds, setCartCoursesIds] = useState<string[]>([]);
   const [cart, setCart] = useState<TCourse[] | null>(null);
+  const cartCoursesIds = cart?.map((course) => course.id) ?? [];
 
-  async function addToCart(courseId: string) {
+  async function addToCart(course: TCourse) {
     const loggedInUser = await getLoggedInUserId();
     if (loggedInUser) {
       const formData = new FormData();
-      formData.append("courseId", courseId);
+      formData.append("courseId", course.id);
       await addToCartAPI(formData);
     } else {
-      addCourseIdToLocalStorage(courseId);
+      addCourseIdToLocalStorage(course.id);
     }
 
-    setCartCoursesIds((curr) => [...curr, courseId]);
+    setCart((curr) => [...(curr ?? []), course]);
   }
 
   useEffect(() => {
@@ -79,7 +77,6 @@ function CartProvider({ children }: { children: React.ReactNode }) {
     <CartContext.Provider
       value={{
         cartCoursesIds,
-        setCartCoursesIds,
         cart,
         setCart,
         addToCart,
