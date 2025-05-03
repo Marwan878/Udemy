@@ -33,7 +33,7 @@ export default function ShoppingCart() {
                 >
                   <Link
                     className="flex gap-x-2 items-start text-start"
-                    href={`/course/${course.id}/lecture`}
+                    href={`/course/${course.id}/info`}
                   >
                     <img
                       src={course.imageUrl}

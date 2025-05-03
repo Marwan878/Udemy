@@ -87,7 +87,6 @@ type TPurchasedCourseData = {
   userRating: number;
   userReview: string;
   purchasedAt: number;
-  purchaseCost: number;
   completedCurriculumItemsIds: string[];
   notes: TNote[];
 };
