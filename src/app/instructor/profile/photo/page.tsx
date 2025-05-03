@@ -101,8 +101,13 @@ export default function Page() {
         height="md"
         onClick={handleSave}
         disabled={isUploading}
+        aria-label={isUploading ? "Uploading..." : "Save"}
       >
-        {isUploading ? <Loader2 className="animate-spin" /> : "Save"}
+        {isUploading ? (
+          <Loader2 className="animate-spin" aria-hidden />
+        ) : (
+          "Save"
+        )}
       </Button>
     </div>
   );

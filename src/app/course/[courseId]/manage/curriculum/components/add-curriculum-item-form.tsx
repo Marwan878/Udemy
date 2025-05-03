@@ -48,8 +48,9 @@ export default function AddCurriculumItemForm({ module }: { module: TModule }) {
             height="sm"
             className="text-udemy-purple flex items-center font-bold min-w-0 p-1"
             onClick={() => setCurrentForm("lecture")}
+            aria-label="Add a lecture."
           >
-            <Plus size={20} />{" "}
+            <Plus aria-hidden size={20} />{" "}
             <span className="inline-block h-fit">Lecture</span>
           </Button>
         </div>

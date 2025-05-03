@@ -18,6 +18,7 @@ export default function ShoppingCart() {
           className="aspect-square"
           as={Link}
           href="/cart"
+          aria-label="Shopping cart."
         >
           <ShoppingCartIcon width={20} height={20} />
         </Button>

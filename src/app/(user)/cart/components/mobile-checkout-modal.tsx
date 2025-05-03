@@ -11,7 +11,7 @@ export default function MobileCheckoutModal() {
       }}
     >
       <Button className="w-full heading-md h-[4.8rem]">
-        Proceed to Checkout <ArrowRight />
+        Proceed to Checkout <ArrowRight aria-hidden />
       </Button>
       <p className="text-[#595c73 text-[1.2rem] mt-[0.8rem] text-center">
         You won't be charged yet

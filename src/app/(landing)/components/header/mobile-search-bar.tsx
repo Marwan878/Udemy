@@ -29,6 +29,7 @@ export default function MobileSearchBar() {
         variant="ghost"
         className="block lg:hidden p-2"
         onClick={handleToggleForm}
+        aria-label="Search"
       >
         <Search width={20} height={20} />
       </Button>
@@ -45,6 +46,7 @@ export default function MobileSearchBar() {
             height="sm"
             className="absolute top-3 right-3"
             onClick={handleToggleForm}
+            aria-label="Close search form."
           >
             <X color="#2a2b3f" />
           </Button>

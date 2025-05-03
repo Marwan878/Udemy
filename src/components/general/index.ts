@@ -5,7 +5,6 @@ import Section from "./section";
 import SectionHeading from "./section-heading";
 import Button from "./button";
 import MaxWidthWrapper from "./max-width-wrapper";
-import ImageSlider from "./hero-carousel";
 import Star from "./star";
 import PopperTrigger from "./popper-trigger";
 import Modal from "./modal";
@@ -27,7 +26,6 @@ export {
   Accordion,
   AccordionHeader,
   AccordionBody,
-  ImageSlider,
   Star,
   PopperTrigger,
   Modal,

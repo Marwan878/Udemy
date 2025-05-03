@@ -101,8 +101,13 @@ export default function AddVideoForm({ lecture }: { lecture: TContent }) {
         </span>
       </label>
       {hasAlreadyUploaded ? (
-        <Button onClick={handleDeleteVideo} variant="ghost" height="sm">
-          <Trash2 />
+        <Button
+          onClick={handleDeleteVideo}
+          variant="ghost"
+          height="sm"
+          aria-label="Delete video."
+        >
+          <Trash2 aria-hidden />
         </Button>
       ) : (
         <Button

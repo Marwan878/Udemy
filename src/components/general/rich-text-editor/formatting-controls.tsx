@@ -24,8 +24,9 @@ export default function FormattingControls({
         height="sm"
         className={cn("h-8 w-8 p-0", activeFormats.bold ? "bg-muted" : "")}
         onClick={() => handleFormat("bold")}
+        aria-label="Add bold format"
       >
-        <Bold className="h-4 w-4" />
+        <Bold className="h-4 w-4" aria-hidden />
       </Button>
       <Button
         type="button"
@@ -33,8 +34,9 @@ export default function FormattingControls({
         height="sm"
         className={cn("h-8 w-8 p-0", activeFormats.italic ? "bg-muted" : "")}
         onClick={() => handleFormat("italic")}
+        aria-label="Add italic format"
       >
-        <Italic className="h-4 w-4" />
+        <Italic className="h-4 w-4" aria-hidden />
       </Button>
       <Button
         type="button"
@@ -48,8 +50,9 @@ export default function FormattingControls({
           ensureValidContent();
           handleListFormat("unordered");
         }}
+        aria-label="Add unordered list format"
       >
-        <List className="h-4 w-4" />
+        <List className="h-4 w-4" aria-hidden />
       </Button>
       <Button
         type="button"
@@ -63,8 +66,9 @@ export default function FormattingControls({
           ensureValidContent();
           handleListFormat("ordered");
         }}
+        aria-label="Add ordered list format"
       >
-        <ListOrdered className="h-4 w-4" />
+        <ListOrdered className="h-4 w-4" aria-hidden />
       </Button>
       <Button
         type="button"
@@ -72,8 +76,9 @@ export default function FormattingControls({
         height="sm"
         className={cn("h-8 w-8 p-0", activeFormats.code ? "bg-muted" : "")}
         onClick={handleCodeFormat}
+        aria-label="Add code format"
       >
-        <Code className="h-4 w-4" />
+        <Code className="h-4 w-4" aria-hidden />
       </Button>
     </div>
   );

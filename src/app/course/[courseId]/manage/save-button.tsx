@@ -29,6 +29,7 @@ export default function SaveButton() {
         setCourseData((prev) => ({
           ...prev,
           imageUrl: `${SUPABASE_URL}/storage/v1/object/public/images//${courseImage.name}`,
+          isPublished: true,
         }));
       }
     }
@@ -46,8 +47,9 @@ export default function SaveButton() {
         "opacity-50 cursor-not-allowed": isLoading,
       })}
       onClick={handleSaveData}
+      aria-label={isLoading ? "Saving" : "Save"}
     >
-      {isLoading ? <Loader2 className="animate-spin" /> : "Save"}
+      {isLoading ? <Loader2 className="animate-spin" aria-hidden /> : "Save"}
     </Button>
   );
 }

@@ -27,6 +27,7 @@ export default function RatingModal({
         height="md"
         className="w-12 aspect-square absolute right-4 top-4"
         onClick={onClose}
+        aria-label="Close rating modal."
       >
         <X />
       </Button>

@@ -33,12 +33,17 @@ export default function Module({
         height="md"
         className="font-bold min-w-0 mt-6 mb-3"
         onClick={() => setAddCurriculumItemFormIsShown((prev) => !prev)}
+        aria-label={
+          addCurriculumItemFormIsShown
+            ? "Close add curriculum item form"
+            : "Open add curriculum item form"
+        }
       >
         {addCurriculumItemFormIsShown ? (
-          <X />
+          <X aria-hidden />
         ) : (
           <>
-            <Plus color="#303141" /> Curriculum item
+            <Plus color="#303141" aria-label="Add" /> Curriculum item
           </>
         )}
       </Button>

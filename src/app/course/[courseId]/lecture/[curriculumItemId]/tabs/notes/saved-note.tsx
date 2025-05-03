@@ -22,6 +22,7 @@ export default function SavedNote({
             height="sm"
             className="hover:bg-[#d1d2e0] px-2"
             onClick={() => onDelete()}
+            aria-label="Delete note."
           >
             <Trash2 className="w-4" />
           </Button>

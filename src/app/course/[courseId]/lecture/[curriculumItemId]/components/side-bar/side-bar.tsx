@@ -88,7 +88,7 @@ export default function SideBar() {
           "
           onClick={() => setIsCollapsed(false)}
         >
-          <ArrowLeft color="white" className="me-3" />
+          <ArrowLeft color="white" className="me-3" aria-hidden />
           <span className="heading-sm">Course content</span>
         </Button>
       )}

@@ -13,6 +13,7 @@ import { useCourseManagement } from "@/contexts/course-management";
 import { cn } from "@/lib/utils";
 import { Menu, PlusCircle, Trash2 } from "lucide-react";
 import PageCard from "../page-card";
+import { TCourse } from "@/types";
 
 export default function Page() {
   const { courseData, setCourseData } = useCourseManagement();
@@ -21,14 +22,21 @@ export default function Page() {
     return resource.every((item) => item.length > 0);
   }
 
-  function handleDeleteObjective(objectiveIndex: number) {
-    if (courseData.whatYouWillLearn.length <= MIN_LEARNING_OBJECTIVES_COUNT) {
+  function handleDeleteData(
+    itemIndex: number,
+    minimum: number,
+    itemName: keyof Pick<
+      TCourse,
+      "whatYouWillLearn" | "requirements" | "whoThisCourseIsFor"
+    >
+  ) {
+    if (courseData[itemName].length <= minimum) {
       return;
     }
 
     setCourseData((prev) => ({
       ...prev,
-      whatYouWillLearn: prev.whatYouWillLearn.toSpliced(objectiveIndex, 1),
+      [itemName]: prev[itemName].toSpliced(itemIndex, 1),
     }));
   }
 
@@ -92,9 +100,16 @@ export default function Page() {
                     "min-w-0 h-10 aspect-square me-1 invisible disabled:cursor-not-allowed",
                     { "group-hover:visible ": objective !== "" }
                   )}
-                  onClick={() => handleDeleteObjective(i)}
+                  onClick={() =>
+                    handleDeleteData(
+                      i,
+                      MIN_LEARNING_OBJECTIVES_COUNT,
+                      "whatYouWillLearn"
+                    )
+                  }
+                  aria-label="Delete objective"
                 >
-                  <Trash2 />
+                  <Trash2 aria-hidden />
                 </Button>
                 <Button
                   variant="secondary"
@@ -104,8 +119,9 @@ export default function Page() {
                       "group-hover:visible": objective !== "",
                     }
                   )}
+                  aria-label="Reorder objective"
                 >
-                  <Menu />
+                  <Menu aria-hidden />
                 </Button>
               </DragDropList.Item>
             ))}
@@ -122,7 +138,7 @@ export default function Page() {
                 }))
               }
             >
-              <PlusCircle className="h-5 w-5 mr-2" />
+              <PlusCircle className="h-5 w-5 mr-2" aria-hidden />
               Add more to your response
             </Button>
           )}
@@ -183,9 +199,16 @@ export default function Page() {
                         "min-w-0 h-10 aspect-square me-1 invisible disabled:cursor-not-allowed",
                         { "group-hover:visible ": prerequisite !== "" }
                       )}
-                      onClick={() => handleDeleteObjective(i)}
+                      onClick={() =>
+                        handleDeleteData(
+                          i,
+                          MIN_PREREQUISITES_COUNT,
+                          "requirements"
+                        )
+                      }
+                      aria-label="Delete prerequisite"
                     >
-                      <Trash2 />
+                      <Trash2 aria-hidden />
                     </Button>
                     <Button
                       variant="secondary"
@@ -195,8 +218,9 @@ export default function Page() {
                           "group-hover:visible": prerequisite !== "",
                         }
                       )}
+                      aria-label="Reorder prerequisite"
                     >
-                      <Menu />
+                      <Menu aria-hidden />
                     </Button>
                   </>
                 )}
@@ -215,7 +239,7 @@ export default function Page() {
                 }))
               }
             >
-              <PlusCircle className="h-5 w-5 mr-2" />
+              <PlusCircle className="h-5 w-5 mr-2" aria-hidden />
               Add more to your response
             </Button>
           )}
@@ -276,9 +300,16 @@ export default function Page() {
                         "min-w-0 h-10 aspect-square me-1 invisible disabled:cursor-not-allowed",
                         { "group-hover:visible ": audience !== "" }
                       )}
-                      onClick={() => handleDeleteObjective(i)}
+                      onClick={() =>
+                        handleDeleteData(
+                          i,
+                          MIN_AUDIENCE_DESCRIPTION_COUNT,
+                          "whoThisCourseIsFor"
+                        )
+                      }
+                      aria-label="Delete Audience"
                     >
-                      <Trash2 />
+                      <Trash2 aria-hidden />
                     </Button>
                     <Button
                       variant="secondary"
@@ -288,8 +319,9 @@ export default function Page() {
                           "group-hover:visible": audience !== "",
                         }
                       )}
+                      aria-label="Reorder Audience"
                     >
-                      <Menu />
+                      <Menu aria-hidden />
                     </Button>
                   </>
                 )}
@@ -308,7 +340,7 @@ export default function Page() {
                 }))
               }
             >
-              <PlusCircle className="h-5 w-5 mr-2" />
+              <PlusCircle className="h-5 w-5 mr-2" aria-hidden />
               Add more to your response
             </Button>
           )}

@@ -129,6 +129,7 @@ export default function Overview({ courseId }: { courseId: string }) {
             <ChevronDown
               className="ms-[0.4rem] h-[1.6rem] w-[1.6rem]"
               color="#6d28d2"
+              aria-hidden
             />
           </>
         ) : (
@@ -137,6 +138,7 @@ export default function Overview({ courseId }: { courseId: string }) {
             <ChevronUp
               className="ms-[0.4rem] h-[1.6rem] w-[1.6rem]"
               color="#6d28d2"
+              aria-hidden
             />
           </>
         )}

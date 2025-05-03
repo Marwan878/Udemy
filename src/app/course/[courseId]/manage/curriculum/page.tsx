@@ -40,12 +40,17 @@ export default function Page() {
         height="md"
         className="font-bold min-w-0 mt-6 mb-3"
         onClick={() => setNewModuleFormIsVisible((prev) => !prev)}
+        aria-label={
+          newModuleFormIsVisible
+            ? "Close new module form."
+            : "Open new module form."
+        }
       >
         {newModuleFormIsVisible ? (
-          <X />
+          <X aria-hidden />
         ) : (
           <>
-            <Plus color="#303141" /> Section
+            <Plus color="#303141" aria-label="Add" /> Section
           </>
         )}
       </Button>

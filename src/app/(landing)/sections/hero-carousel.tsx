@@ -98,10 +98,8 @@ export default function HeroCarousel() {
         >
           {sliderImagesUrls.map((url, i) => (
             <div key={i} className="z-50 w-screen mx-auto relative">
-              <>
-                <LargeScreensContent url={url} />
-                <SmallScreensContent url={url} />
-              </>
+              <LargeScreensContent url={url} />
+              <SmallScreensContent url={url} />
             </div>
           ))}
         </div>

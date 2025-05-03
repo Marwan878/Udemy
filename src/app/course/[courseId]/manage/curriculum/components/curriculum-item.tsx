@@ -35,16 +35,18 @@ export default function CurriculumItem({
             variant="ghost"
             className="p-1"
             onClick={() => setCurrentForm(null)}
+            aria-label="Close video form"
           >
-            <X />
+            <X aria-hidden />
           </Button>
         ) : (
           <Button
             height="md"
             variant="secondary"
             onClick={() => setCurrentForm("video-form")}
+            aria-label="Open video form"
           >
-            <Plus /> Content
+            <Plus aria-label="Add" /> Content
           </Button>
         )}
       </div>

@@ -56,8 +56,9 @@ export default async function Layout({
           as={Link}
           className="w-fit min-w-0"
           href="/instructor"
+          aria-label="Back to instructor page."
         >
-          <ChevronLeft />
+          <ChevronLeft aria-hidden />
         </Button>
         <div className="flex flex-col gap-3 md:flex-row md:items-center flex-1">
           <div className="heading-lg">{courseData.title}</div>
@@ -68,8 +69,12 @@ export default async function Layout({
         <CourseManagementSidebar />
         <main className="flex flex-col lg:basis-2/3 mx-auto">
           <div className="mb-4 flex justify-between items-center lg:hidden">
-            <Button variant="ghost" className="min-w-0 px-2">
-              <Menu size={28} className="text-udemy-purple" />
+            <Button
+              variant="ghost"
+              className="min-w-0 px-2"
+              aria-label="Open course management options."
+            >
+              <Menu size={28} className="text-udemy-purple" aria-hidden />
             </Button>
           </div>
           {children}

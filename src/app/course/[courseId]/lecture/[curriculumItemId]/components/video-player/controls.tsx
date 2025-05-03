@@ -52,6 +52,7 @@ export default function Controls({
           variant="ghost"
           height="sm"
           onClick={togglePlay}
+          aria-label={isPlaying ? "Play video" : "Pause video"}
         >
           {isPlaying ? (
             <Pause color="#d1d2e0" />
@@ -65,6 +66,7 @@ export default function Controls({
           variant="ghost"
           height="sm"
           onClick={() => handleSeek(Math.max(currentTime - 5, 0).toString())}
+          aria-label="Rewind by 5 seconds."
         >
           <RotateCcw color="#d1d2e0" />
           <ControlTooltip text="Rewind 5s" />
@@ -74,6 +76,7 @@ export default function Controls({
           variant="ghost"
           height="sm"
           onClick={() => handleSeek(Math.max(currentTime + 5, 0).toString())}
+          aria-label="Forward by 5 seconds"
         >
           <RotateCw color="#d1d2e0" />
           <ControlTooltip text="Forward 5s" />
@@ -109,6 +112,7 @@ export default function Controls({
           height="sm"
           onClick={toggleMute}
           className="md:p-1 w-3 h-3 md:w-8 md:h-8"
+          aria-label={volume === 0 ? "Unmute video" : "Mute video"}
         >
           {volume === 0 ? (
             <VolumeOff color="#d1d2e0" />
@@ -131,6 +135,7 @@ export default function Controls({
           height="sm"
           onClick={toggleFullscreen}
           className="md:p-1 w-3 h-3 md:w-8 md:h-8 ms-1"
+          aria-label={isFullscreen ? "Minimize video." : "Expand video."}
         >
           {isFullscreen ? (
             <Minimize color="#d1d2e0" />
