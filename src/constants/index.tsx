@@ -110,7 +110,7 @@ export function TestimonialAuthor({
         className="rounded-full w-[4.8rem] h-[4.8rem]"
       />
       <div className="ms-[0.8rem] text-[1.2rem]">
-        <h6 className="text-[#595c73]">{name}</h6>
+        <div className="text-[#595c73]">{name}</div>
         <p className="font-normal text-[#9194AC]">{role}</p>
       </div>
     </div>

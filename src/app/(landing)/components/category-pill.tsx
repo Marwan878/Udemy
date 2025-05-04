@@ -26,7 +26,7 @@ export default function CategoryPill({
         onClick={onClick}
         className="cursor-pointer"
       >
-        <h4
+        <div
           className={cn(
             "mb-[0.4rem] heading-md text-[#303141] user-select-none",
             {
@@ -35,7 +35,7 @@ export default function CategoryPill({
           )}
         >
           {category.displayName}
-        </h4>
+        </div>
         <span
           className={cn("text-xs text-[#595c73] user-select-none", {
             "text-white": checked,
