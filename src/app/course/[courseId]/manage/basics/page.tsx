@@ -138,6 +138,7 @@ export default function Page() {
                   ? URL.createObjectURL(courseImage)
                   : "/images/course-image-placeholder.webp"
               }
+              alt="Your selected course cover image"
             />
 
             <div className="space-y-4">

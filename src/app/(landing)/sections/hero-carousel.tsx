@@ -116,6 +116,7 @@ function LargeScreensContent({ url }: { url: string }) {
       <img
         className="object-cover h-[40rem] w-full hidden md:block"
         src={HERO_IMAGES_BASE_URL + "/big-" + url}
+        alt=""
       />
       <Card
         className="bg-white top-[20rem] shadow-md rounded-sm w-[34rem] left-[10rem] -translate-y-1/2 absolute hidden md:block"
@@ -139,6 +140,7 @@ function SmallScreensContent({ url }: { url: string }) {
         <img
           className="object-cover h-[40rem] w-full block md:hidden"
           src={HERO_IMAGES_BASE_URL + "/small-" + url}
+          alt=""
         />
       </div>
       <div className="md:hidden flex flex-col">

@@ -38,7 +38,7 @@ export default function ShoppingCart() {
                   >
                     <img
                       src={course.imageUrl}
-                      alt="Course image."
+                      alt={`${course.title} cover image`}
                       className="w-24 aspect-square rounded-md object-cover"
                     />
                     <div className="basis-3/4 shrink-0">

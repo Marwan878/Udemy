@@ -60,7 +60,7 @@ export default function Page() {
               width={240}
               height={180}
               src="/images/empty-cart.webp"
-              alt=""
+              alt="Empty cart image."
             />
             <p className="mb-[2.4rem]">
               Your cart is empty. Keep shopping to find a course!

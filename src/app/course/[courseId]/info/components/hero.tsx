@@ -23,7 +23,7 @@ export default function Hero({
           <img
             src={imageUrl}
             className="lg:hidden w-full object-cover h-[32rem] mb-4"
-            alt="Course image."
+            alt={`${title} cover image`}
           />
           <h1 className="heading-xl font-bold mb-2">{title}</h1>
           <p className="text-lg mb-4">{leadHeadline}</p>

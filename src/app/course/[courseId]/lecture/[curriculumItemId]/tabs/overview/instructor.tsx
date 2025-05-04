@@ -9,6 +9,9 @@ export default function Instructor({ instructor }: { instructor: TUser }) {
           <img
             src={instructor.imageUrl}
             className="flex-shrink-0 self-center w-[6.4rem] h-[6.4rem] bg-red-700 border border-[#d1d2e0] rounded-full object-cover"
+            alt={`${
+              instructor.firstName + " " + instructor.lastName
+            } profile picture`}
           />
           <div className="ms-[2.4rem]">
             <a href="" className="heading-lg text-[#303141]">
