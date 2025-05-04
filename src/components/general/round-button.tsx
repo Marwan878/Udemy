@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { CSSProperties, MouseEventHandler } from "react";
+import { ComponentPropsWithRef, CSSProperties, MouseEventHandler } from "react";
 
 export default function RoundButton({
   onClick,
@@ -7,12 +7,14 @@ export default function RoundButton({
   className,
   style,
   children,
+  ...rest
 }: {
   onClick: MouseEventHandler<HTMLButtonElement> | undefined;
   size?: number;
   className?: string;
   style?: CSSProperties;
   children: React.ReactNode;
+  rest?: ComponentPropsWithRef<"button">;
 }) {
   return (
     <button
@@ -26,6 +28,7 @@ export default function RoundButton({
         "flex justify-center items-center rounded-full bg-white shadow-md hover:bg-[#e9eaf2]",
         className
       )}
+      {...rest}
     >
       {children}
     </button>

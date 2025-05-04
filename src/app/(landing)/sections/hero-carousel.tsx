@@ -77,14 +77,16 @@ export default function HeroCarousel() {
         <RoundButton
           onClick={handlePrev}
           className="top-[20rem] left-8 -translate-y-1/2 absolute z-30"
+          aria-label="Previous slide"
         >
-          <ChevronLeft />
+          <ChevronLeft aria-hidden />
         </RoundButton>
         <RoundButton
           onClick={handleNext}
           className="top-[20rem] right-8 -translate-y-1/2 absolute z-30"
+          aria-label="Next slide"
         >
-          <ChevronRight />
+          <ChevronRight aria-hidden />
         </RoundButton>
         <div
           ref={sliderRef}

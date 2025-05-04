@@ -18,11 +18,11 @@ export default function Footer() {
 function FooterTop() {
   return (
     <div className="flex flex-col lg:flex-row lg:items-center justify-between items-stretch border-b border-[#b7b9cd] py-[1.2rem] px-[2.4rem]">
-      <h6 className="heading-lg py-[1.2rem] pe-[2.4rem]">
+      <div className="heading-lg py-[1.2rem] pe-[2.4rem]">
         Top companies choose{" "}
         <span className="text-[#c0c4fc]">Udemy Business</span> to build
         in-demand career skills.
-      </h6>
+      </div>
       <ul className="flex flex-shrink-0 flex-grow">
         {UDEMY_BUISNESS_USERS_IMAGES_URLS.map((imageUrl) => (
           <li
