@@ -107,11 +107,15 @@ export function TestimonialAuthor({
 }) {
   return (
     <div className="flex items-center gap-x-4">
-      <img
-        src={imageUrl}
-        alt={`${name} personal image.`}
-        className="rounded-full w-[4.8rem] h-[4.8rem]"
-      />
+      <div className="relative rounded-full w-[4.8rem] h-[4.8rem]">
+        <Image
+          src={imageUrl}
+          alt={`${name} personal image.`}
+          fill
+          className="object-cover"
+        />
+      </div>
+
       <div className="ms-[0.8rem] text-[1.2rem]">
         <div className="text-[#595c73]">{name}</div>
         <p className="font-normal text-[#9194AC]">{role}</p>
