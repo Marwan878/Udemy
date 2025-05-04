@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import CoursePopover from "./course-popover";
 import Tag from "./tag";
+import Image from "next/image";
 
 export default function CourseCard({
   course,
@@ -29,13 +30,16 @@ export default function CourseCard({
         href={`/course/${course.id}/info`}
         className="border-[#d1d2e0] max-w-[calc(37.5rem+2*1px)] min-w-[30rem] block relative shrink-0 bg-white lg:hidden"
       >
-        <img
-          className="object-cover w-full rounded-t-[8px]"
-          src={
-            imageUrl || "https://s.udemycdn.com/course/200_H/placeholder.jpg"
-          }
-          alt={`${title} cover image`}
-        />
+        <div className="w-full rounded-t-[8px]">
+          <Image
+            fill
+            className="object-cover "
+            src={
+              imageUrl || "https://s.udemycdn.com/course/200_H/placeholder.jpg"
+            }
+            alt={`${title} cover image`}
+          />
+        </div>
         <div className="pt-[0.8rem] px-[2.4rem] pb-[1.6rem] border-[#d1d2e0] border text-[#303141] gap-[0.8rem] flex flex-col items-start rounded-b-[8px]">
           <h3 className="overflow-hidden text-ellipsis heading-md">{title}</h3>
           <div className="text-sm">
@@ -57,13 +61,16 @@ export default function CourseCard({
         {isHovered && (
           <CoursePopover cardRect={cardRect} course={course} state={state} />
         )}
-        <img
-          className="object-cover w-full rounded-t-[8px]"
-          src={
-            imageUrl || "https://s.udemycdn.com/course/200_H/placeholder.jpg"
-          }
-          alt={`${title} cover image`}
-        />
+        <div className="relative w-full rounded-t-[8px]">
+          <Image
+            fill
+            className="object-cover"
+            src={
+              imageUrl || "https://s.udemycdn.com/course/200_H/placeholder.jpg"
+            }
+            alt={`${title} cover image`}
+          />
+        </div>
         <div className="pt-[0.8rem] px-[2.4rem] pb-[1.6rem] border-[#d1d2e0] border text-[#303141] gap-[0.8rem] flex flex-col items-start rounded-b-[8px]">
           <h3 className="overflow-hidden text-ellipsis heading-md">{title}</h3>
           <div className="text-sm">

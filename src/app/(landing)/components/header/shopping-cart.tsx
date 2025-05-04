@@ -4,6 +4,7 @@ import { Button } from "@/components/general";
 import Popper from "@/components/general/popper";
 import { useCart } from "@/contexts/cart";
 import { ShoppingCartIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function ShoppingCart() {
@@ -36,11 +37,14 @@ export default function ShoppingCart() {
                     className="flex gap-x-2 items-start text-start"
                     href={`/course/${course.id}/info`}
                   >
-                    <img
-                      src={course.imageUrl}
-                      alt={`${course.title} cover image`}
-                      className="w-24 aspect-square rounded-md object-cover"
-                    />
+                    <div className="w-24 aspect-square rounded-md relative">
+                      <Image
+                        src={course.imageUrl}
+                        alt={`${course.title} cover image`}
+                        className="object-cover"
+                        fill
+                      />
+                    </div>
                     <div className="basis-3/4 shrink-0">
                       <p className="text-start font-bold leading-6 mb-2">
                         {course.title}

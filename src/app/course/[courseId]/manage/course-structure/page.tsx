@@ -3,6 +3,7 @@ import {
   COURSE_CREATION_TIPS,
 } from "@/constants";
 import PageCard from "../page-card";
+import Image from "next/image";
 
 export default function Page() {
   return (
@@ -22,11 +23,14 @@ export default function Page() {
             </p>
           </div>
           <div className="bg-white mt-[3.2rem] py-[3.2rem] px-6 flex flex-col items-center grow-[4] lg:me-[4.8rem] w-fit mx-auto">
-            <img
-              src={"/images/planning.jpg"}
-              className="w-32 h-32 mb-6"
-              alt=""
-            />
+            <div className="relative w-32 h-32 mb-6">
+              <Image
+                src={"/images/planning.jpg"}
+                className="object-cover"
+                alt=""
+                fill
+              />
+            </div>
             <p className="text-center">
               Remember that planning is the key to success
             </p>

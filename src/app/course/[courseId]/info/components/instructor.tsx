@@ -1,5 +1,6 @@
 import { TUser } from "@/types";
 import { Award, PlayCircle, Star, Users } from "lucide-react";
+import Image from "next/image";
 
 export default function Instructor({
   instructor: {
@@ -26,14 +27,17 @@ export default function Instructor({
 
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-x-8">
-          <img
-            src={
-              imageUrl ||
-              "https://img-c.udemycdn.com/user/200_H/anonymous_3.png"
-            }
-            alt={`${firstName} ${lastName} personal image.`}
-            className="h-44 w-44 rounded-full object-cover"
-          />
+          <div className="relative h-44 w-44 rounded-full ">
+            <Image
+              src={
+                imageUrl ||
+                "https://img-c.udemycdn.com/user/200_H/anonymous_3.png"
+              }
+              alt={`${firstName} ${lastName} personal image.`}
+              className="object-cover"
+              fill
+            />
+          </div>
 
           <div className="space-y-2 text-sm">
             <div className="flex items-center">

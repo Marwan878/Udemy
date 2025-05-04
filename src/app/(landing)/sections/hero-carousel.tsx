@@ -4,6 +4,7 @@ import { MaxWidthWrapper, RoundButton } from "@/components/general";
 import { HERO_IMAGES_BASE_URL, HERO_IMAGES_RAW_URLS } from "@/constants";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react";
 
 export default function HeroCarousel() {
@@ -112,11 +113,13 @@ export default function HeroCarousel() {
 
 function LargeScreensContent({ url }: { url: string }) {
   return (
-    <>
-      <img
-        className="object-cover h-[40rem] w-full hidden md:block"
+    <div className="h-[40rem] w-full hidden md:block">
+      <Image
+        className="object-cover"
         src={HERO_IMAGES_BASE_URL + "/big-" + url}
         alt=""
+        fill
+        priority
       />
       <Card
         className="bg-white top-[20rem] shadow-md rounded-sm w-[34rem] left-[10rem] -translate-y-1/2 absolute hidden md:block"
@@ -129,18 +132,20 @@ function LargeScreensContent({ url }: { url: string }) {
           <>Skills for your present (and your future). Get started with us.</>
         }
       />
-    </>
+    </div>
   );
 }
 
 function SmallScreensContent({ url }: { url: string }) {
   return (
     <>
-      <div className="h-[40rem]">
-        <img
-          className="object-cover h-[40rem] w-full block md:hidden"
+      <div className="h-[40rem] block md:hidden">
+        <Image
+          className="object-cover"
           src={HERO_IMAGES_BASE_URL + "/small-" + url}
           alt=""
+          fill
+          priority
         />
       </div>
       <div className="md:hidden flex flex-col">

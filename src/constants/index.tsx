@@ -1,4 +1,5 @@
 import { TTestimonial } from "@/types";
+import Image from "next/image";
 
 const CATEGORIES = [
   {
@@ -35,11 +36,13 @@ const TESTIMONIALS: TTestimonial[] = [
     ),
     author: (
       <div className="flex flex-col gap-y-3">
-        <img
-          src="https://cms-images.udemycdn.com/96883mtakkm8/2PBcNgsQa3SvYWklkiN27r/5b8707cc79c8cae5774d5eb3b88b4001/logo_stackoverflow.svg"
-          alt="Stackoverflow logo."
-          className="w-44 h-11"
-        />
+        <div className="w-44 h-12 relative">
+          <Image
+            src="https://cms-images.udemycdn.com/96883mtakkm8/2PBcNgsQa3SvYWklkiN27r/5b8707cc79c8cae5774d5eb3b88b4001/logo_stackoverflow.svg"
+            alt="Stackoverflow logo."
+            fill
+          />
+        </div>
         <p className="text-[#9194ac]">37,076 responses collected</p>
       </div>
     ),

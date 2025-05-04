@@ -1,6 +1,7 @@
 import { MaxWidthWrapper, StarRating } from "@/components/general";
 import { TCourse } from "@/types";
 import { Clock } from "lucide-react";
+import Image from "next/image";
 
 export default function Hero({
   course: {
@@ -20,11 +21,14 @@ export default function Hero({
     <div className="lg:bg-[#1d1e27] lg:text-white">
       <MaxWidthWrapper className="pt-8 pb-12">
         <div>
-          <img
-            src={imageUrl}
-            className="lg:hidden w-full object-cover h-[32rem] mb-4"
-            alt={`${title} cover image`}
-          />
+          <div className="relative lg:hidden w-full h-[32rem] mb-4">
+            <Image
+              src={imageUrl}
+              className="object-cover"
+              alt={`${title} cover image`}
+              fill
+            />
+          </div>
           <h1 className="heading-xl font-bold mb-2">{title}</h1>
           <p className="text-lg mb-4">{leadHeadline}</p>
 

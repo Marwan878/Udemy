@@ -1,4 +1,5 @@
 import { TUser } from "@/types";
+import Image from "next/image";
 
 export default function Instructor({ instructor }: { instructor: TUser }) {
   return (
@@ -6,13 +7,16 @@ export default function Instructor({ instructor }: { instructor: TUser }) {
       <dt className="w-1/4">Instructor</dt>
       <dd className="max-sm:ps-[0.8rem] w-3/4">
         <div className="flex mb-[2.4rem]">
-          <img
-            src={instructor.imageUrl}
-            className="flex-shrink-0 self-center w-[6.4rem] h-[6.4rem] bg-red-700 border border-[#d1d2e0] rounded-full object-cover"
-            alt={`${
-              instructor.firstName + " " + instructor.lastName
-            } profile picture`}
-          />
+          <div className="flex-shrink-0 self-center w-[6.4rem] h-[6.4rem] border border-[#d1d2e0] rounded-full">
+            <Image
+              src={instructor.imageUrl}
+              className=" object-cover"
+              alt={`${
+                instructor.firstName + " " + instructor.lastName
+              } profile picture`}
+              fill
+            />
+          </div>
           <div className="ms-[2.4rem]">
             <a href="" className="heading-lg text-[#303141]">
               {instructor.firstName + " " + instructor.lastName}

@@ -1,6 +1,7 @@
 import { fetchLearnerCourses } from "@/actions/user";
 import { Button, ProgressBar } from "@/components/general";
 import Popper from "@/components/general/popper";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function MyLearning() {
@@ -27,11 +28,14 @@ export default async function MyLearning() {
                   className="flex gap-x-2 items-center px-4"
                   href={`/course/${course.id}/lecture`}
                 >
-                  <img
-                    src={course.imageUrl}
-                    alt={`${course.title} cover image`}
-                    className="w-24 aspect-square rounded-md object-cover"
-                  />
+                  <div className="relative w-24 aspect-square rounded-md">
+                    <Image
+                      src={course.imageUrl}
+                      alt={`${course.title} cover image`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
                   <div className="basis-3/4 shrink-0">
                     <p className="text-start font-bold leading-6 mb-2">
                       {course.title}

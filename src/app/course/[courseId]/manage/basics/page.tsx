@@ -8,6 +8,7 @@ import { CATEGORIES, LANGUAGES, LEVELS } from "@/constants";
 import { useCourseManagement } from "@/contexts/course-management";
 import { TLevel } from "@/types";
 import PageCard from "../page-card";
+import Image from "next/image";
 
 export default function Page() {
   const { courseData, setCourseData, courseImage, setCourseImage } =
@@ -132,14 +133,17 @@ export default function Page() {
         <div>
           <label className="block font-bold mb-4">Course image</label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <img
-              src={
-                courseImage
-                  ? URL.createObjectURL(courseImage)
-                  : "/images/course-image-placeholder.webp"
-              }
-              alt="Your selected course cover image"
-            />
+            <div className="relative">
+              <Image
+                src={
+                  courseImage
+                    ? URL.createObjectURL(courseImage)
+                    : "/images/course-image-placeholder.webp"
+                }
+                alt="Your selected course cover image"
+                fill
+              />
+            </div>
 
             <div className="space-y-4">
               <p>
