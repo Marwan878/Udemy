@@ -1,9 +1,9 @@
-import dynamic from "next/dynamic";
-import { HeroCarousel } from "./sections";
-
-const FeaturedCourses = dynamic(() => import("./sections/featured-courses"));
-const Companies = dynamic(() => import("./sections/companies"));
-const Testimonials = dynamic(() => import("./sections/testimonials"));
+import {
+  Companies,
+  FeaturedCourses,
+  HeroCarousel,
+  Testimonials,
+} from "./sections";
 
 export default function Home() {
   return (
