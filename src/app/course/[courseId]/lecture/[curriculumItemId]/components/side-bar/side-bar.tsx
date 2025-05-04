@@ -105,8 +105,12 @@ export default function SideBar() {
         >
           <div className="border-b p-4 flex items-center justify-between">
             <h1 className="text-xl font-semibold">Course content</h1>
-            <button className="text-gray-500 hover:text-gray-700 hidden md:block">
-              <X className="h-5 w-5" onClick={() => setIsCollapsed(true)} />
+            <button
+              className="text-gray-500 hover:text-gray-700 hidden md:block"
+              onClick={() => setIsCollapsed(true)}
+              aria-label="Collapse sidebar"
+            >
+              <X className="h-5 w-5" aria-hidden />
             </button>
           </div>
 

@@ -26,8 +26,9 @@ export default function SearchBar({
             "cursor-pointer": value.trim() !== "",
           }
         )}
+        aria-label="Search"
       >
-        <Search width={20} height={24} />
+        <Search width={20} height={24} aria-hidden />
       </button>
       <input
         type="text"

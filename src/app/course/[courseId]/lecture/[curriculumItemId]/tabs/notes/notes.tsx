@@ -129,13 +129,10 @@ export default function Notes() {
           >
             Create a new note at {formatVideoTime(currentTimestamp)}
             <span className="w-5 h-5 p-1 bg-[#303141] text-white rounded-full flex items-center justify-center">
-              <Plus />
+              <Plus aria-label="Add a note" />
             </span>
           </button>
         )}
-        <div className="flex flex-wrap gap-[0.8rem] pt-[0.8rem] pb-[3.2rem]">
-          {/* <Filter /> */}
-        </div>
         <SavedNotes notes={notes} setNotes={setNotes} courseId={courseId} />
       </div>
     </MaxWidthWrapper>

@@ -26,8 +26,11 @@ function SearchForm({ className }: { className?: string }) {
         )}
         placeholder="Search course content"
       />
-      <button className="flex items-center justify-center px-4 w-16 btn-md btn heading-sm bg-udemy-purple hover:bg-btn-dark-focus">
-        <Search color="white" />
+      <button
+        aria-label="Search"
+        className="flex items-center justify-center px-4 w-16 btn-md btn heading-sm bg-udemy-purple hover:bg-btn-dark-focus"
+      >
+        <Search aria-hidden color="white" />
       </button>
     </form>
   );

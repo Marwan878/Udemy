@@ -25,8 +25,9 @@ export default function SideNavToggle() {
           setSideNavIsOpen(true);
           document.body.classList.add("sidebar-open");
         }}
+        aria-label="Open side navigation"
       >
-        <Menu />
+        <Menu aria-hidden />
       </button>
 
       {sideNavIsOpen && <div className="fixed inset-0 bg-black/60 z-50" />}
