@@ -100,8 +100,9 @@ export default function SideNavToggle() {
                 "bg-white rounded-full flex justify-center items-center delay-100",
                 { "animate-grow": sideNavIsOpen }
               )}
+              aria-label="Close side navigation"
             >
-              <X />
+              <X aria-hidden />
             </RoundButton>
           </div>
         </div>

@@ -75,6 +75,7 @@ export default function ContentSlider({
           >
             <ChevronLeft
               color={arrowStyle === "chevron" ? "#6d28d2" : "black"}
+              aria-hidden
             />
           </RoundButton>
         )}
@@ -89,6 +90,7 @@ export default function ContentSlider({
           >
             <ChevronRight
               color={arrowStyle === "chevron" ? "#6d28d2" : "black"}
+              aria-hidden
             />
           </RoundButton>
         )}
