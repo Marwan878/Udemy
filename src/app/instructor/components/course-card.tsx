@@ -56,7 +56,7 @@ export function CourseCard({ course }: { course: TCourse }) {
             course.imageUrl ||
             "https://s.udemycdn.com/course/200_H/placeholder.jpg"
           }
-          alt={course.title}
+          alt={`${course.title} cover image`}
           fill
           className="object-cover"
         />

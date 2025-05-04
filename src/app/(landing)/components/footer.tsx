@@ -1,5 +1,6 @@
-import { UDEMY_BUISNESS_USERS_IMAGES_URLS } from "@/constants";
 import Logo from "@/components/udemy-logo";
+import { UDEMY_BUISNESS_USERS_IMAGES_URLS } from "@/constants";
+import { getCompanyNameFromUrl } from "@/lib/utils";
 import Image from "next/image";
 
 export default function Footer() {
@@ -29,7 +30,15 @@ function FooterTop() {
             key={imageUrl}
             className="relative h-[4.4rem] mx-2 lg:me-[2.4rem] lg:my-[1.2rem] w-full"
           >
-            <Image fill src={imageUrl} alt={""} />
+            <Image
+              fill
+              src={imageUrl}
+              alt={
+                getCompanyNameFromUrl(imageUrl)
+                  ? `${getCompanyNameFromUrl(imageUrl)} logo`
+                  : ""
+              }
+            />
           </li>
         ))}
       </ul>

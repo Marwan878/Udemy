@@ -1,3 +1,4 @@
+import { COMPANIES_LOGOS, UDEMY_BUISNESS_USERS_IMAGES_URLS } from "@/constants";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -74,4 +75,12 @@ export async function fileFromImageUrl(
   const response = await fetch(url);
   const blob = await response.blob();
   return new File([blob], filename, { type: blob.type });
+}
+
+export function getCompanyNameFromUrl(
+  imageUrl:
+    | (typeof UDEMY_BUISNESS_USERS_IMAGES_URLS)[number]
+    | (typeof COMPANIES_LOGOS)[number]
+) {
+  return imageUrl.split("/").at(-1)?.split(".").at(0);
 }

@@ -32,7 +32,7 @@ export default async function Page() {
                       objectFit="cover"
                       className="aspect-video group-hover/outer:opacity-80"
                       src={imageUrl}
-                      alt=""
+                      alt={`${title} cover image`}
                     />
                     <div className="w-[4.8rem] h-[4.8rem] hidden group-hover/outer:flex rounded-full justify-center items-center bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                       <PlayIcon />

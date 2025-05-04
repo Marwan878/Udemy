@@ -1,5 +1,6 @@
 import MaxWidthWrapper from "@/components/general/max-width-wrapper";
 import { COMPANIES_LOGOS } from "@/constants";
+import { getCompanyNameFromUrl } from "@/lib/utils";
 import Image from "next/image";
 
 export default function Companies() {
@@ -13,7 +14,16 @@ export default function Companies() {
         <div className="grid grid-cols-4 gap-y-8 gap-x-8 lg:flex lg:items-center lg:justify-between">
           {COMPANIES_LOGOS.map((logo) => (
             <div key={logo} className="mx-auto h-[4.8rem] relative w-full">
-              <Image className="object-contain" fill src={logo} alt="" />
+              <Image
+                className="object-contain"
+                fill
+                src={logo}
+                alt={
+                  getCompanyNameFromUrl(logo)
+                    ? `${getCompanyNameFromUrl(logo)} logo`
+                    : ""
+                }
+              />
             </div>
           ))}
         </div>

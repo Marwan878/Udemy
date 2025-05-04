@@ -37,7 +37,7 @@ export default function DesktopSearchBar() {
                     fill
                     src={course.imageUrl}
                     className="object-cover"
-                    alt=""
+                    alt={`${course.title} cover image`}
                   />
                 </div>
                 <div className="flex flex-col gap-y-3">
