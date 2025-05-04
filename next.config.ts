@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "s.udemycdn.com",
       },
+      {
+        hostname: "cms-images.udemycdn.com",
+      },
     ],
   },
   experimental: {
