@@ -48,7 +48,10 @@ export default function Module({
         )}
       </Button>
       {addCurriculumItemFormIsShown && (
-        <AddCurriculumItemForm module={module} />
+        <AddCurriculumItemForm
+          module={module}
+          onAddCurriculumItem={() => setAddCurriculumItemFormIsShown(false)}
+        />
       )}
     </div>
   );

@@ -2,7 +2,7 @@
 
 import { searchCourses } from "@/actions/courses";
 import { Button, SearchBar } from "@/components/general";
-import { TCourse } from "@/types";
+import { TCourse, TUser } from "@/types";
 import { Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,7 +11,9 @@ import { useState } from "react";
 export default function MobileSearchBar() {
   const [formIsVisible, setFormIsVisible] = useState(false);
   const [query, setQuery] = useState("");
-  const [courses, setCourses] = useState<TCourse[]>([]);
+  const [courses, setCourses] = useState<(TCourse & { instructor: TUser })[]>(
+    []
+  );
 
   const handleToggleForm = () => {
     document.body.classList.toggle("overflow-hidden");

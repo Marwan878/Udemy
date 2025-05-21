@@ -31,7 +31,7 @@ export default function NewSectionForm({
       <div className="font-bold">New Section:</div>
       <div className="flex flex-col grow">
         <label className="flex flex-col mb-3">
-          <span className="text-nowrap">What is the title of the course?</span>
+          <span className="text-nowrap">What is the title of the section?</span>
           <Input
             content={newSectionTitle}
             setContent={setNewSectionTitle}

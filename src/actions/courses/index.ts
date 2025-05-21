@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/firebase";
-import { TCategory, TContent, TCourse, TUser, TModule } from "@/types";
+import { TCategory, TContent, TCourse, TModule, TUser } from "@/types";
 import {
   arrayUnion,
   collection,
@@ -14,10 +14,12 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { fetchInstructors } from "../instructor";
 import { getLoggedInUserId } from "../cart";
+import { fetchInstructors } from "../instructor";
 
-async function fetchCourses(coursesIds: string[]): Promise<TCourse[]> {
+async function fetchCourses(
+  coursesIds: string[]
+): Promise<(TCourse & { instructor: TUser })[]> {
   if (coursesIds.length === 0) return [];
 
   const coursesQuery = query(
@@ -26,21 +28,14 @@ async function fetchCourses(coursesIds: string[]): Promise<TCourse[]> {
   );
   const snapshot = await getDocs(coursesQuery);
 
-  type TCourseWithInstructorId = Omit<TCourse, "instructor"> & {
-    instructorId: string;
-  };
-
-  const fetchedCourses: TCourseWithInstructorId[] = snapshot.docs.map(
-    (doc) => ({
-      id: doc.id,
-      ...(doc.data() as Omit<TCourseWithInstructorId, "id">),
-    })
-  );
+  const fetchedCourses: TCourse[] = snapshot.docs.map((doc) => ({
+    ...(doc.data() as TCourse),
+  }));
 
   // Get unique instructors ids
   const instructorsIds = Array.from(
     new Set(fetchedCourses.map((course) => course.instructorId))
-  ).filter(Boolean) as string[];
+  ) as string[];
 
   const instructors = await fetchInstructors(instructorsIds);
   const instructorsHashMap = new Map(
@@ -48,18 +43,19 @@ async function fetchCourses(coursesIds: string[]): Promise<TCourse[]> {
   ) as Map<string, TUser>;
 
   const courses = fetchedCourses.map((course) => {
+    if (!course?.instructorId) {
+      throw new Error("Encountered a course without instructorId.");
+    }
+
     const instructor = instructorsHashMap.get(course.instructorId);
     if (!instructor) {
       throw new Error("Did not find an instructor for a course.");
     }
 
-    const courseWithoutInstructorNorInstructorId: Omit<
-      TCourse & { instructorId?: string },
-      "instructor"
-    > = course;
+    const courseWithoutInstructorNorInstructorId = course;
     delete courseWithoutInstructorNorInstructorId.instructorId;
 
-    const preparedCourse: TCourse = {
+    const preparedCourse: TCourse & { instructor: TUser } = {
       ...courseWithoutInstructorNorInstructorId,
       instructor,
     };
@@ -250,17 +246,24 @@ async function upsertCourseDataAndModules(
 ) {
   // Update the main course document
   const courseRef = doc(db, "courses", courseData.id);
-  await updateDoc(courseRef, {
-    ...courseData,
-  });
+  // The course in the database just has the instructor ID
+  delete courseData.instructor;
+  await updateDoc(courseRef, courseData);
 
   // Upsert each module and its content
   for (const _module of modules) {
     const moduleRef = doc(db, "courses", courseData.id, "modules", _module.id);
-    await updateDoc(moduleRef, {
+    const moduleSnap = await getDoc(moduleRef);
+    const moduleData = {
       id: _module.id,
       title: _module.title,
-    });
+    };
+    // Upsert the module
+    if (moduleSnap.exists()) {
+      await updateDoc(moduleRef, moduleData);
+    } else {
+      await setDoc(moduleRef, moduleData);
+    }
 
     // Upsert each content item in the module
     for (const contentItem of _module.content) {
@@ -273,22 +276,35 @@ async function upsertCourseDataAndModules(
         "content",
         contentItem.id
       );
-      await updateDoc(contentRef, {
-        ...contentItem,
-      });
+
+      const contentSnap = await getDoc(contentRef);
+
+      if (contentSnap.exists()) {
+        await updateDoc(contentRef, contentItem);
+      } else {
+        await setDoc(contentRef, contentItem);
+      }
     }
   }
 }
 
-async function searchCourses(query: string): Promise<TCourse[]> {
+async function searchCourses(
+  query: string
+): Promise<(TCourse & { instructor: TUser })[]> {
   const coursesRef = collection(db, "courses");
   const snapshot = await getDocs(coursesRef);
-  const allCourses = snapshot.docs.map((doc) => ({
-    ...doc.data(),
-    id: doc.id,
-  })) as TCourse[];
 
-  return allCourses.filter((course) =>
+  const courses = snapshot.docs.map((doc) => ({
+    ...doc.data(),
+  })) as (TCourse & { instructorId: string })[];
+
+  const instructorsIds = courses.map((course) => course.instructorId);
+  const instructors = await fetchInstructors(instructorsIds);
+
+  const coursesWithInstructors: (TCourse & { instructor: TUser })[] =
+    courses.map((course, i) => ({ ...course, instructor: instructors[i] }));
+
+  return coursesWithInstructors.filter((course) =>
     course.title.toLowerCase().includes(query.toLowerCase())
   );
 }
@@ -300,12 +316,11 @@ async function createCourse(title: string, category: string): Promise<string> {
   }
 
   const newCourseId = crypto.randomUUID();
-  const newCourse: Omit<TCourse, "instructor" | "price"> & {
+  const newCourse: Omit<TCourse, "instructor"> & {
     instructorId: string;
   } = {
     category,
     description: "",
-    features: [],
     hasCaptions: false,
     id: newCourseId,
     imageUrl: "",
@@ -322,6 +337,7 @@ async function createCourse(title: string, category: string): Promise<string> {
     whatYouWillLearn: [],
     whoThisCourseIsFor: [],
     updatedAt: new Date().getTime(),
+    price: 0,
   };
 
   const courseRef = doc(db, "courses", newCourse.id);
@@ -364,20 +380,20 @@ async function addCourseToPublishedCourses(courseId: string) {
 }
 
 export {
-  fetchCourses,
-  fetchModule,
-  fetchCurriculumItem,
-  fetchModulesWithContent,
-  fetchCourseName,
-  fetchCourseLength,
-  fetchCategories,
-  fetchVideoSource,
-  fetchCategoryCourses,
-  incrementCourseRatingCount,
-  updateCourseAverageRating,
-  upsertCourseDataAndModules,
-  searchCourses,
-  createCourse,
   addCourseToAppropriateCategory,
   addCourseToPublishedCourses,
+  createCourse,
+  fetchCategories,
+  fetchCategoryCourses,
+  fetchCourseLength,
+  fetchCourseName,
+  fetchCourses,
+  fetchCurriculumItem,
+  fetchModule,
+  fetchModulesWithContent,
+  fetchVideoSource,
+  incrementCourseRatingCount,
+  searchCourses,
+  updateCourseAverageRating,
+  upsertCourseDataAndModules,
 };

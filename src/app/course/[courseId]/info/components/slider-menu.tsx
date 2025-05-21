@@ -1,13 +1,17 @@
 "use client";
 
 import { Button } from "@/components/general";
-import { TCourse } from "@/types";
+import { TCourse, TUser } from "@/types";
 import { Star } from "lucide-react";
 import React from "react";
 import { useCart } from "@/contexts/cart";
 import Link from "next/link";
 
-export default function SliderMenu({ course }: { course: TCourse }) {
+export default function SliderMenu({
+  course,
+}: {
+  course: TCourse & { instructor: TUser };
+}) {
   const { title, price, rating, ratingCount, studentsCount } = course;
   const { addToCart, cartCoursesIds } = useCart();
 

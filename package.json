@@ -23,6 +23,7 @@
     "react": "^19.0.0",
     "react-content-loader": "^7.0.2",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.2",
     "react-youtube": "^10.1.0",
     "stripe": "^17.6.0",
     "svix": "^1.45.1",

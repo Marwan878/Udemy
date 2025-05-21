@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "cms-images.udemycdn.com",
       },
+      {
+        hostname: "lwuyfctjegtncjmmnrbu.supabase.co",
+      },
     ],
   },
   experimental: {

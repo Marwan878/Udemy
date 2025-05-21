@@ -1,50 +1,10 @@
 import { ProgressBar } from "@/components/general";
-import {
-  MIN_AUDIENCE_DESCRIPTION_COUNT,
-  MIN_FEATURES_COUNT,
-  MIN_LEARNING_OBJECTIVES_COUNT,
-  MIN_PREREQUISITES_COUNT,
-} from "@/constants";
+import { instructorCourseCompletionPercentage } from "@/lib/utils";
 import { TCourse } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
 export function CourseCard({ course }: { course: TCourse }) {
-  /*
-    For a course to be complete:
-     - imageUrl
-     - title
-     - language
-     - whoThisCourseIsFor.length > 0
-     - requirements.length > 0
-     - whatYouWillLearn.length > 3
-     - features > 1 
-  */
-  const {
-    imageUrl,
-    title,
-    language,
-    whoThisCourseIsFor,
-    whatYouWillLearn,
-    requirements,
-    features,
-  } = course;
-  const courseCompletionCriteria = [
-    imageUrl,
-    title,
-    language,
-    whoThisCourseIsFor.length >= MIN_AUDIENCE_DESCRIPTION_COUNT,
-    whatYouWillLearn.length >= MIN_LEARNING_OBJECTIVES_COUNT,
-    requirements.length >= MIN_PREREQUISITES_COUNT,
-    features?.length > MIN_FEATURES_COUNT,
-  ];
-
-  const courseProgress = Math.round(
-    (courseCompletionCriteria.filter(Boolean).length /
-      courseCompletionCriteria.length) *
-      100
-  );
-
   return (
     <Link
       href={`/course/${course.id}/manage/goals`}
@@ -70,13 +30,13 @@ export function CourseCard({ course }: { course: TCourse }) {
           Edit / manage course
         </p>
         <div className="hover:opacity-20 peer-hover:opacity-20 flex items-center space-x-24 me-4 h-full">
-          <div className="flex justify-between flex-col gap-2 text-sm self-stretch">
+          <div className="flex justify-between flex-col gap-2 text-sm self-stretch w-1/5">
             <h3 className="text-2xl font-bold">{course.title}</h3>
             <span className="text-sm font-semibold">
               {course.isPublished ? "Published" : "Draft"}
             </span>
           </div>
-          <div className="space-y-4 w-full">
+          <div className="space-y-4 w-4/5">
             <span
               className="text-gray-700 text-lg"
               style={{ fontWeight: "600" }}
@@ -85,7 +45,7 @@ export function CourseCard({ course }: { course: TCourse }) {
             </span>
             <ProgressBar
               className="h-2 rounded-none w-full"
-              progress={courseProgress}
+              progress={instructorCourseCompletionPercentage(course)}
             />
           </div>
         </div>

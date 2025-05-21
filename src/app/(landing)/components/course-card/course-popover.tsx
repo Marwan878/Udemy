@@ -1,10 +1,15 @@
 import { useCart } from "@/contexts/cart";
 import { unixToMonthYear } from "@/lib/utils";
-import { TAppropriatePopoverPosition, TCourse, TCourseState } from "@/types";
+import {
+  TAppropriatePopoverPosition,
+  TCourse,
+  TCourseState,
+  TUser,
+} from "@/types";
 import { Check } from "lucide-react";
 import { CSSProperties } from "react";
 import { createPortal } from "react-dom";
-import { Button } from "../general";
+import { Button } from "../../../../components/general";
 import Tag from "./tag";
 import Link from "next/link";
 import {
@@ -17,12 +22,12 @@ export default function CoursePopover({
   cardRect,
   state,
 }: {
-  course: TCourse;
+  course: TCourse & { instructor: TUser };
   cardRect: DOMRect | undefined;
   state: TCourseState;
 }) {
   const { cartCoursesIds, addToCart } = useCart();
-  const { title, leadHeadline, features, tag, updatedAt, id } = course;
+  const { title, leadHeadline, tag, updatedAt, id, whatYouWillLearn } = course;
 
   if (!cardRect) return null;
 
@@ -70,10 +75,10 @@ export default function CoursePopover({
         </div>
         <div className="text-sm mt-[0.8rem]">{leadHeadline}</div>
         <ul>
-          {features?.map((feature) => (
-            <li key={feature} className="flex">
+          {whatYouWillLearn?.map((outcome) => (
+            <li key={outcome} className="flex">
               <Check className="mt-[0.4rem]" />
-              <p className="ms-[1.6rem] py-[0.4rem]">{feature}</p>
+              <p className="ms-[1.6rem] py-[0.4rem]">{outcome}</p>
             </li>
           ))}
         </ul>

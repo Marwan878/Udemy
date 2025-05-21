@@ -8,9 +8,11 @@ import FormattingControls from "./formatting-controls";
 function RichTextEditor({
   value,
   onChange,
+  id,
 }: {
   value: string;
   onChange: (newContent: string) => void;
+  id?: string;
 }) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [activeFormats, setActiveFormats] = useState<TFormats>({
@@ -166,6 +168,7 @@ function RichTextEditor({
       />
       <div className="p-4">
         <div
+          id={id}
           ref={editorRef}
           contentEditable={true}
           suppressContentEditableWarning={true}

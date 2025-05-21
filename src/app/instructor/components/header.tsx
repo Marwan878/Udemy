@@ -17,6 +17,15 @@ export default function Header() {
         </Button>
         <Button
           as={Link}
+          href="/instructor"
+          variant="ghost"
+          height="md"
+          className="text-sm hover:text-udemy-purple me-2"
+        >
+          Instructor
+        </Button>
+        <Button
+          as={Link}
           href="/"
           variant="ghost"
           height="md"

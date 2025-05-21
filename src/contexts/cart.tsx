@@ -3,9 +3,9 @@
 import { addToCart as addToCartAPI, getLoggedInUserId } from "@/actions/cart";
 import { fetchCourses } from "@/actions/courses";
 import { fetchUserCart } from "@/actions/user";
-import { addCourseIdToLocalStorage } from "@/components/course-card/helpers";
+import { addCourseIdToLocalStorage } from "@/app/(landing)/components/course-card/helpers";
 import { CART_LOCAL_STORAGE_KEY } from "@/constants";
-import { TCourse } from "@/types";
+import { TCourse, TUser } from "@/types";
 import {
   createContext,
   Dispatch,
@@ -17,9 +17,9 @@ import {
 
 const CartContext = createContext<{
   cartCoursesIds: string[];
-  addToCart: (course: TCourse) => Promise<void>;
-  cart: TCourse[] | null;
-  setCart: Dispatch<SetStateAction<TCourse[] | null>>;
+  addToCart: (course: TCourse & { instructor: TUser }) => Promise<void>;
+  cart: (TCourse & { instructor: TUser })[] | null;
+  setCart: Dispatch<SetStateAction<(TCourse & { instructor: TUser })[] | null>>;
 }>({
   cartCoursesIds: [],
   addToCart: async () => {},
@@ -28,10 +28,12 @@ const CartContext = createContext<{
 });
 
 function CartProvider({ children }: { children: React.ReactNode }) {
-  const [cart, setCart] = useState<TCourse[] | null>(null);
+  const [cart, setCart] = useState<(TCourse & { instructor: TUser })[] | null>(
+    null
+  );
   const cartCoursesIds = cart?.map((course) => course.id) ?? [];
 
-  async function addToCart(course: TCourse) {
+  async function addToCart(course: TCourse & { instructor: TUser }) {
     const loggedInUser = await getLoggedInUserId();
     if (loggedInUser) {
       const formData = new FormData();

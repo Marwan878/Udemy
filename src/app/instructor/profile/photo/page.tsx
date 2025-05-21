@@ -6,6 +6,7 @@ import { Button } from "@/components/general";
 import Image from "next/image";
 import { fetchUser, updateUserImagePath } from "@/actions/user";
 import supabase, { SUPABASE_URL } from "@/lib/supabase";
+import { fileFromImageUrl } from "@/lib/utils";
 
 export default function Page() {
   const [isUploading, setIsUploading] = useState(false);
@@ -41,16 +42,14 @@ export default function Page() {
   };
 
   useEffect(() => {
-    const fetchUserImage = async () => {
+    const fetchUserImageFile = async () => {
       const { imageUrl } = await fetchUser();
-      if (imageUrl) {
-        const image = await fetch(imageUrl);
-        const blob = await image.blob();
-        const mimeType = image.headers.get("Content-Type") || blob.type;
-        setSelectedImage(new File([blob], "avatar.png", { type: mimeType }));
+      const file = await fileFromImageUrl(imageUrl, "My Avatar");
+      if (file) {
+        setSelectedImage(file);
       }
     };
-    fetchUserImage();
+    fetchUserImageFile();
   }, []);
 
   return (

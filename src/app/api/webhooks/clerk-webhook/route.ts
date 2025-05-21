@@ -1,4 +1,5 @@
 import { db } from "@/lib/firebase";
+import { TUser } from "@/types";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { headers } from "next/headers";
@@ -49,29 +50,24 @@ export async function POST(req: Request) {
   }
 
   if (evt.type === "user.created") {
-    const { id, email_addresses, first_name, last_name, image_url } = evt.data;
+    const { id, first_name, last_name } = evt.data;
     const userRef = doc(db, "users", id);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) {
-      await setDoc(userRef, {
-        id,
-        email: email_addresses[0]?.email_address || "",
-        displayName:
-          `${first_name || ""} ${last_name || ""}`.trim() || "Unspecified name",
-        photoURL: image_url || "",
-        role: "student",
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        purchasedCourses: [],
+      const userData: TUser = {
+        about: "",
+        bio: "",
         cart: [],
-        wishlist: [],
-        subscriptions: {
-          plan: "free",
-          status: "active",
-          expiresAt: null,
-        },
-      });
+        courses: [],
+        publishedCoursesIds: [],
+        firstName: first_name ?? "",
+        lastName: last_name ?? "",
+        id,
+        imageUrl: "",
+        studentsCount: 0,
+      };
+      await setDoc(userRef, userData);
     }
   }
 

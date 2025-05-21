@@ -1,9 +1,13 @@
+"use client";
+
 import { Button } from "@/components/general";
 import { useCourseManagement } from "@/contexts/course-management";
 import supabase, { SUPABASE_URL } from "@/lib/supabase";
+import { getVideoDuration } from "@/lib/utils";
 import { TContent } from "@/types";
-import { Trash2 } from "lucide-react";
-import { ChangeEvent, useRef, useState } from "react";
+import { Loader2, Trash2 } from "lucide-react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function AddVideoForm({ lecture }: { lecture: TContent }) {
   const [selectedVideo, setSelectedVideo] = useState<File | undefined>(
@@ -14,54 +18,64 @@ export default function AddVideoForm({ lecture }: { lecture: TContent }) {
   const [hasAlreadyUploaded, setHasAlreadyUploaded] = useState(!!lecture.url);
   const { modules, setModules } = useCourseManagement();
 
+  useEffect(() => {
+    async function fetchFile() {
+      if (!lecture.url) return;
+      const res = await fetch(lecture.url);
+      const blob = await res.blob();
+      const file = new File([blob], lecture.title, { type: blob.type });
+      setSelectedVideo(file);
+    }
+    fetchFile();
+  }, [lecture.url, lecture.title]);
+
   const handleFileSelection = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (isLoading) {
+      return;
+    }
+
     const video = e.target.files?.[0];
     setSelectedVideo(video);
 
     if (video) {
       setIsLoading(true);
-      const { error } = await supabase.storage
-        .from("videos")
-        .upload(`${video.name}`, video, {
-          cacheControl: "3600",
-          upsert: false,
-        });
-      setIsLoading(false);
-      if (error) {
+      try {
+        // 1. Get video duration
+        const videoDuration = await getVideoDuration(video);
+        console.log(videoDuration);
+
+        if (typeof videoDuration !== "number") {
+          throw new Error("Failed to compute video duration.");
+        }
+
+        // 2. Upload video to supabase
+        const finalVideoName = `${crypto.randomUUID()}-${video.name}`;
+        const { error } = await supabase.storage
+          .from("videos")
+          .upload(finalVideoName, video, {
+            cacheControl: "3600",
+            upsert: false,
+          });
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        setHasAlreadyUploaded(true);
+        toast.success("Video successfully uploaded!");
+
+        // 3. Add the video to the state
+        setLectureUrlAndDuration(
+          `${SUPABASE_URL}/storage/v1/object/public/videos//${finalVideoName}`,
+          videoDuration
+        );
+      } catch (error) {
+        setSelectedVideo(undefined);
+        toast.error("An error occured, please try again.");
         console.error(error);
-        return;
+      } finally {
+        setIsLoading(false);
       }
-
-      setHasAlreadyUploaded(true);
-
-      // Add the video to the state
-      const currentModule = modules.find(
-        (module) =>
-          module.content.find((_lecture) => _lecture.id === lecture.id) !==
-          undefined
-      );
-
-      if (!currentModule) return;
-
-      const currentModuleIndex = modules.indexOf(currentModule);
-      setModules((modules) =>
-        modules
-          .slice(0, currentModuleIndex)
-          .concat([
-            {
-              ...currentModule,
-              content: currentModule.content.map((_lecture) => {
-                if (_lecture.id === lecture.id) {
-                  return {
-                    ..._lecture,
-                    url: `${SUPABASE_URL}/storage/v1/object/public/videos//${video.name}`,
-                  };
-                } else return _lecture;
-              }),
-            },
-          ])
-          .concat(modules.slice(currentModuleIndex + 1))
-      );
     }
   };
 
@@ -70,12 +84,64 @@ export default function AddVideoForm({ lecture }: { lecture: TContent }) {
 
     setIsLoading(true);
 
-    await supabase.storage.from("videos").remove([`${selectedVideo.name}`]);
+    try {
+      // 1. Remove video from supabase
+      const { error } = await supabase.storage
+        .from("videos")
+        .remove([`${selectedVideo.name}`]);
 
-    setIsLoading(false);
-    setHasAlreadyUploaded(false);
-    setSelectedVideo(undefined);
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      toast.success("Lecture has been successfully deleted!");
+
+      setHasAlreadyUploaded(false);
+      setSelectedVideo(undefined);
+
+      // 2. Remove video from state
+      setLectureUrlAndDuration("", 0);
+    } catch (error) {
+      toast.error(
+        "An error occured while deleting the lecture, please try again."
+      );
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  function setLectureUrlAndDuration(url: string, duration: number) {
+    const currentModule = modules.find(
+      (module) =>
+        module.content.find((_lecture) => _lecture.id === lecture.id) !==
+        undefined
+    );
+
+    if (!currentModule) throw new Error("Failed to get the current module.");
+
+    const currentModuleIndex = modules.indexOf(currentModule);
+
+    setModules((modules) =>
+      modules
+        .slice(0, currentModuleIndex)
+        .concat([
+          {
+            ...currentModule,
+            content: currentModule.content.map((_lecture) => {
+              if (_lecture.id === lecture.id) {
+                return {
+                  ..._lecture,
+                  url,
+                  duration: Math.round(duration),
+                };
+              } else return _lecture;
+            }),
+          },
+        ])
+        .concat(modules.slice(currentModuleIndex + 1))
+    );
+  }
 
   return (
     <div className="flex bg-white px-2 py-4 items-center justify-between gap-x-4">
@@ -92,7 +158,7 @@ export default function AddVideoForm({ lecture }: { lecture: TContent }) {
           onChange={handleFileSelection}
           ref={fileInputRef}
         />
-        <span>
+        <span className="text-ellipsis whitespace-nowrap overflow-hidden max-w-3xl">
           {lecture.url
             ? lecture.url
             : selectedVideo
@@ -106,8 +172,13 @@ export default function AddVideoForm({ lecture }: { lecture: TContent }) {
           variant="ghost"
           height="sm"
           aria-label="Delete video."
+          disabled={isLoading}
         >
-          <Trash2 aria-hidden />
+          {isLoading ? (
+            <Loader2 className="animate-spin" aria-hidden />
+          ) : (
+            <Trash2 aria-hidden />
+          )}
         </Button>
       ) : (
         <Button

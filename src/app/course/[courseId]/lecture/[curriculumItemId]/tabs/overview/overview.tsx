@@ -1,10 +1,9 @@
 "use client";
 
 import { fetchCourses, fetchModulesWithContent } from "@/actions/courses";
-import { fetchInstructors } from "@/actions/instructor";
 import { Button, MaxWidthWrapper } from "@/components/general";
 import { secondsToHours } from "@/lib/utils";
-import { TCourse, TUser, TModule } from "@/types";
+import { TCourse, TModule, TUser } from "@/types";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import ByTheNumbers from "./by-the-numbers";
@@ -19,11 +18,11 @@ import UpdatedAt from "./updated-at";
 
 export default function Overview({ courseId }: { courseId: string }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [courseData, setCourseData] = useState<TCourse | null>(null);
-  const [instructor, setInstructor] = useState<TUser | null>(null);
+  const [courseData, setCourseData] = useState<
+    (TCourse & { instructor: TUser }) | null
+  >(null);
   const [modules, setModules] = useState<TModule[]>([]);
 
-  const instructorId = courseData?.instructor.id;
   const { courseDuration, lecturesCount } =
     computeLecturesCountAndCourseDuration();
 
@@ -54,18 +53,7 @@ export default function Overview({ courseId }: { courseId: string }) {
     handleLoad();
   }, [courseId]);
 
-  useEffect(() => {
-    if (!instructorId) return;
-
-    const handleGetInstructor = async () => {
-      const [instructor] = await fetchInstructors([instructorId]);
-      setInstructor(instructor);
-    };
-
-    handleGetInstructor();
-  }, [instructorId]);
-
-  if (courseData === null || instructor === null) return;
+  if (courseData === null) return;
 
   const {
     title,
@@ -113,7 +101,7 @@ export default function Overview({ courseId }: { courseId: string }) {
               whatYouWillLearn={whatYouWillLearn}
               whoThisCourseIsFor={whoThisCourseIsFor}
             />
-            <Instructor instructor={instructor} />
+            <Instructor instructor={courseData.instructor} />
           </>
         )}
       </dl>

@@ -30,6 +30,7 @@ export default function Page() {
         title: course.title,
         price: course.price,
         id: course.id,
+        publisherId: course.instructor.id,
       }))
     );
 

@@ -2,14 +2,16 @@
 
 import SearchBar from "@/components/search-bar";
 import { useState } from "react";
-import { TCourse } from "@/types";
+import { TCourse, TUser } from "@/types";
 import { searchCourses } from "@/actions/courses";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function DesktopSearchBar() {
   const [query, setQuery] = useState("");
-  const [courses, setCourses] = useState<TCourse[]>([]);
+  const [courses, setCourses] = useState<(TCourse & { instructor: TUser })[]>(
+    []
+  );
 
   const handleSearch = async () => {
     const courses = await searchCourses(query);

@@ -13,9 +13,7 @@ export default function CurriculumItem({
   lecture: TContent;
   order: number;
 }) {
-  const [currentForm, setCurrentForm] = useState<
-    "new-section" | "curriculum-item-types" | "video-form" | null
-  >(null);
+  const [currentForm, setCurrentForm] = useState<"video-form" | null>(null);
 
   return (
     <div className="mb-4">

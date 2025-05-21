@@ -1,13 +1,17 @@
-import Tag from "@/components/course-card/tag";
+import Tag from "@/app/(landing)/components/course-card/tag";
 import DiscSeperatedText from "./disc-separated-text";
 import { Button, StarRating } from "@/components/general";
 import Image from "next/image";
-import { TCourse } from "@/types";
+import { TCourse, TUser } from "@/types";
 import { removeFromCart } from "@/actions/cart";
 import Link from "next/link";
 import { useCart } from "@/contexts/cart";
 
-export default function CartCourseCard({ course }: { course: TCourse }) {
+export default function CartCourseCard({
+  course,
+}: {
+  course: TCourse & { instructor: TUser };
+}) {
   const { setCart } = useCart();
   const {
     id,

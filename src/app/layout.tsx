@@ -2,6 +2,8 @@ import { CartProvider } from "@/contexts/cart";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,6 +35,7 @@ export default function RootLayout({
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
             {children}
+            <Toaster />
           </body>
         </html>
       </CartProvider>

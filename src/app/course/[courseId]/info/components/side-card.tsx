@@ -3,10 +3,14 @@
 import { Button } from "@/components/general";
 import { useCart } from "@/contexts/cart";
 import Link from "next/link";
-import { TCourse } from "@/types";
+import { TCourse, TUser } from "@/types";
 import Image from "next/image";
 
-export default function SideCard({ course }: { course: TCourse }) {
+export default function SideCard({
+  course,
+}: {
+  course: TCourse & { instructor: TUser };
+}) {
   const { cartCoursesIds, addToCart } = useCart();
   return (
     <div className="hidden lg:block lg:w-[34rem] -translate-y-96 lg:top-0 shrink-0 mb-10 lg:right-0 bg-white h-fit border-b-[#d1d2e0] border-b shadow-[0_2px_4px_rgba(6,17,118,0.08),0_4px_12px_rgba(6,17,118,0.08)]">

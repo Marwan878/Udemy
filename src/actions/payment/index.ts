@@ -8,6 +8,7 @@ export const createCheckoutSession = async (
     title: string;
     price: number;
     id: string;
+    publisherId: string;
   }[]
 ) => {
   const userId = await getLoggedInUserId();
@@ -35,6 +36,9 @@ export const createCheckoutSession = async (
       metadata: {
         userId,
         coursesIds: JSON.stringify(coursesDetails.map((course) => course.id)),
+        coursesPublishersIds: JSON.stringify(
+          coursesDetails.map((course) => course.publisherId)
+        ),
       },
     });
 

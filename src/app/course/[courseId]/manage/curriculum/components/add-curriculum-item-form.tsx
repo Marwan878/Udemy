@@ -6,7 +6,13 @@ import { TModule } from "@/types";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
-export default function AddCurriculumItemForm({ module }: { module: TModule }) {
+export default function AddCurriculumItemForm({
+  module,
+  onAddCurriculumItem,
+}: {
+  module: TModule;
+  onAddCurriculumItem: () => void;
+}) {
   const [currentForm, setCurrentForm] = useState<"lecture" | null>(null);
   const [lectureTitle, setLectureTitle] = useState("");
   const { modules, setModules } = useCourseManagement();
@@ -37,6 +43,7 @@ export default function AddCurriculumItemForm({ module }: { module: TModule }) {
     );
     setLectureTitle("");
     setCurrentForm(null);
+    onAddCurriculumItem();
   };
 
   return (

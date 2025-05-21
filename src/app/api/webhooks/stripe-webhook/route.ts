@@ -1,4 +1,5 @@
 import { removeFromCart } from "@/actions/cart";
+import { incrementUsersStudents } from "@/actions/instructor";
 import { addCoursesToUserCourses } from "@/actions/user";
 import { stripe } from "@/lib/stripe";
 import { headers } from "next/headers";
@@ -38,16 +39,25 @@ export async function POST(req: Request) {
 
       const metadata = sessionWithLineItems?.metadata;
 
-      if (!metadata?.userId || !metadata?.coursesIds) {
+      if (
+        !metadata?.userId ||
+        !metadata?.coursesIds ||
+        !metadata?.coursesPublishersIds
+      ) {
         return new Response("Invalid metadata", { status: 400 });
       }
 
       const userId: string = metadata.userId;
       const coursesIds: string[] = JSON.parse(metadata.coursesIds);
+      const coursesPublishersIds: string[] = JSON.parse(
+        metadata.coursesPublishersIds
+      );
 
       await addCoursesToUserCourses(coursesIds, userId);
 
-      removeFromCart(coursesIds);
+      await removeFromCart(coursesIds);
+
+      await incrementUsersStudents(coursesPublishersIds);
     }
 
     return NextResponse.json({ result: event, ok: true });

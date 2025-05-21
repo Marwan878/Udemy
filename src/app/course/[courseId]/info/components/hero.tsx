@@ -1,5 +1,5 @@
 import { MaxWidthWrapper, StarRating } from "@/components/general";
-import { TCourse } from "@/types";
+import { TCourse, TUser } from "@/types";
 import { Clock } from "lucide-react";
 import Image from "next/image";
 
@@ -15,7 +15,7 @@ export default function Hero({
     updatedAt,
   },
 }: {
-  course: TCourse;
+  course: TCourse & { instructor: TUser };
 }) {
   return (
     <div className="lg:bg-[#1d1e27] lg:text-white">
@@ -50,7 +50,7 @@ export default function Hero({
           {updatedAt && (
             <div className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
-              <span>Last updated {updatedAt}</span>
+              <span>Last updated: {new Date(updatedAt).toDateString()}</span>
             </div>
           )}
         </div>

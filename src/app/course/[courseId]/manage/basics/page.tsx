@@ -7,8 +7,8 @@ import Select from "@/components/general/select";
 import { CATEGORIES, LANGUAGES, LEVELS } from "@/constants";
 import { useCourseManagement } from "@/contexts/course-management";
 import { TLevel } from "@/types";
-import PageCard from "../page-card";
 import Image from "next/image";
+import PageCard from "../page-card";
 
 export default function Page() {
   const { courseData, setCourseData, courseImage, setCourseImage } =
@@ -73,6 +73,7 @@ export default function Page() {
             Course description
           </label>
           <RichTextEditor
+            id="course-description"
             value={courseData.description}
             onChange={(newContent) =>
               setCourseData({ ...courseData, description: newContent })
@@ -141,7 +142,9 @@ export default function Page() {
                     : "/images/course-image-placeholder.webp"
                 }
                 alt="Your selected course cover image"
-                fill
+                width={750}
+                height={422}
+                className="object-cover"
               />
             </div>
 

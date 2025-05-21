@@ -2,7 +2,16 @@
 
 import { db } from "@/lib/firebase";
 import { TUser } from "@/types";
-import { query, collection, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  increment,
+  query,
+  where,
+  writeBatch,
+} from "firebase/firestore";
 import { fetchUserField, getLoggedInUserId } from "../cart";
 import { fetchCourses } from "../courses";
 
@@ -34,4 +43,24 @@ async function fetchInstructorCourses() {
   return instructorCourses;
 }
 
-export { fetchInstructors, fetchInstructorCourses };
+async function incrementUsersStudents(usersId: string[]) {
+  const batch = writeBatch(db);
+
+  for (const userId of usersId) {
+    const userRef = doc(db, "users", userId);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      console.warn(`User with ID: ${userId} does not exist.`);
+      continue;
+    }
+
+    batch.update(userRef, {
+      studentsCount: increment(1),
+    });
+  }
+
+  await batch.commit();
+}
+
+export { fetchInstructorCourses, fetchInstructors, incrementUsersStudents };

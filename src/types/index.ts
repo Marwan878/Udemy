@@ -11,45 +11,40 @@ type TUser = {
   publishedCoursesIds: string[];
   cart: string[];
   studentsCount: number;
-  reviewsCount: number;
-  coursesCount: number;
-  rating: number;
 };
 
 type TCategory = {
   id: string;
   displayName: string;
   coursesIds: string[];
-  learnersCount: number;
 };
 
 type TLevel = (typeof LEVELS)[number];
 
-// Made from UI perspective not database perspective.
 type TCourse = {
+  id: string;
   imageUrl: string;
   title: string;
-  instructor: TUser;
+  category: string;
+  description: string;
+  hasCaptions: boolean;
+  isPublished: boolean;
+  language: string;
   rating: number;
   ratingCount: number;
+  studentsCount: number;
   price: number;
-  tag?: TCourseTag;
-  updatedAt?: number;
-  category: string;
+  updatedAt: number;
   skillLevel: TLevel;
   leadHeadline: string;
-  features: string[];
-  id: string;
-  studentsCount: number;
-  description: string;
   whatYouWillLearn: string[];
   requirements: string[];
   whoThisCourseIsFor: string[];
+  instructorId?: string;
+  instructor?: TUser;
+  tag?: TCourseTag;
   meta?: string[];
   modules?: TModule[];
-  hasCaptions: boolean;
-  language: string;
-  isPublished: boolean;
 };
 
 type TCurriculumItemType = "video";

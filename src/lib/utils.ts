@@ -1,4 +1,11 @@
-import { COMPANIES_LOGOS, UDEMY_BUISNESS_USERS_IMAGES_URLS } from "@/constants";
+import {
+  COMPANIES_LOGOS,
+  MIN_AUDIENCE_DESCRIPTION_COUNT,
+  MIN_LEARNING_OBJECTIVES_COUNT,
+  MIN_PREREQUISITES_COUNT,
+  UDEMY_BUISNESS_USERS_IMAGES_URLS,
+} from "@/constants";
+import { TCourse } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -83,4 +90,51 @@ export function getCompanyNameFromUrl(
     | (typeof COMPANIES_LOGOS)[number]
 ) {
   return imageUrl.split("/").at(-1)?.split(".").at(0);
+}
+
+export function getVideoDuration(file: File) {
+  return new Promise((resolve, reject) => {
+    const video = document.createElement("video");
+    video.preload = "metadata";
+
+    video.onloadedmetadata = () => {
+      URL.revokeObjectURL(video.src);
+      resolve(video.duration); // duration in seconds
+    };
+
+    video.onerror = () => {
+      reject(new Error("Failed to load video metadata."));
+    };
+
+    video.src = URL.createObjectURL(file);
+  });
+}
+
+export function instructorCourseCompletionPercentage(course: TCourse): number {
+  const {
+    imageUrl,
+    title,
+    language,
+    whoThisCourseIsFor,
+    whatYouWillLearn,
+    requirements,
+  } = course;
+
+  const courseCompletionCriteria = [
+    imageUrl,
+    title,
+    language,
+    whoThisCourseIsFor.filter((item) => item.trim() != "").length >=
+      MIN_AUDIENCE_DESCRIPTION_COUNT,
+    whatYouWillLearn.filter((item) => item.trim() != "").length >=
+      MIN_LEARNING_OBJECTIVES_COUNT,
+    requirements.filter((item) => item.trim() != "").length >=
+      MIN_PREREQUISITES_COUNT,
+  ];
+
+  return Math.floor(
+    (courseCompletionCriteria.filter(Boolean).length /
+      courseCompletionCriteria.length) *
+      100
+  );
 }
