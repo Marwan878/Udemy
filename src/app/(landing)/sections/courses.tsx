@@ -56,8 +56,10 @@ export default function Courses({ categories }: { categories: TCategory[] }) {
     const _fetchUserCourses = async () => {
       const userCourses = await fetchUserField("courses");
       setUserCoursesIds(new Set(Object.keys(userCourses)));
-      const userPublishedCourses = await fetchUserField("publishedCoursesIds");
-      setUserPublishedCoursesIds(new Set(Object.keys(userPublishedCourses)));
+      const userPublishedCoursesIds = (await fetchUserField(
+        "publishedCoursesIds"
+      )) as string[];
+      setUserPublishedCoursesIds(new Set(userPublishedCoursesIds));
     };
 
     _fetchUserCourses();
