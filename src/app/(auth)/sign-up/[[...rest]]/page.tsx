@@ -8,6 +8,7 @@ export default function Page() {
       appearance={{
         elements: {
           cardBox: "w-full",
+          rootBox: "my-auto",
         },
         variables: {
           fontSize: "1.3rem",
