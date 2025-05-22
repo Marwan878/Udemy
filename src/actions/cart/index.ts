@@ -23,7 +23,7 @@ async function addToCart(formData: FormData) {
     throw new Error("Attempted to add to cart for a non-authenticated user.");
   }
 
-  const courseId = formData.get("courseId");
+  const courseId = formData.get("courseId") as string;
   try {
     const userRef = doc(db, "users", userId);
     await updateDoc(userRef, {
@@ -80,4 +80,27 @@ async function fetchUserField(
   }
 }
 
-export { addToCart, fetchUserField, getLoggedInUserId, removeFromCart };
+async function mergeCoursesWithCart(coursesIds: string[]) {
+  if (coursesIds.length === 0) return;
+
+  const userId = await getLoggedInUserId();
+  if (!userId) {
+    throw new Error("You must be signed in to perform this action.");
+  }
+
+  const dbCart = (await fetchUserField("cart")) as string[];
+  const uniqueCoursesIds = Array.from(new Set(dbCart.concat(coursesIds)));
+
+  const userRef = doc(db, "users", userId);
+  await updateDoc(userRef, {
+    cart: uniqueCoursesIds,
+  });
+}
+
+export {
+  addToCart,
+  fetchUserField,
+  getLoggedInUserId,
+  removeFromCart,
+  mergeCoursesWithCart,
+};

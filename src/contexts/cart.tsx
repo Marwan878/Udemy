@@ -1,11 +1,17 @@
 "use client";
 
-import { addToCart as addToCartAPI, getLoggedInUserId } from "@/actions/cart";
+import {
+  addToCart as addToCartAPI,
+  getLoggedInUserId,
+  mergeCoursesWithCart,
+} from "@/actions/cart";
 import { fetchCourses } from "@/actions/courses";
 import { fetchUserCart } from "@/actions/user";
 import { addCourseIdToLocalStorage } from "@/app/(landing)/components/course-card/helpers";
 import { CART_LOCAL_STORAGE_KEY } from "@/constants";
+import { isStringArray } from "@/lib/utils";
 import { TCourse, TUser } from "@/types";
+import { useUser } from "@clerk/nextjs";
 import {
   createContext,
   Dispatch,
@@ -31,10 +37,15 @@ function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<(TCourse & { instructor: TUser })[] | null>(
     null
   );
-  const cartCoursesIds = cart?.map((course) => course.id) ?? [];
+  const { isSignedIn } = useUser();
+
+  const cartCoursesIds = Array.from(
+    new Set(cart?.map((course) => course.id) ?? [])
+  );
 
   async function addToCart(course: TCourse & { instructor: TUser }) {
     const loggedInUser = await getLoggedInUserId();
+
     if (loggedInUser) {
       const formData = new FormData();
       formData.append("courseId", course.id);
@@ -56,11 +67,7 @@ function CartProvider({ children }: { children: React.ReactNode }) {
         const parsedValue = JSON.parse(
           window.localStorage.getItem(CART_LOCAL_STORAGE_KEY) ?? "[]"
         );
-        if (
-          // A simple check that the local storage coursesIds is properly structured
-          Array.isArray(parsedValue) &&
-          parsedValue.every((item) => typeof item === "string")
-        ) {
+        if (isStringArray(parsedValue)) {
           const courses = await fetchCourses(parsedValue);
           setCart(courses);
         } else {
@@ -74,6 +81,24 @@ function CartProvider({ children }: { children: React.ReactNode }) {
 
     handleAppStart();
   }, []);
+
+  useEffect(() => {
+    const syncCartWithLocalStorage = async () => {
+      const localCart = JSON.parse(localStorage.getItem("cart") ?? "[]");
+      if (!isStringArray(localCart) || localCart.length === 0) return;
+
+      try {
+        await mergeCoursesWithCart(localCart);
+        localStorage.removeItem("cart");
+      } catch (error) {
+        console.error("Failed to sync remote cart with local storage:", error);
+      }
+    };
+
+    if (isSignedIn) {
+      syncCartWithLocalStorage();
+    }
+  }, [isSignedIn]);
 
   return (
     <CartContext.Provider
