@@ -31,10 +31,6 @@ export function isInteger(number: number) {
   return Math.floor(number) === number;
 }
 
-export function localStorageKeyExists(key: string) {
-  return window.localStorage.getItem(key) !== null;
-}
-
 export function isStringArray(value: unknown) {
   return (
     Array.isArray(value) && value.every((item) => typeof item === "string")
