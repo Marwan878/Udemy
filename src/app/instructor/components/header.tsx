@@ -11,7 +11,7 @@ export default function Header() {
           href="/instructor/profile/basic-information"
           variant="ghost"
           height="md"
-          className="text-sm hover:text-udemy-purple me-2"
+          className="text-sm hover:text-udemy-purple mx-2"
         >
           Profile and Settings
         </Button>
@@ -20,7 +20,7 @@ export default function Header() {
           href="/instructor"
           variant="ghost"
           height="md"
-          className="text-sm hover:text-udemy-purple me-2"
+          className="text-sm hover:text-udemy-purple mx-2"
         >
           Instructor
         </Button>

@@ -10,9 +10,14 @@ export default async function Page() {
 
   return (
     <MaxWidthWrapper className="pt-[1.6rem] min-h-screen">
-      <div className="mx-[-0.8rem] grid grid-cols-1 sm:grid-cols-2 gap-[2.4rem] md:grid-cols-3 xl:grid-cols-4">
-        {learnerCourses.length > 0 ? (
-          learnerCourses.map(
+      {learnerCourses.length === 0 ? (
+        <p className="text-xl mx-auto my-12">
+          You don't have any courses yet, start your learning journey now and
+          shine!
+        </p>
+      ) : (
+        <div className="mx-[-0.8rem] grid grid-cols-1 sm:grid-cols-2 gap-[2.4rem] md:grid-cols-3 xl:grid-cols-4">
+          {learnerCourses.map(
             ({ id, imageUrl, instructor, title, userRating, userProgress }) => (
               <Link
                 key={id}
@@ -54,14 +59,9 @@ export default async function Page() {
                 </div>
               </Link>
             )
-          )
-        ) : (
-          <p className="text-xl mx-auto my-12">
-            You don't have any courses yet, start your learning journey now and
-            shine!
-          </p>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </MaxWidthWrapper>
   );
 }
