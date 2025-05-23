@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/firebase";
 import { TNote, TPurchasedCourseData, TUser } from "@/types";
-import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { revalidatePath } from "next/cache";
 import { fetchUserField, getLoggedInUserId } from "../cart";
 import {
@@ -50,21 +50,19 @@ async function addCoursesToUserCourses(coursesIds: string[], userId: string) {
       throw new Error(`User with id: ${userId} does not exsist.`);
     }
 
-    const newCourses: Record<string, TPurchasedCourseData>[] = coursesIds.map(
-      (courseId) => ({
-        [courseId]: {
-          completedCurriculumItemsIds: [],
-          userRating: 0,
-          userReview: "",
-          notes: [],
-          purchasedAt: new Date().getTime(),
-        },
-      })
-    );
+    const updates: Record<string, TPurchasedCourseData> = {};
 
-    await updateDoc(userRef, {
-      courses: arrayUnion(...newCourses),
-    });
+    for (const courseId of coursesIds) {
+      updates[`courses.${courseId}`] = {
+        completedCurriculumItemsIds: [],
+        userRating: 0,
+        userReview: "",
+        notes: [],
+        purchasedAt: new Date().getTime(),
+      };
+    }
+
+    await updateDoc(userRef, updates);
   } catch (error) {
     console.error(error);
   }
@@ -329,16 +327,16 @@ async function updateUserData(formData: FormData) {
 
 export {
   addCoursesToUserCourses,
+  deleteNote,
+  fetchCourseNotes,
   fetchLearnerCourses,
+  fetchUser,
   fetchUserCart,
   fetchUserCourseData,
   fetchUserCoursesData,
   rateCourse,
-  toggleCurriculumItemCompletion,
-  fetchCourseNotes,
   saveNote,
-  deleteNote,
-  fetchUser,
-  updateUserImagePath,
+  toggleCurriculumItemCompletion,
   updateUserData,
+  updateUserImagePath,
 };
