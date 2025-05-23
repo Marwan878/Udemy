@@ -6,6 +6,7 @@ import { TCourse, TUser } from "@/types";
 import { removeFromCart } from "@/actions/cart";
 import Link from "next/link";
 import { useCart } from "@/contexts/cart";
+import { useUser } from "@clerk/nextjs";
 
 export default function CartCourseCard({
   course,
@@ -13,6 +14,7 @@ export default function CartCourseCard({
   course: TCourse & { instructor: TUser };
 }) {
   const { setCart } = useCart();
+  const { user } = useUser();
   const {
     id,
     imageUrl,
@@ -68,7 +70,9 @@ export default function CartCourseCard({
         <Button
           variant="ghost"
           onClick={() => {
-            removeFromCart([id]);
+            if (user?.id) {
+              removeFromCart([id], user?.id);
+            }
             setCart((prev) => prev?.filter((course) => course.id !== id) ?? []);
           }}
           className="text-sm text-udemy-purple"

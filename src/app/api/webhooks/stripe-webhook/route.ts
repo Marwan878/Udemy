@@ -55,7 +55,7 @@ export async function POST(req: Request) {
 
       await addCoursesToUserCourses(coursesIds, userId);
 
-      await removeFromCart(coursesIds);
+      await removeFromCart(coursesIds, userId);
 
       await incrementUsersStudents(coursesPublishersIds);
     }

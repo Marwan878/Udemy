@@ -34,14 +34,7 @@ async function addToCart(formData: FormData) {
   }
 }
 
-async function removeFromCart(coursesIds: string[]) {
-  const { userId } = await auth();
-
-  if (!userId) {
-    throw new Error(
-      "Attempted to remove from cart for a non-authenticated user."
-    );
-  }
+async function removeFromCart(coursesIds: string[], userId: string) {
   try {
     const userRef = doc(db, "users", userId);
     await updateDoc(userRef, {
