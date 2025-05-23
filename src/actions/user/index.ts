@@ -50,14 +50,17 @@ async function addCoursesToUserCourses(coursesIds: string[], userId: string) {
       throw new Error(`User with id: ${userId} does not exsist.`);
     }
 
-    const newCourses: TPurchasedCourseData[] = coursesIds.map((courseId) => ({
-      id: courseId,
-      completedCurriculumItemsIds: [],
-      userRating: 0,
-      userReview: "",
-      notes: [],
-      purchasedAt: new Date().getTime(),
-    }));
+    const newCourses: Record<string, TPurchasedCourseData>[] = coursesIds.map(
+      (courseId) => ({
+        [courseId]: {
+          completedCurriculumItemsIds: [],
+          userRating: 0,
+          userReview: "",
+          notes: [],
+          purchasedAt: new Date().getTime(),
+        },
+      })
+    );
 
     await updateDoc(userRef, {
       courses: arrayUnion(...newCourses),

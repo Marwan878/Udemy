@@ -11,7 +11,7 @@ export default async function Page() {
   return (
     <MaxWidthWrapper className="pt-[1.6rem] min-h-screen">
       {learnerCourses.length === 0 ? (
-        <p className="text-xl mx-auto my-12">
+        <p className="text-xl mx-auto my-12 text-center">
           You don't have any courses yet, start your learning journey now and
           shine!
         </p>
