@@ -59,7 +59,7 @@ export async function POST(req: Request) {
         about: "",
         bio: "",
         cart: [],
-        courses: [],
+        courses: {},
         publishedCoursesIds: [],
         firstName: first_name ?? "",
         lastName: last_name ?? "",

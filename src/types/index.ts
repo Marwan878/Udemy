@@ -7,7 +7,7 @@ type TUser = {
   imageUrl: string;
   bio: string;
   about: string;
-  courses: TPurchasedCourseData[];
+  courses: Record<string, TPurchasedCourseData>;
   publishedCoursesIds: string[];
   cart: string[];
   studentsCount: number;
