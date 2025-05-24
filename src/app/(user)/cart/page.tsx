@@ -101,7 +101,9 @@ export default function Page() {
           </div>
         )}
       </MaxWidthWrapper>
-      {cart.length > 0 && <MobileCheckoutModal />}
+      {cart.length > 0 && (
+        <MobileCheckoutModal handleCheckout={handleCheckout} />
+      )}
     </>
   );
 }
