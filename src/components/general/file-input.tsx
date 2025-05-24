@@ -13,7 +13,7 @@ export default function FileInput({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="flex gap-x-2">
+    <div className="flex flex-col gap-y-2 xl:flex-row gap-x-2">
       <label
         htmlFor="file-selector"
         className="border border-[#d1d2e0] rounded-md grow p-4 px-6 h-10 flex items-center grow-1"

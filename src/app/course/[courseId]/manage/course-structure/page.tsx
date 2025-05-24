@@ -8,7 +8,7 @@ import Image from "next/image";
 export default function Page() {
   return (
     <PageCard heading="Course structure" className="pb-4">
-      <div className="bg-[#f6f7f9] -mx-[4.8rem]">
+      <div className="bg-[#f6f7f9] -mx-3 md:-mx-[4.8rem]">
         <div className="lg:flex justify-between items-center">
           <div className="grow-[8] py-6 px-[4.8rem]">
             <h3 className="heading-xl">

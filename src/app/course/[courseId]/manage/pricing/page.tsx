@@ -17,30 +17,26 @@ export default function Page() {
           Please select the currency and the price tier for your course.
         </p>
 
-        <div className="space-y-4">
-          <div className="flex gap-8 items-center">
-            <div className="space-y-2">
-              <label className="block font-medium text-gray-700">
-                Currency
-              </label>
-              <Select
-                className="w-36"
-                name="currency"
-                options={[{ displayName: "USD", value: "usd" }]}
-              />
-            </div>
+        <div className="flex flex-col xl:flex-row gap-y-3 xl:gap-x-8">
+          <div className="space-y-2">
+            <label className="block font-medium text-gray-700">Currency</label>
+            <Select
+              className="w-36"
+              name="currency"
+              options={[{ displayName: "USD", value: "usd" }]}
+            />
+          </div>
 
-            <div className="space-y-2">
-              <label className="block font-medium text-gray-700">Price</label>
-              <Input
-                type="number"
-                min={0}
-                value={courseData.price ?? 0}
-                setContent={(newContent) =>
-                  setCourseData((prev) => ({ ...prev, price: +newContent }))
-                }
-              />
-            </div>
+          <div className="space-y-2">
+            <label className="block font-medium text-gray-700">Price</label>
+            <Input
+              type="number"
+              min={0}
+              value={courseData.price ?? 0}
+              setContent={(newContent) =>
+                setCourseData((prev) => ({ ...prev, price: +newContent }))
+              }
+            />
           </div>
         </div>
       </div>

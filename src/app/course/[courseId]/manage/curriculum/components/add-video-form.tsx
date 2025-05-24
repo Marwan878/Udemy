@@ -157,7 +157,7 @@ export default function AddVideoForm({ lecture }: { lecture: TContent }) {
           onChange={handleFileSelection}
           ref={fileInputRef}
         />
-        <span className="text-ellipsis whitespace-nowrap overflow-hidden max-w-3xl">
+        <span className="truncate max-w-[15rem] md:max-w-3xl">
           {lecture.url
             ? lecture.url
             : selectedVideo

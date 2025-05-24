@@ -61,7 +61,7 @@ export default function Page() {
             placeholder="Insert your course subtitle."
             className="w-full"
           />
-          <p className="text-xs text-gray-500 mt-1 text-nowrap">
+          <p className="text-xs text-gray-500 mt-1">
             Use 1 or 2 related keywords, and mention 3-4 of the most important
             areas that you've covered during your course.
           </p>
@@ -87,7 +87,7 @@ export default function Page() {
           <div className="flex flex-wrap gap-y-3 gap-x-3">
             <Select
               name="language"
-              className="basis-1/2 md:basis-[31%] me-auto lg:basis-1/2 xl:basis-[31%]"
+              className="basis-full"
               options={LANGUAGES}
               value={courseData.language}
               onChange={(e) =>
@@ -96,7 +96,7 @@ export default function Page() {
             />
             <Select
               name="level"
-              className="basis-1/2 md:basis-[31%] lg:basis-1/2 xl:basis-[31%]"
+              className="basis-full"
               options={[
                 ...LEVELS.map((level) => ({
                   displayName: `${level.at(0)?.toUpperCase()}${level.slice(
@@ -117,7 +117,7 @@ export default function Page() {
 
             <Select
               name="category"
-              className="basis-[100%] md:basis-[31%] md:ms-auto lg:basis-[100%] xl:basis-[31%]"
+              className="basis-full"
               options={CATEGORIES}
               value={courseData.category}
               onChange={(e) =>
@@ -144,7 +144,7 @@ export default function Page() {
                 alt="Your selected course cover image"
                 width={750}
                 height={422}
-                className="object-cover"
+                className="object-cover max-w-full"
               />
             </div>
 

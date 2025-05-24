@@ -27,7 +27,7 @@ export default function NewSectionForm({
   };
 
   return (
-    <div className="border border-[#9194ac] p-4 gap-2 flex gap-x-6">
+    <div className="border border-[#9194ac] p-4 gap-2 flex flex-col md:flex-row gap-x-6">
       <div className="font-bold">New Section:</div>
       <div className="flex flex-col grow">
         <label className="flex flex-col mb-3">

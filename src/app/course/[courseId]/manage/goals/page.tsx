@@ -97,8 +97,8 @@ export default function Page() {
                     MIN_LEARNING_OBJECTIVES_COUNT
                   }
                   className={cn(
-                    "min-w-0 h-10 aspect-square me-1 invisible disabled:cursor-not-allowed",
-                    { "group-hover:visible ": objective !== "" }
+                    "min-w-0 h-10 aspect-square me-1 hidden lg:invisible disabled:cursor-not-allowed",
+                    { "group-hover:lg:visible ": objective !== "" }
                   )}
                   onClick={() =>
                     handleDeleteData(
@@ -114,7 +114,7 @@ export default function Page() {
                 <Button
                   variant="secondary"
                   className={cn(
-                    "min-w-0 h-10 aspect-square cursor-move invisible",
+                    "min-w-0 h-10 aspect-square cursor-move hidden lg:invisible",
                     {
                       "group-hover:visible": objective !== "",
                     }
@@ -196,8 +196,8 @@ export default function Page() {
                         MIN_PREREQUISITES_COUNT
                       }
                       className={cn(
-                        "min-w-0 h-10 aspect-square me-1 invisible disabled:cursor-not-allowed",
-                        { "group-hover:visible ": prerequisite !== "" }
+                        "min-w-0 h-10 aspect-square me-1 hidden lg:invisible disabled:cursor-not-allowed",
+                        { "group-hover:lg:visible ": prerequisite !== "" }
                       )}
                       onClick={() =>
                         handleDeleteData(
@@ -314,9 +314,9 @@ export default function Page() {
                     <Button
                       variant="secondary"
                       className={cn(
-                        "min-w-0 h-10 aspect-square cursor-move invisible",
+                        "min-w-0 h-10 aspect-square cursor-move hidden lg:invisible",
                         {
-                          "group-hover:visible": audience !== "",
+                          "group-hover:*:lg:visible": audience !== "",
                         }
                       )}
                       aria-label="Reorder Audience"

@@ -27,7 +27,11 @@ export default function CourseCard({
   return (
     <>
       <Link
-        href={`/course/${course.id}/info`}
+        href={
+          state === "published"
+            ? `/course/${course.id}/manage/basics`
+            : `/course/${course.id}/info`
+        }
         className="border-[#d1d2e0] max-w-[calc(37.5rem+2*1px)] min-w-[30rem] block relative shrink-0 bg-white lg:hidden"
       >
         <div className="relative w-full h-80 rounded-t-[8px]">
