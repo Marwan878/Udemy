@@ -1,18 +1,19 @@
+import { fetchModulesWithContent } from "@/actions/courses";
 import { fetchInstructorCourses } from "@/actions/instructor";
 import { Button, MaxWidthWrapper } from "@/components/general";
-import { CourseManagementProvider } from "@/contexts/course-management";
-import { ChevronLeft, Menu } from "lucide-react";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { ReactNode } from "react";
-import CourseManagementSidebar from "./course-management-sidebar";
-import SaveButton from "./save-button";
-import { fetchModulesWithContent } from "@/actions/courses";
 import {
   MIN_AUDIENCE_DESCRIPTION_COUNT,
   MIN_LEARNING_OBJECTIVES_COUNT,
   MIN_PREREQUISITES_COUNT,
 } from "@/constants";
+import { CourseManagementProvider } from "@/contexts/course-management";
+import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ReactNode } from "react";
+import CourseManagementSidebar from "./course-management-sidebar";
+import MobileCourseManagementNav from "./mobile-course-management-nav";
+import SaveButton from "./save-button";
 
 export default async function Layout({
   children,
@@ -69,13 +70,7 @@ export default async function Layout({
         <CourseManagementSidebar />
         <main className="flex flex-col lg:basis-2/3 mx-auto">
           <div className="mb-4 flex justify-between items-center lg:hidden">
-            <Button
-              variant="ghost"
-              className="min-w-0 px-2"
-              aria-label="Open course management options."
-            >
-              <Menu size={28} className="text-udemy-purple" aria-hidden />
-            </Button>
+            <MobileCourseManagementNav />
           </div>
           {children}
         </main>
