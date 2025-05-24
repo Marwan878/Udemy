@@ -28,15 +28,18 @@ export default function SideCard({
         <div className="heading-xl my-4">
           {course.price > 0 ? `$${course.price}` : "FREE"}
         </div>
-        <Button
-          as={cartCoursesIds.includes(course.id) ? Link : undefined}
-          href="/cart"
-          className="font-bold w-full"
-          onClick={() => addToCart(course)}
-          variant="primary"
-        >
-          {cartCoursesIds.includes(course.id) ? "Go to cart" : "Add to cart"}
-        </Button>
+        {cartCoursesIds.includes(course.id) ? (
+          <Button as={Link} href="/cart" className="font-bold w-full">
+            Go to cart
+          </Button>
+        ) : (
+          <Button
+            className="font-bold w-full"
+            onClick={() => addToCart(course)}
+          >
+            Add to cart
+          </Button>
+        )}
         <span className="text-xs text-[#2a2b3f] w-full text-center inline-block">
           Full Lifetime Access
         </span>

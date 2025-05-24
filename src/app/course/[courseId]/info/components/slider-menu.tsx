@@ -29,16 +29,22 @@ export default function SliderMenu({
       </div>
       <div className="flex items-center gap-x-3 lg:hidden">
         <span className="font-bold shrink-0 heading-lg">${price}</span>
-        {
+        {cartCoursesIds.includes(course.id) ? (
           <Button
-            as={cartCoursesIds.includes(course.id) ? Link : undefined}
+            as={Link}
             href="/cart"
+            className="font-bold flex-1 md:bg-white md:hover:bg-gray-200 md:text-[#000]"
+          >
+            Go to cart
+          </Button>
+        ) : (
+          <Button
             className="font-bold flex-1 md:bg-white md:hover:bg-gray-200 md:text-[#000]"
             onClick={() => addToCart(course)}
           >
-            {cartCoursesIds.includes(course.id) ? "Go to cart" : "Add to cart"}
+            Add to cart
           </Button>
-        }
+        )}
       </div>
     </div>
   );
