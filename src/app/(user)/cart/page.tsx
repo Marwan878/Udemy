@@ -63,7 +63,7 @@ export default function Page() {
               src="/images/empty-cart.webp"
               alt="Empty cart image."
             />
-            <p className="mb-[2.4rem]">
+            <p className="mb-[2.4rem] text-center">
               Your cart is empty. Keep shopping to find a course!
             </p>
             <Button as="a" href="/" className="heading-md h-[4.8rem]">
@@ -101,7 +101,7 @@ export default function Page() {
           </div>
         )}
       </MaxWidthWrapper>
-      <MobileCheckoutModal />
+      {cart.length > 0 && <MobileCheckoutModal />}
     </>
   );
 }

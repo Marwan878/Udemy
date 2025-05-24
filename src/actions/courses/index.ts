@@ -109,7 +109,9 @@ async function fetchModulesWithContent(courseId: string): Promise<TModule[]> {
   const q = query(collection(db, "courses", courseId, "modules"));
 
   const snapshot = await getDocs(q);
-  const modules = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  const modules = snapshot.docs
+    .map((doc) => ({ ...doc.data(), id: doc.id }))
+    .reverse();
 
   const modulesWithContent = (await Promise.all(
     modules.map(async (module) => {
@@ -122,10 +124,12 @@ async function fetchModulesWithContent(courseId: string): Promise<TModule[]> {
         "content"
       );
       const contentSnap = await getDocs(contentRef);
-      const content = contentSnap.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as TContent[];
+      const content = contentSnap.docs
+        .map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }))
+        .reverse() as TContent[];
 
       return { ...module, content };
     })

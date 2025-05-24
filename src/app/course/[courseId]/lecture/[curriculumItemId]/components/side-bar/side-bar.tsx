@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import CurriculumItem from "./curriculum-item";
 
 export default function SideBar() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [modules, setModules] = useState<TModule[]>([]);
   const { courseId } = useParams() as { courseId: string };
@@ -84,7 +84,7 @@ export default function SideBar() {
         <Button
           height="md"
           variant="primary"
-          className="absolute top-32 right-0 border border-[#9194ac] translate-x-[11.5rem] hover:translate-x-0 transition-transform duration-500 hidden md:flex
+          className="absolute top-32 right-0 border border-[#9194ac] translate-x-[11.5rem] hover:translate-x-0 transition-transform duration-500 hidden lg:flex
           "
           onClick={() => setIsCollapsed(false)}
         >
@@ -94,19 +94,19 @@ export default function SideBar() {
       )}
       <div
         className={cn(
-          "sticky top-0 h-[calc(100vh-48.8px)] md:basis-[30rem] xl:basis-[40rem]",
-          { "md:basis-0 xl:basis-0": isCollapsed }
+          "sticky top-0 h-[calc(100vh-48.8px)] lg:basis-[30rem] xl:basis-[40rem]",
+          { "lg:basis-0": isCollapsed }
         )}
       >
         <aside
-          className={`mx-auto bg-white w-[41.6rem] h-[calc(100vh-5rem)] overflow-auto ${
-            isCollapsed ? "md:hidden" : ""
+          className={`mx-auto bg-white w-full lg:w-[41.6rem] h-[calc(100vh-5rem)] overflow-auto ${
+            isCollapsed ? "lg:hidden" : ""
           }`}
         >
           <div className="border-b p-4 flex items-center justify-between">
             <h1 className="text-xl font-semibold">Course content</h1>
             <button
-              className="text-gray-500 hover:text-gray-700 hidden md:block"
+              className="text-gray-500 hover:text-gray-700 hidden lg:block"
               onClick={() => setIsCollapsed(true)}
               aria-label="Collapse sidebar"
             >
@@ -141,7 +141,7 @@ export default function SideBar() {
                   </div>
                 </AccordionHeader>
                 <AccordionBody>
-                  <ul className="space-y-1 cursor-pointer">
+                  <ul className="space-y-1 divide-y-2 cursor-pointer">
                     {module.content.map((item) => (
                       <CurriculumItem
                         key={item.id}

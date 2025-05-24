@@ -21,7 +21,7 @@ async function Layout({
   return (
     <>
       <Header courseId={courseId} />
-      <main className="md:flex w-full relative">
+      <main className="lg:flex w-full relative">
         <VideoTimestampProvider>
           <div className="min-w-0 grow">
             <VideoPlayer

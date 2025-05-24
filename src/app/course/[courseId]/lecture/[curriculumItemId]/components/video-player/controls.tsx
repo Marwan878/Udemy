@@ -48,7 +48,7 @@ export default function Controls({
       {/* Left controls */}
       <div className="flex items-center gap-x-1 md:gap-x-3">
         <Button
-          className="md:p-1 w-3 h-3 md:w-8 md:h-8"
+          className="w-4 h-4 md:w-10 md:h-10 me-2 md:me-0"
           variant="ghost"
           height="sm"
           onClick={togglePlay}
@@ -62,7 +62,7 @@ export default function Controls({
           <ControlTooltip text={isPlaying ? "Pause" : "Play"} />
         </Button>
         <Button
-          className="md:p-1 w-3 h-3 md:w-8 md:h-8"
+          className="w-4 h-4 md:w-10 md:h-10"
           variant="ghost"
           height="sm"
           onClick={() => handleSeek(Math.max(currentTime - 5, 0).toString())}
@@ -72,7 +72,7 @@ export default function Controls({
           <ControlTooltip text="Rewind 5s" />
         </Button>
         <Button
-          className="md:p-1 w-3 h-3 md:w-8 md:h-8"
+          className="w-4 h-4 md:w-10 md:h-10"
           variant="ghost"
           height="sm"
           onClick={() => handleSeek(Math.max(currentTime + 5, 0).toString())}
@@ -88,8 +88,8 @@ export default function Controls({
         />
       </div>
       {/* Center controls: Progress bar */}
-      <div className="flex items-center gap-x-2 flex-1 mx-4">
-        <span className="text-xs text-white w-12 text-right">
+      <div className="flex items-center gap-x-2 flex-1 mx-2">
+        <span className="text-xs md:text-xl text-white w-12 text-right">
           {formatVideoTime(currentTime)}
         </span>
         <input
@@ -99,42 +99,44 @@ export default function Controls({
           step={0.1}
           value={currentTime}
           onChange={(e) => handleSeek(e.target.value)}
-          className="w-full h-1 accent-purple-500 bg-gray-300 rounded-lg cursor-pointer"
+          className="w-full h-1 md:h-3 accent-purple-500 bg-gray-300 rounded-lg cursor-pointer"
         />
-        <span className="text-xs text-white w-12">
+        <span className="text-xs md:text-2xl text-white w-12">
           {formatVideoTime(duration)}
         </span>
       </div>
       {/* Right controls: Volume, Fullscreen */}
-      <div className="flex items-center gap-x-1 md:gap-x-3">
-        <Button
-          variant="ghost"
-          height="sm"
-          onClick={toggleMute}
-          className="md:p-1 w-3 h-3 md:w-8 md:h-8"
-          aria-label={volume === 0 ? "Unmute video" : "Mute video"}
-        >
-          {volume === 0 ? (
-            <VolumeOff color="#d1d2e0" />
-          ) : (
-            <Volume2Icon color="#d1d2e0" />
-          )}
-          <ControlTooltip text={isMuted ? "Unmute" : "Mute"} />
-        </Button>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.01}
-          value={volume}
-          onChange={handleVolumeChange}
-          className="w-16 accent-purple-500"
-        />
+      <div className="flex items-center gap-x-1">
+        <div className="flex items-center gap-x-1">
+          <Button
+            variant="ghost"
+            height="sm"
+            onClick={toggleMute}
+            className="w-4 h-4 md:w-10 md:h-10"
+            aria-label={volume === 0 ? "Unmute video" : "Mute video"}
+          >
+            {volume === 0 ? (
+              <VolumeOff color="#d1d2e0" />
+            ) : (
+              <Volume2Icon color="#d1d2e0" />
+            )}
+            <ControlTooltip text={isMuted ? "Unmute" : "Mute"} />
+          </Button>
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.01}
+            value={volume}
+            onChange={handleVolumeChange}
+            className="w-20 md:w-28 accent-purple-500"
+          />
+        </div>
         <Button
           variant="ghost"
           height="sm"
           onClick={toggleFullscreen}
-          className="md:p-1 w-3 h-3 md:w-8 md:h-8 ms-1"
+          className="w-4 h-4 md:w-10 md:h-10 ms-1"
           aria-label={isFullscreen ? "Minimize video." : "Expand video."}
         >
           {isFullscreen ? (

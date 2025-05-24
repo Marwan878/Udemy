@@ -7,6 +7,7 @@ import Image from "next/image";
 import { fetchUser, updateUserImagePath } from "@/actions/user";
 import supabase, { SUPABASE_URL } from "@/lib/supabase";
 import { fileFromImageUrl } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const [isUploading, setIsUploading] = useState(false);
@@ -26,28 +27,34 @@ export default function Page() {
     if (!selectedImage) return;
     setIsUploading(true);
 
-    const imageId = crypto.randomUUID();
-    const { error } = await supabase.storage
-      .from("images")
-      .upload(imageId, selectedImage);
+    try {
+      const imageId = crypto.randomUUID();
+      const { error } = await supabase.storage
+        .from("images")
+        .upload(imageId, selectedImage);
 
-    if (error) {
-      console.error(error);
-    } else {
+      if (error) {
+        throw new Error(error.message);
+      }
+
       const newImagePath = `${SUPABASE_URL}/storage/v1/object/public/images//${imageId}`;
       await updateUserImagePath(newImagePath);
+      toast.success("Image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      setIsUploading(false);
+      toast.error("Failed to upload image. Please try again.");
+    } finally {
+      setIsUploading(false);
     }
-
-    setIsUploading(false);
   };
 
   useEffect(() => {
     const fetchUserImageFile = async () => {
       const { imageUrl } = await fetchUser();
+      if (!imageUrl) return;
       const file = await fileFromImageUrl(imageUrl, "My Avatar");
-      if (file) {
-        setSelectedImage(file);
-      }
+      setSelectedImage(file);
     };
     fetchUserImageFile();
   }, []);

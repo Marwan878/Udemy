@@ -11,14 +11,14 @@ export default function PlaybackControl({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="relative">
+    <div className="relative hidden md:block">
       <Button
         variant="ghost"
         height="sm"
         onClick={() => setIsMenuOpen((prev) => !prev)}
         className="w-12 min-w-12 max-w-12 md:w-24 md:min-w-24 md:max-w-24"
       >
-        <div className="bg-white md:px-2 w-full text-black text-sm md:text-md">
+        <div className="bg-white md:px-2 w-full text-black">
           {playbackRate + "x"}
         </div>
       </Button>

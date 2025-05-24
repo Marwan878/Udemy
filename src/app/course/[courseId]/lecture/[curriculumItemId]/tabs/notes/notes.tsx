@@ -18,7 +18,7 @@ const computeCurriculumItemOrder = (
 ): number => {
   const curriculumItems: TContent[] = [];
   modules.forEach((module) => {
-    curriculumItems.concat(module.content);
+    curriculumItems.push(...module.content);
   });
 
   const curriculumItemIndex = curriculumItems.findIndex(
@@ -36,7 +36,7 @@ const computeModuleOrder = (
     modules.findIndex(
       (module) =>
         module.content.find(
-          (curriculumItem) => curriculumItem.id !== curriculumItemId
+          (curriculumItem) => curriculumItem.id === curriculumItemId
         ) !== undefined
     ) + 1
   );
@@ -68,18 +68,23 @@ export default function Notes() {
       modules,
       curriculumItemId
     );
-    const currentModule = modules.at(currentModuleOrder - 1);
-    const currentLecture = currentModule?.content.find(
+    const currentModule = modules[currentModuleOrder - 1];
+    const currentLecture = currentModule.content.find(
       (lecture) => lecture.id === curriculumItemId
     );
+
+    if (!currentLecture) {
+      console.error("Current lecture not found");
+      return;
+    }
 
     const newNote: TNote = {
       content: note,
       lectureNumber: curriculumItemOrder,
       moduleNumber: currentModuleOrder,
       takenAtSecond: Math.round(currentTimestamp),
-      lectureName: currentLecture?.title ?? "",
-      moduleName: currentModule?.title ?? "",
+      lectureName: currentLecture.title,
+      moduleName: currentModule.title,
       id: crypto.randomUUID(),
     };
 
@@ -94,6 +99,8 @@ export default function Notes() {
         },
         courseId
       );
+      setNote("");
+      setTextEditiorIsVisible(false);
     } catch (error) {
       console.error(error);
       setNotes(initialState);
@@ -104,7 +111,7 @@ export default function Notes() {
     <MaxWidthWrapper>
       <div className="max-w-[84.8rem] pt-[3.2rem] md:px-[2.4rem] mx-auto">
         {textEditorIsVisible ? (
-          <div className="flex gap-x-3 items-start">
+          <div className="flex gap-x-3 items-start mb-3">
             <TimePill timeInSeconds={currentTimestamp} />
             <div className="flex flex-col shrink-0 grow">
               <RichTextEditor value={note} onChange={setNote} />
@@ -125,7 +132,7 @@ export default function Notes() {
         ) : (
           <button
             onClick={() => setTextEditiorIsVisible(true)}
-            className="border border-[#9194ac] rounded-[0.4rem] px-4 py-1 text-[#595c73] w-full flex justify-between items-center btn-md hover:bg-[#f5f5f6]"
+            className="border border-[#9194ac] rounded-[0.4rem] px-4 py-1 mb-5 text-[#595c73] w-full flex justify-between items-center btn-md hover:bg-[#f5f5f6]"
           >
             Create a new note at {formatVideoTime(currentTimestamp)}
             <span className="w-5 h-5 p-1 bg-[#303141] text-white rounded-full flex items-center justify-center">
