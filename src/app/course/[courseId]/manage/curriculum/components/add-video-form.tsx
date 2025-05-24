@@ -42,7 +42,6 @@ export default function AddVideoForm({ lecture }: { lecture: TContent }) {
       try {
         // 1. Get video duration
         const videoDuration = await getVideoDuration(video);
-        console.log(videoDuration);
 
         if (typeof videoDuration !== "number") {
           throw new Error("Failed to compute video duration.");

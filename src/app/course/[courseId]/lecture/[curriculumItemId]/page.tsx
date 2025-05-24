@@ -14,7 +14,7 @@ const tabComponents = {
 
 export default function Page() {
   const [activeTabName, setActiveTabName] = useState<"overview" | "notes">(
-    "notes"
+    "overview"
   );
   const Tab = tabComponents[activeTabName];
   const { courseId } = useParams() as { courseId: string };

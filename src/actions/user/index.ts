@@ -258,7 +258,7 @@ async function deleteNote(courseId: string, noteId: string) {
   const learnerCourses = userSnap.get("courses");
   if (!(courseId in learnerCourses)) {
     throw new Error(
-      "You can't delete a note for a course you haven't purchased"
+      "You can't delete a note for a course you aren't enrolled in."
     );
   }
 

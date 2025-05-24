@@ -66,6 +66,8 @@ export default function Overview({ courseId }: { courseId: string }) {
     whoThisCourseIsFor,
     requirements,
     leadHeadline,
+    skillLevel,
+    updatedAt,
   } = courseData;
 
   return (
@@ -79,9 +81,7 @@ export default function Overview({ courseId }: { courseId: string }) {
             <CourseDuration totalHours={secondsToHours(courseDuration)} />
           </div>
           <div>
-            {courseData?.updatedAt && (
-              <UpdatedAt updatedAt={courseData.updatedAt} />
-            )}
+            {updatedAt && <UpdatedAt updatedAt={updatedAt} />}
             <Language language={language} />
           </div>
           <ScheduleCTA />
@@ -92,6 +92,9 @@ export default function Overview({ courseId }: { courseId: string }) {
           studentsCount={studentsCount}
           hasCaptions={hasCaptions}
           lecturesCount={lecturesCount}
+          courseDuration={secondsToHours(courseDuration)}
+          language={language}
+          skillLevel={skillLevel}
         />
         {!isCollapsed && (
           <>

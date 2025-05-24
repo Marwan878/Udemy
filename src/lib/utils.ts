@@ -54,8 +54,8 @@ export function unixToMonthYear(unixMs: number) {
   return `${month} ${year}`;
 }
 
-export function secondsToHours(seconds: number) {
-  return Math.round(seconds / 60 / 60);
+export function secondsToHours(seconds: number): number {
+  return parseFloat((seconds / 60 / 60).toFixed(2));
 }
 
 export function formatVideoTime(seconds: number) {

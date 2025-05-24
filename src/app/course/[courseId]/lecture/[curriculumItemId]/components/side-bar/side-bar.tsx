@@ -84,8 +84,7 @@ export default function SideBar() {
         <Button
           height="md"
           variant="primary"
-          className="absolute top-32 right-0 border border-[#9194ac] translate-x-[11.5rem] hover:translate-x-0 transition-transform duration-500 hidden lg:flex
-          "
+          className="absolute top-32 right-0 border border-[#9194ac] translate-x-[11.5rem] hover:translate-x-0 transition-transform duration-500 hidden lg:flex"
           onClick={() => setIsCollapsed(false)}
         >
           <ArrowLeft color="white" className="me-3" aria-hidden />
@@ -95,7 +94,7 @@ export default function SideBar() {
       <div
         className={cn(
           "sticky top-0 h-[calc(100vh-48.8px)] lg:basis-[30rem] xl:basis-[40rem]",
-          { "lg:basis-0": isCollapsed }
+          { "lg:basis-0 xl:basis-0": isCollapsed }
         )}
       >
         <aside

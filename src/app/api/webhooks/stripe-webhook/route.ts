@@ -1,4 +1,5 @@
 import { removeFromCart } from "@/actions/cart";
+import { incrementCoursesStudents } from "@/actions/courses";
 import { incrementUsersStudents } from "@/actions/instructor";
 import { addCoursesToUserCourses } from "@/actions/user";
 import { stripe } from "@/lib/stripe";
@@ -58,6 +59,8 @@ export async function POST(req: Request) {
       await removeFromCart(coursesIds, userId);
 
       await incrementUsersStudents(coursesPublishersIds);
+
+      await incrementCoursesStudents(coursesIds);
     }
 
     return NextResponse.json({ result: event, ok: true });

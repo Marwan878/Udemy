@@ -13,6 +13,7 @@ import {
   setDoc,
   updateDoc,
   where,
+  writeBatch,
 } from "firebase/firestore";
 import { getLoggedInUserId } from "../cart";
 import { fetchInstructors } from "../instructor";
@@ -383,6 +384,21 @@ async function addCourseToPublishedCourses(courseId: string) {
   });
 }
 
+async function incrementCoursesStudents(coursesIds: string[]) {
+  const coursesRef = collection(db, "courses");
+  const coursesQuery = query(coursesRef, where("__name__", "in", coursesIds));
+  const snapshot = await getDocs(coursesQuery);
+
+  const batch = writeBatch(db);
+  snapshot.docs.forEach((doc) => {
+    const courseData = doc.data();
+    batch.update(doc.ref, {
+      studentsCount: courseData.studentsCount + 1,
+    });
+  });
+  await batch.commit();
+}
+
 export {
   addCourseToAppropriateCategory,
   addCourseToPublishedCourses,
@@ -400,4 +416,5 @@ export {
   searchCourses,
   updateCourseAverageRating,
   upsertCourseDataAndModules,
+  incrementCoursesStudents,
 };
