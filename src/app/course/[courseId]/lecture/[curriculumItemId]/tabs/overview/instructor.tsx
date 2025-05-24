@@ -7,10 +7,13 @@ export default function Instructor({ instructor }: { instructor: TUser }) {
       <dt className="w-1/4">Instructor</dt>
       <dd className="max-sm:ps-[0.8rem] w-3/4">
         <div className="flex mb-[2.4rem]">
-          <div className="flex-shrink-0 self-center w-[6.4rem] h-[6.4rem] border border-[#d1d2e0] rounded-full">
+          <div className="flex-shrink-0 self-center w-[6.4rem] h-[6.4rem] border border-[#d1d2e0] rounded-full relative">
             <Image
-              src={instructor.imageUrl}
-              className=" object-cover"
+              src={
+                instructor.imageUrl ||
+                "https://img-c.udemycdn.com/user/200_H/anonymous_3.png"
+              }
+              className="object-cover"
               alt={`${
                 instructor.firstName + " " + instructor.lastName
               } profile picture`}
