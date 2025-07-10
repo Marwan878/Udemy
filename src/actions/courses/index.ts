@@ -41,7 +41,7 @@ async function fetchCourses(
   const instructors = await fetchInstructors(instructorsIds);
   const instructorsHashMap = new Map(
     instructors.map((instructor) => [instructor.id, instructor])
-  ) as Map<string, TUser>;
+  );
 
   const courses = fetchedCourses.map((course) => {
     if (!course?.instructorId) {
@@ -216,6 +216,27 @@ async function incrementCourseRatingCount(courseId: string) {
   await updateDoc(courseRef, { ratingCount: increment(1) });
 }
 
+async function addNewRating(courseId: string, rating: number) {
+  const courseRef = doc(db, "courses", courseId);
+  const courseSnap = await getDoc(courseRef);
+  if (!courseSnap.exists()) {
+    throw new Error(`Course with id ${courseId} does not exist.`);
+  }
+
+  const ratingCount = courseSnap.data().ratingCount;
+  const averageRating = courseSnap.data().rating;
+  const newTotalRating = averageRating * ratingCount + rating;
+
+  const finalRating = parseFloat(
+    (newTotalRating / (ratingCount + 1)).toFixed(1)
+  );
+
+  await updateDoc(courseRef, {
+    rating: finalRating,
+    ratingCount: ratingCount + 1,
+  });
+}
+
 async function updateCourseAverageRating(
   courseId: string,
   oldRating: number,
@@ -231,8 +252,6 @@ async function updateCourseAverageRating(
   const averageRating = courseSnap.data().rating;
   const newTotalRating = averageRating * ratingCount + newRating - oldRating;
 
-  // We don't increment ratingCount as this function is meant to be used after ratingCount increment
-  // if we are handling a new rating
   const finalRating = parseFloat((newTotalRating / ratingCount).toFixed(1));
 
   await updateDoc(courseRef, {
@@ -415,6 +434,7 @@ export {
   incrementCourseRatingCount,
   searchCourses,
   updateCourseAverageRating,
+  addNewRating,
   upsertCourseDataAndModules,
   incrementCoursesStudents,
 };

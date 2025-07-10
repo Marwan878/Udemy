@@ -82,7 +82,7 @@ const PLANS: Plan[] = [
       "International course collection featuring 15 languages",
       "Customizable content",
       "Hands-on tech training with add-on",
-      "Strategic implementation services with add-on",
+      "Stegic implementation services with add-on",
     ],
     isPersonal: false,
     usersCountText: "More than 20 people",
@@ -105,7 +105,7 @@ export default function Pricing() {
   return (
     <Section>
       <SectionHeading
-        primaryText="Accelerate growth — for you or your organization"
+        primaryText="Accelee growth — for you or your organization"
         secondaryText="Reach goals faster with one of our plans or programs. Try one free today or contact sales to learn more."
       />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-[1.6rem]">

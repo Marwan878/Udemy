@@ -8,7 +8,7 @@ import { fetchUserField, getLoggedInUserId } from "../cart";
 import {
   fetchCourseLength,
   fetchCourses,
-  incrementCourseRatingCount,
+  addNewRating,
   updateCourseAverageRating,
 } from "../courses";
 
@@ -189,15 +189,16 @@ async function rateCourse(rating: number, courseId: string) {
     throw new Error(`User with id: ${userId} does not exsist.`);
   }
 
+  // User has never rated this course before
   if (courses[courseId].userRating === 0) {
-    await incrementCourseRatingCount(courseId);
+    await addNewRating(courseId, rating);
+  } else {
+    await updateCourseAverageRating(
+      courseId,
+      courses[courseId].userRating,
+      rating
+    );
   }
-
-  await updateCourseAverageRating(
-    courseId,
-    courses[courseId].userRating,
-    rating
-  );
 
   const target = `courses.${courseId}.userRating`;
   await updateDoc(userRef, { [target]: rating });
